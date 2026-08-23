@@ -1,0 +1,231 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - list:
+                - listitem:
+                  - link:
+                    - /url: /admin/dashboard
+                    - generic: Laravel Starter Kit
+            - generic:
+              - generic:
+                - generic: Platform
+                - list:
+                  - listitem:
+                    - link:
+                      - /url: /admin/dashboard
+                      - generic: Dashboard
+                  - listitem:
+                    - link:
+                      - /url: /admin/plans
+                      - generic: Plans
+                  - listitem:
+                    - link:
+                      - /url: /admin/services
+                      - generic: Services
+                  - listitem:
+                    - link:
+                      - /url: /admin/plan-categories
+                      - generic: Plan Categories
+                  - listitem:
+                    - link:
+                      - /url: /admin/pages/plans
+                      - generic: Plans Page
+                  - listitem:
+                    - link:
+                      - /url: /admin/hero-config
+                      - generic: Hero Config
+                  - listitem:
+                    - link:
+                      - /url: /admin/website-config
+                      - generic: Website Config
+            - generic:
+              - generic:
+                - generic:
+                  - list:
+                    - listitem:
+                      - link:
+                        - /url: https://github.com/laravel/react-starter-kit
+                        - generic: Repository
+                    - listitem:
+                      - link:
+                        - /url: https://laravel.com/docs/starter-kits
+                        - generic: Documentation
+              - list:
+                - listitem:
+                  - button:
+                    - generic: A
+                    - generic: Admin
+      - main:
+        - generic:
+          - generic:
+            - button:
+              - generic: Toggle Sidebar
+            - navigation:
+              - list:
+                - listitem:
+                  - link:
+                    - /url: /admin/dashboard
+                    - text: Dashboard
+                - listitem
+                - listitem:
+                  - link [disabled]: Plans
+        - generic:
+          - generic:
+            - generic:
+              - heading [level=1]: Internet Plans
+              - paragraph: Manage broadband packages shown on the public Plans page.
+            - link:
+              - /url: http://127.0.0.1:8899/admin/plans/create
+              - button: New Plan
+          - generic:
+            - generic:
+              - paragraph: Total Plans
+              - paragraph: "6"
+            - generic:
+              - paragraph: Active
+              - paragraph: "6"
+            - generic:
+              - paragraph: Featured
+              - paragraph: "2"
+          - generic:
+            - generic:
+              - textbox:
+                - /placeholder: Search by name...
+            - combobox
+            - combobox
+          - generic:
+            - table:
+              - rowgroup:
+                - row:
+                  - columnheader: Plan
+                  - columnheader: Category
+                  - columnheader: Speed
+                  - columnheader: Price
+                  - columnheader: Status
+                  - columnheader: Sort
+                  - columnheader: Actions
+              - rowgroup:
+                - row:
+                  - cell:
+                    - generic: Starter Fiber
+                    - paragraph: Perfect for everyday browsing
+                  - cell: Home Internet
+                  - cell: 25 Mbps
+                  - cell: $800.00/mo
+                  - cell:
+                    - button:
+                      - generic: Active
+                  - cell: "10"
+                  - cell:
+                    - generic:
+                      - link:
+                        - /url: /plans/starter-fiber
+                      - link:
+                        - /url: http://127.0.0.1:8899/admin/plans/1/edit
+                      - button
+                - row:
+                  - cell:
+                    - generic: Family Value
+                    - paragraph: Smart choice for families
+                  - cell: Home Internet
+                  - cell: 75 Mbps
+                  - cell: $1500.00/mo
+                  - cell:
+                    - button:
+                      - generic: Active
+                  - cell: "15"
+                  - cell:
+                    - generic:
+                      - link:
+                        - /url: /plans/family-value
+                      - link:
+                        - /url: http://127.0.0.1:8899/admin/plans/6/edit
+                      - button
+                - row:
+                  - cell:
+                    - generic: Stream Boost
+                    - paragraph: Built for binge-watchers
+                  - cell: Streaming
+                  - cell: 50 Mbps
+                  - cell: $1200.00/mo
+                  - cell:
+                    - button:
+                      - generic: Active
+                  - cell: "20"
+                  - cell:
+                    - generic:
+                      - link:
+                        - /url: /plans/stream-boost
+                      - link:
+                        - /url: http://127.0.0.1:8899/admin/plans/2/edit
+                      - button
+                - row:
+                  - cell:
+                    - generic:
+                      - generic: Gamer Pro
+                      - generic: Featured
+                    - paragraph: Dominate every match
+                  - cell: Gaming
+                  - cell: 100 Mbps
+                  - cell: $1800.00/mo
+                  - cell:
+                    - button:
+                      - generic: Active
+                  - cell: "30"
+                  - cell:
+                    - generic:
+                      - link:
+                        - /url: /plans/gamer-pro
+                      - link:
+                        - /url: http://127.0.0.1:8899/admin/plans/3/edit
+                      - button
+                - row:
+                  - cell:
+                    - generic: Business Suite
+                    - paragraph: Keep your business always-on
+                  - cell: Business
+                  - cell: 200 Mbps
+                  - cell: $4500.00/mo
+                  - cell:
+                    - button:
+                      - generic: Active
+                  - cell: "40"
+                  - cell:
+                    - generic:
+                      - link:
+                        - /url: /plans/business-suite
+                      - link:
+                        - /url: http://127.0.0.1:8899/admin/plans/4/edit
+                      - button
+                - row:
+                  - cell:
+                    - generic:
+                      - generic: Hyper Max
+                      - generic: Featured
+                    - paragraph: The fastest we offer
+                  - cell: Premium
+                  - cell: 1 Gbps
+                  - cell: $9000.00/mo
+                  - cell:
+                    - button:
+                      - generic: Active
+                  - cell: "50"
+                  - cell:
+                    - generic:
+                      - link:
+                        - /url: /plans/hyper-max
+                      - link:
+                        - /url: http://127.0.0.1:8899/admin/plans/5/edit
+                      - button
+  - dialog [ref=f37e439]:
+    - generic [ref=f37e428]:
+      - heading "Delete \"\"?" [level=2] [ref=f37e440]
+      - paragraph [ref=f37e430]: This will permanently remove this plan and all its features and service associations. This action cannot be undone.
+    - generic [ref=f37e431]:
+      - button "Cancel" [ref=f37e432]
+      - button "Delete Plan" [active] [ref=f37e433]
+    - button "Close" [ref=f37e434]

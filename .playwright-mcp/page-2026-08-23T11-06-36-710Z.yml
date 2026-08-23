@@ -1,0 +1,187 @@
+- generic [ref=f33e3]:
+  - generic [ref=f33e7]:
+    - list [ref=f33e9]:
+      - listitem [ref=f33e10]:
+        - link "Laravel Starter Kit" [ref=f33e11] [cursor=pointer]:
+          - /url: /admin/dashboard
+    - generic [ref=f33e18]:
+      - generic [ref=f33e19]: Platform
+      - list [ref=f33e20]:
+        - listitem [ref=f33e21]:
+          - link "Dashboard" [ref=f33e22] [cursor=pointer]:
+            - /url: /admin/dashboard
+        - listitem [ref=f33e29]:
+          - link "Plans" [ref=f33e30] [cursor=pointer]:
+            - /url: /admin/plans
+        - listitem [ref=f33e36]:
+          - link "Services" [ref=f33e37] [cursor=pointer]:
+            - /url: /admin/services
+        - listitem [ref=f33e41]:
+          - link "Plan Categories" [ref=f33e42] [cursor=pointer]:
+            - /url: /admin/plan-categories
+        - listitem [ref=f33e47]:
+          - link "Plans Page" [ref=f33e48] [cursor=pointer]:
+            - /url: /admin/pages/plans
+        - listitem [ref=f33e53]:
+          - link "Hero Config" [ref=f33e54] [cursor=pointer]:
+            - /url: /admin/hero-config
+        - listitem [ref=f33e59]:
+          - link "Website Config" [ref=f33e60] [cursor=pointer]:
+            - /url: /admin/website-config
+    - generic [ref=f33e65]:
+      - list [ref=f33e68]:
+        - listitem [ref=f33e69]:
+          - link "Repository" [ref=f33e70] [cursor=pointer]:
+            - /url: https://github.com/laravel/react-starter-kit
+        - listitem [ref=f33e74]:
+          - link "Documentation" [ref=f33e75] [cursor=pointer]:
+            - /url: https://laravel.com/docs/starter-kits
+      - list [ref=f33e79]:
+        - listitem [ref=f33e80]:
+          - button "A Admin" [ref=f33e81]:
+            - generic [ref=f33e82]: A
+            - generic [ref=f33e84]: Admin
+  - main [ref=f33e89]:
+    - generic [ref=f33e91]:
+      - button "Toggle Sidebar" [ref=f33e92]
+      - navigation "breadcrumb" [ref=f33e94]:
+        - list [ref=f33e95]:
+          - listitem [ref=f33e96]:
+            - link "Dashboard" [ref=f33e97] [cursor=pointer]:
+              - /url: /admin/dashboard
+          - listitem [ref=f33e98]
+          - listitem [ref=f33e101]:
+            - link "Pages" [ref=f33e102] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f33e103]
+          - listitem [ref=f33e106]:
+            - link "Plans Page" [disabled] [ref=f33e107]
+    - generic [ref=f33e108]:
+      - generic [ref=f33e109]:
+        - generic [ref=f33e110]:
+          - heading "Plans Page Content" [level=1] [ref=f33e111]
+          - paragraph [ref=f33e112]: Edit the global content shown on the public Plans page.
+        - link "View Public Page" [ref=f33e113] [cursor=pointer]:
+          - /url: /plans
+      - generic [ref=f33e114]:
+        - generic [ref=f33e115]:
+          - generic [ref=f33e116]:
+            - generic [ref=f33e117]: Hero Section
+            - generic [ref=f33e118]: The dark futuristic banner at the top of the page.
+          - generic [ref=f33e119]:
+            - generic [ref=f33e120]:
+              - text: Eyebrow Badge
+              - textbox "Eyebrow Badge" [ref=f33e121]:
+                - /placeholder: Next Generation Internet
+                - text: Choose Your Connection
+            - generic [ref=f33e122]:
+              - generic [ref=f33e123]:
+                - text: Heading
+                - textbox "Heading" [ref=f33e124]:
+                  - /placeholder: Choose Your Perfect
+                  - text: Internet Plans Designed for Your
+              - generic [ref=f33e125]:
+                - text: Highlighted Word(s)
+                - textbox "Highlighted Word(s)" [ref=f33e126]:
+                  - /placeholder: Connection
+                  - text: Digital Life
+            - generic [ref=f33e127]:
+              - text: Subheading
+              - textbox "Subheading" [ref=f33e128]: Explore high-speed internet packages built for streaming, gaming, work, entertainment, and everything in between.
+            - generic [ref=f33e129]:
+              - generic [ref=f33e130]:
+                - text: Primary Button Text
+                - textbox "Primary Button Text" [ref=f33e131]: Get Started
+              - generic [ref=f33e132]:
+                - text: Primary Button URL
+                - textbox "Primary Button URL" [ref=f33e133]: "#plans-section"
+              - generic [ref=f33e134]:
+                - text: Secondary Button Text
+                - textbox "Secondary Button Text" [ref=f33e135]: Contact Us
+              - generic [ref=f33e136]:
+                - text: Secondary Button URL
+                - textbox "Secondary Button URL" [ref=f33e137]: /contact
+            - generic [ref=f33e138]:
+              - text: Background Image URL
+              - textbox "Background Image URL" [ref=f33e139]:
+                - /placeholder: https://...
+        - generic [ref=f33e140]:
+          - generic [ref=f33e141]:
+            - generic [ref=f33e142]:
+              - generic [ref=f33e143]: Category & Plans Section Headings
+              - generic [ref=f33e144]: Titles above the category filter and plan cards.
+            - generic [ref=f33e146]:
+              - generic [ref=f33e147]:
+                - text: Category Filter Title
+                - textbox "Category Filter Title" [ref=f33e148]:
+                  - /placeholder: Browse by Category
+                  - text: Browse by Category
+              - generic [ref=f33e149]:
+                - text: Category Filter Description
+                - textbox "Category Filter Description" [ref=f33e150]: Find the perfect connection type for your home, business, or gaming setup.
+              - generic [ref=f33e151]:
+                - text: Plans Grid Title
+                - textbox "Plans Grid Title" [ref=f33e152]:
+                  - /placeholder: All Internet Plans
+                  - text: Our Internet Plans
+              - generic [ref=f33e153]:
+                - text: Plans Grid Description
+                - textbox "Plans Grid Description" [ref=f33e154]: Transparent pricing. Blazing speeds. Premium entertainment bundled in.
+          - generic [ref=f33e155]:
+            - generic [ref=f33e156]:
+              - generic [ref=f33e157]: Bottom CTA Section
+              - generic [ref=f33e158]: The closing call-to-action banner.
+            - generic [ref=f33e159]:
+              - generic [ref=f33e160] [cursor=pointer]:
+                - generic [ref=f33e161]: Enabled
+                - checkbox "Enable CTA section" [checked] [ref=f33e162]
+              - generic [ref=f33e163]:
+                - text: Title
+                - textbox "Title" [ref=f33e164]: Ready for a Better Internet Experience?
+              - generic [ref=f33e165]:
+                - text: Description
+                - textbox "Description" [ref=f33e166]: Choose the plan that fits your lifestyle and get connected today.
+              - generic [ref=f33e167]:
+                - generic [ref=f33e168]:
+                  - text: Primary Text
+                  - textbox "Primary Text" [ref=f33e169]: Get Started
+                - generic [ref=f33e170]:
+                  - text: Primary URL
+                  - textbox "Primary URL" [ref=f33e171]: /plans
+                - generic [ref=f33e172]:
+                  - text: Secondary Text
+                  - textbox "Secondary Text" [ref=f33e173]: Contact Us
+                - generic [ref=f33e174]:
+                  - text: Secondary URL
+                  - textbox "Secondary URL" [ref=f33e175]: /contact
+        - generic [ref=f33e176]:
+          - generic [ref=f33e177]:
+            - generic [ref=f33e178]:
+              - generic [ref=f33e179]: Currency
+              - generic [ref=f33e180]: Global currency used for every price on the page.
+            - generic [ref=f33e182]:
+              - generic [ref=f33e183]:
+                - text: Symbol *
+                - textbox "Symbol *" [ref=f33e184]:
+                  - /placeholder: $ / ৳ / €
+                  - text: $
+              - generic [ref=f33e185]:
+                - text: ISO Code
+                - textbox "ISO Code" [ref=f33e186]:
+                  - /placeholder: USD / BDT
+                  - text: USD
+          - generic [ref=f33e187]:
+            - generic [ref=f33e188]:
+              - generic [ref=f33e189]: SEO & Meta
+              - generic [ref=f33e190]: Browser title and search-engine snippets.
+            - generic [ref=f33e191]:
+              - generic [ref=f33e192]:
+                - text: Meta Title
+                - textbox "Meta Title" [ref=f33e193]
+              - generic [ref=f33e194]:
+                - text: Meta Description
+                - textbox "Meta Description" [ref=f33e195]
+              - generic [ref=f33e196]:
+                - text: Meta Keywords (comma separated)
+                - textbox "Meta Keywords (comma separated)" [ref=f33e197]
+        - button "Save Settings" [ref=f33e199]

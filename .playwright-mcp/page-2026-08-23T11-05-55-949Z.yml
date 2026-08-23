@@ -1,0 +1,121 @@
+- generic [ref=f32e3]:
+  - generic [ref=f32e7]:
+    - list [ref=f32e9]:
+      - listitem [ref=f32e10]:
+        - link "Laravel Starter Kit" [ref=f32e11] [cursor=pointer]:
+          - /url: /admin/dashboard
+    - generic [ref=f32e18]:
+      - generic [ref=f32e19]: Platform
+      - list [ref=f32e20]:
+        - listitem [ref=f32e21]:
+          - link "Dashboard" [ref=f32e22] [cursor=pointer]:
+            - /url: /admin/dashboard
+        - listitem [ref=f32e29]:
+          - link "Plans" [ref=f32e30] [cursor=pointer]:
+            - /url: /admin/plans
+        - listitem [ref=f32e36]:
+          - link "Services" [ref=f32e37] [cursor=pointer]:
+            - /url: /admin/services
+        - listitem [ref=f32e41]:
+          - link "Plan Categories" [ref=f32e42] [cursor=pointer]:
+            - /url: /admin/plan-categories
+        - listitem [ref=f32e47]:
+          - link "Plans Page" [ref=f32e48] [cursor=pointer]:
+            - /url: /admin/pages/plans
+        - listitem [ref=f32e53]:
+          - link "Hero Config" [ref=f32e54] [cursor=pointer]:
+            - /url: /admin/hero-config
+        - listitem [ref=f32e59]:
+          - link "Website Config" [ref=f32e60] [cursor=pointer]:
+            - /url: /admin/website-config
+    - generic [ref=f32e65]:
+      - list [ref=f32e68]:
+        - listitem [ref=f32e69]:
+          - link "Repository" [ref=f32e70] [cursor=pointer]:
+            - /url: https://github.com/laravel/react-starter-kit
+        - listitem [ref=f32e74]:
+          - link "Documentation" [ref=f32e75] [cursor=pointer]:
+            - /url: https://laravel.com/docs/starter-kits
+      - list [ref=f32e79]:
+        - listitem [ref=f32e80]:
+          - button "A Admin" [ref=f32e81]:
+            - generic [ref=f32e82]: A
+            - generic [ref=f32e84]: Admin
+  - main [ref=f32e89]:
+    - generic [ref=f32e91]:
+      - button "Toggle Sidebar" [ref=f32e92]
+      - navigation "breadcrumb" [ref=f32e94]:
+        - list [ref=f32e95]:
+          - listitem [ref=f32e96]:
+            - link "Dashboard" [ref=f32e97] [cursor=pointer]:
+              - /url: /admin/dashboard
+          - listitem [ref=f32e98]
+          - listitem [ref=f32e101]:
+            - link "Plan Categories" [disabled] [ref=f32e102]
+    - generic [ref=f32e103]:
+      - generic [ref=f32e104]:
+        - generic [ref=f32e105]:
+          - heading "Plan Categories" [level=1] [ref=f32e106]
+          - paragraph [ref=f32e107]: Group plans into filterable tabs on the public page.
+        - button "New Category" [ref=f32e108]
+      - generic [ref=f32e109]:
+        - generic [ref=f32e111]:
+          - generic [ref=f32e112]:
+            - generic [ref=f32e113]:
+              - generic [ref=f32e114]: 🏠
+              - generic [ref=f32e116]:
+                - paragraph [ref=f32e117]: Home Internet
+                - paragraph [ref=f32e118]: /home-internet
+            - generic [ref=f32e119]: 2 plans
+          - paragraph [ref=f32e120]: Reliable fiber connectivity for the whole family.
+          - generic [ref=f32e121]:
+            - button "Edit" [ref=f32e122]
+            - button "Delete" [ref=f32e123]
+        - generic [ref=f32e125]:
+          - generic [ref=f32e126]:
+            - generic [ref=f32e127]:
+              - generic [ref=f32e128]: 🎮
+              - generic [ref=f32e130]:
+                - paragraph [ref=f32e131]: Gaming
+                - paragraph [ref=f32e132]: /gaming
+            - generic [ref=f32e133]: 1 plans
+          - paragraph [ref=f32e134]: Ultra low latency for competitive play.
+          - generic [ref=f32e135]:
+            - button "Edit" [ref=f32e136]
+            - button "Delete" [ref=f32e137]
+        - generic [ref=f32e139]:
+          - generic [ref=f32e140]:
+            - generic [ref=f32e141]:
+              - generic [ref=f32e142]: 📺
+              - generic [ref=f32e144]:
+                - paragraph [ref=f32e145]: Streaming
+                - paragraph [ref=f32e146]: /streaming
+            - generic [ref=f32e147]: 1 plans
+          - paragraph [ref=f32e148]: Buffer-free 4K streaming on every device.
+          - generic [ref=f32e149]:
+            - button "Edit" [ref=f32e150]
+            - button "Delete" [ref=f32e151]
+        - generic [ref=f32e153]:
+          - generic [ref=f32e154]:
+            - generic [ref=f32e155]:
+              - generic [ref=f32e156]: 💼
+              - generic [ref=f32e158]:
+                - paragraph [ref=f32e159]: Business
+                - paragraph [ref=f32e160]: /business
+            - generic [ref=f32e161]: 1 plans
+          - paragraph [ref=f32e162]: Dedicated bandwidth with SLA-backed uptime.
+          - generic [ref=f32e163]:
+            - button "Edit" [ref=f32e164]
+            - button "Delete" [ref=f32e165]
+        - generic [ref=f32e167]:
+          - generic [ref=f32e168]:
+            - generic [ref=f32e169]:
+              - generic [ref=f32e170]: ⚡
+              - generic [ref=f32e172]:
+                - paragraph [ref=f32e173]: Premium
+                - paragraph [ref=f32e174]: /premium
+            - generic [ref=f32e175]: 1 plans
+          - paragraph [ref=f32e176]: Our fastest speeds with VIP support.
+          - generic [ref=f32e177]:
+            - button "Edit" [ref=f32e178]
+            - button "Delete" [ref=f32e179]

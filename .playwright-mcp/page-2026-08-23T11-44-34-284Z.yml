@@ -1,0 +1,324 @@
+- generic [ref=f41e3]:
+  - generic [ref=f41e5]:
+    - generic [ref=f41e6]:
+      - link "+1 (800) 123-4567" [ref=f41e7] [cursor=pointer]:
+        - /url: tel:+18001234567
+      - link "support@vibranet.com" [ref=f41e11] [cursor=pointer]:
+        - /url: mailto:support@vibranet.com
+    - generic [ref=f41e16]:
+      - link "Facebook" [ref=f41e17] [cursor=pointer]:
+        - /url: "#"
+      - link "Twitter" [ref=f41e20] [cursor=pointer]:
+        - /url: "#"
+      - link "Instagram" [ref=f41e23] [cursor=pointer]:
+        - /url: "#"
+      - link "LinkedIn" [ref=f41e27] [cursor=pointer]:
+        - /url: "#"
+  - banner [ref=f41e32]:
+    - generic [ref=f41e33]:
+      - link "Vibranet Internet Provider" [ref=f41e34] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f41e42]:
+          - generic [ref=f41e43]: Vibranet
+          - generic [ref=f41e44]: Internet Provider
+      - navigation [ref=f41e45]:
+        - link "Home" [ref=f41e46] [cursor=pointer]:
+          - /url: /
+        - link "About" [ref=f41e47] [cursor=pointer]:
+          - /url: ""
+        - link "Services" [ref=f41e48] [cursor=pointer]:
+          - /url: /services
+        - link "Plans" [ref=f41e49] [cursor=pointer]:
+          - /url: /plans
+        - link "Blog" [ref=f41e50] [cursor=pointer]:
+          - /url: /blog
+        - link "Contact" [ref=f41e51] [cursor=pointer]:
+          - /url: /contact
+      - link "Selfcare" [ref=f41e53] [cursor=pointer]:
+        - /url: ""
+  - main [ref=f41e55]:
+    - generic [ref=f41e78]:
+      - generic [ref=f41e79]: Choose Your Connection
+      - heading "Internet Plans Designed for Your Digital Life" [level=1] [ref=f41e81]
+      - paragraph [ref=f41e82]: Explore high-speed internet packages built for streaming, gaming, work, entertainment, and everything in between.
+      - generic [ref=f41e83]:
+        - link "Get Started" [ref=f41e84] [cursor=pointer]:
+          - /url: "#plans-section"
+        - link "Contact Us" [ref=f41e87] [cursor=pointer]:
+          - /url: /contact
+    - region "Plan categories" [ref=f41e90]:
+      - tablist "Filter plans by category" [ref=f41e92]:
+        - tab "All Plans" [selected] [ref=f41e93]
+        - tab "Home Internet" [ref=f41e99]
+        - tab "Gaming" [ref=f41e102]
+        - tab "Streaming" [ref=f41e105]
+        - tab "Business" [ref=f41e108]
+        - tab "Premium" [ref=f41e111]
+    - generic [ref=f41e114]:
+      - generic [ref=f41e115]:
+        - heading "Our Internet Plans" [level=2] [ref=f41e116]
+        - paragraph [ref=f41e117]: Transparent pricing. Blazing speeds. Premium entertainment bundled in.
+      - generic [ref=f41e118]:
+        - article [ref=f41e120]:
+          - generic [ref=f41e121]: Lowest Latency
+          - generic [ref=f41e124]:
+            - generic [ref=f41e125]:
+              - generic [ref=f41e126]:
+                - generic [ref=f41e127]:
+                  - heading "Gamer Pro" [level=3] [ref=f41e128]
+                  - paragraph [ref=f41e129]: Dominate every match
+                - button "Add Gamer Pro to comparison" [ref=f41e130]
+              - generic [ref=f41e139]:
+                - generic [ref=f41e140]: 100Mbps
+                - generic [ref=f41e141]: High-Speed Internet
+              - generic [ref=f41e142]:
+                - generic [ref=f41e143]: $1,800
+                - generic [ref=f41e144]: / month
+              - paragraph [ref=f41e145]: Ultra-low latency routing engineered for competitive gaming. Ping under 10ms to regional game servers.
+              - list [ref=f41e146]:
+                - listitem [ref=f41e147]:
+                  - generic [ref=f41e150]:
+                    - text: <10ms Ping
+                    - generic [ref=f41e151]: Direct game-server peering
+                - listitem [ref=f41e152]:
+                  - generic [ref=f41e155]:
+                    - text: Symmetric Speeds
+                    - generic [ref=f41e156]: Equal upload and download
+                - listitem [ref=f41e157]:
+                  - generic [ref=f41e160]:
+                    - text: DDoS Protection
+                    - generic [ref=f41e161]: Enterprise-grade firewall
+                - listitem [ref=f41e162]:
+                  - generic [ref=f41e165]:
+                    - text: Static IP Option
+                    - generic [ref=f41e166]: Available on request
+                - listitem [ref=f41e167]:
+                  - generic [ref=f41e170]:
+                    - text: VIP Support
+                    - generic [ref=f41e171]: Priority gamer hotline
+              - generic [ref=f41e172]:
+                - paragraph [ref=f41e173]: Included Entertainment & Services
+                - generic [ref=f41e174]:
+                  - generic "YouTube Premium" [ref=f41e175]: "Y"
+                  - generic "IPTV Bundle" [ref=f41e177]: I
+            - generic [ref=f41e179]:
+              - link "Get This Plan" [ref=f41e180] [cursor=pointer]:
+                - /url: /plans/gamer-pro
+              - link "View plan details →" [ref=f41e183] [cursor=pointer]:
+                - /url: /plans/gamer-pro
+        - article [ref=f41e185]:
+          - generic [ref=f41e186]: Most Popular
+          - generic [ref=f41e189]:
+            - generic [ref=f41e190]:
+              - generic [ref=f41e191]:
+                - generic [ref=f41e192]:
+                  - heading "Hyper Max" [level=3] [ref=f41e193]
+                  - paragraph [ref=f41e194]: The fastest we offer
+                - button "Add Hyper Max to comparison" [ref=f41e195]
+              - generic [ref=f41e204]:
+                - generic [ref=f41e205]: 1Gbps
+                - generic [ref=f41e206]: High-Speed Internet
+              - generic [ref=f41e207]:
+                - generic [ref=f41e208]: $9,000
+                - generic [ref=f41e209]: / month
+              - paragraph [ref=f41e210]: "Gigabit-class fiber with everything unlocked: every OTT bundle, VIP support and concierge installation."
+              - list [ref=f41e211]:
+                - listitem [ref=f41e212]:
+                  - generic [ref=f41e215]:
+                    - text: 1 Gbps Symmetric
+                    - generic [ref=f41e216]: Fiber to the home
+                - listitem [ref=f41e217]:
+                  - generic [ref=f41e220]:
+                    - text: Every OTT Included
+                    - generic [ref=f41e221]: Full entertainment bundle
+                - listitem [ref=f41e222]:
+                  - generic [ref=f41e225]:
+                    - text: Concierge Install
+                    - generic [ref=f41e226]: Same-day white-glove setup
+                - listitem [ref=f41e227]:
+                  - generic [ref=f41e230]:
+                    - text: WiFi 7 Mesh
+                    - generic [ref=f41e231]: Whole-home coverage
+                - listitem [ref=f41e232]:
+                  - generic [ref=f41e235]:
+                    - text: Dedicated Manager
+                    - generic [ref=f41e236]: Personal account manager
+              - generic [ref=f41e237]:
+                - paragraph [ref=f41e238]: Included Entertainment & Services
+                - generic [ref=f41e239]:
+                  - generic "Premium 4K screens" [ref=f41e240]: P
+                  - generic "Chorki" [ref=f41e242]: C
+                  - generic "Bongo" [ref=f41e244]: B
+                  - generic "Hoichoi" [ref=f41e246]: H
+                  - button "+4 More" [ref=f41e248]
+            - generic [ref=f41e249]:
+              - link "Get This Plan" [ref=f41e250] [cursor=pointer]:
+                - /url: /plans/hyper-max
+              - link "View plan details →" [ref=f41e253] [cursor=pointer]:
+                - /url: /plans/hyper-max
+        - article [ref=f41e255]:
+          - generic [ref=f41e256]: Best for Streaming
+          - generic [ref=f41e259]:
+            - generic [ref=f41e260]:
+              - generic [ref=f41e261]:
+                - generic [ref=f41e262]:
+                  - heading "Stream Boost" [level=3] [ref=f41e263]
+                  - paragraph [ref=f41e264]: Built for binge-watchers
+                - button "Add Stream Boost to comparison" [ref=f41e265]
+              - generic [ref=f41e274]:
+                - generic [ref=f41e275]: 50Mbps
+                - generic [ref=f41e276]: High-Speed Internet
+              - generic [ref=f41e277]:
+                - generic [ref=f41e278]: $1,200
+                - generic [ref=f41e279]: / month
+              - paragraph [ref=f41e280]: + $500 one-time setup
+              - paragraph [ref=f41e281]: Optimized bandwidth for 4K streaming across multiple devices, with premium OTT services included.
+              - list [ref=f41e282]:
+                - listitem [ref=f41e283]:
+                  - generic [ref=f41e286]:
+                    - text: 4K Ready
+                    - generic [ref=f41e287]: Stream on up to 5 devices
+                - listitem [ref=f41e288]:
+                  - generic [ref=f41e291]:
+                    - text: Netflix Included
+                    - generic [ref=f41e292]: 6 months complimentary access
+                - listitem [ref=f41e293]:
+                  - generic [ref=f41e296]:
+                    - text: Priority Streaming
+                    - generic [ref=f41e297]: QoS optimized for video traffic
+                - listitem [ref=f41e298]:
+                  - generic [ref=f41e301]:
+                    - text: Dual-band Router
+                    - generic [ref=f41e302]: WiFi 6 router included
+              - generic [ref=f41e303]:
+                - paragraph [ref=f41e304]: Included Entertainment & Services
+                - generic [ref=f41e305]:
+                  - generic "Netflix" [ref=f41e306]: "N"
+                  - generic "Chorki" [ref=f41e308]: C
+                  - generic "Hoichoi" [ref=f41e310]: H
+            - generic [ref=f41e312]:
+              - link "Get This Plan" [ref=f41e313] [cursor=pointer]:
+                - /url: /plans/stream-boost
+              - link "View plan details →" [ref=f41e316] [cursor=pointer]:
+                - /url: /plans/stream-boost
+        - article [ref=f41e318]:
+          - generic [ref=f41e319]:
+            - generic [ref=f41e320]:
+              - generic [ref=f41e321]:
+                - generic [ref=f41e322]:
+                  - heading "Starter Fiber" [level=3] [ref=f41e323]
+                  - paragraph [ref=f41e324]: Perfect for everyday browsing
+                - button "Add Starter Fiber to comparison" [ref=f41e325]
+              - generic [ref=f41e334]:
+                - generic [ref=f41e335]: 25Mbps
+                - generic [ref=f41e336]: High-Speed Internet
+              - generic [ref=f41e337]:
+                - generic [ref=f41e338]: $800
+                - generic [ref=f41e339]: / month
+              - paragraph [ref=f41e340]: + $1000 one-time setup
+              - list [ref=f41e341]:
+                - listitem [ref=f41e342]:
+                  - generic [ref=f41e345]:
+                    - text: Unlimited Data
+                    - generic [ref=f41e346]: No data caps or throttling
+                - listitem [ref=f41e347]:
+                  - generic [ref=f41e350]:
+                    - text: Free Installation
+                    - generic [ref=f41e351]: On orders above 3 months
+                - listitem [ref=f41e352]:
+                  - generic [ref=f41e355]:
+                    - text: 24/7 Support
+                    - generic [ref=f41e356]: Round-the-clock helpline
+              - generic [ref=f41e357]:
+                - paragraph [ref=f41e358]: Included Entertainment & Services
+                - generic "Toffee" [ref=f41e360]: T
+            - generic [ref=f41e362]:
+              - link "Get This Plan" [ref=f41e363] [cursor=pointer]:
+                - /url: /plans/starter-fiber
+              - link "View plan details →" [ref=f41e366] [cursor=pointer]:
+                - /url: /plans/starter-fiber
+        - article [ref=f41e368]:
+          - generic [ref=f41e369]:
+            - generic [ref=f41e370]:
+              - generic [ref=f41e371]:
+                - generic [ref=f41e372]:
+                  - heading "Family Value" [level=3] [ref=f41e373]
+                  - paragraph [ref=f41e374]: Smart choice for families
+                - button "Add Family Value to comparison" [ref=f41e375]
+              - generic [ref=f41e384]:
+                - generic [ref=f41e385]: 75Mbps
+                - generic [ref=f41e386]: High-Speed Internet
+              - generic [ref=f41e387]:
+                - generic [ref=f41e388]: $1,500
+                - generic [ref=f41e389]: / month
+              - paragraph [ref=f41e390]: + $500 one-time setup
+              - list [ref=f41e391]:
+                - listitem [ref=f41e392]:
+                  - generic [ref=f41e395]:
+                    - text: Unlimited Data
+                    - generic [ref=f41e396]: No data caps
+                - listitem [ref=f41e397]:
+                  - generic [ref=f41e400]:
+                    - text: Parental Controls
+                    - generic [ref=f41e401]: Per-device scheduling
+                - listitem [ref=f41e402]:
+                  - generic [ref=f41e405]:
+                    - text: Mesh WiFi Ready
+                    - generic [ref=f41e406]: Add extenders anytime
+              - generic [ref=f41e407]:
+                - paragraph [ref=f41e408]: Included Entertainment & Services
+                - generic [ref=f41e409]:
+                  - generic "Bongo" [ref=f41e410]: B
+                  - generic "Toffee" [ref=f41e412]: T
+            - generic [ref=f41e414]:
+              - link "Get This Plan" [ref=f41e415] [cursor=pointer]:
+                - /url: /plans/family-value
+              - link "View plan details →" [ref=f41e418] [cursor=pointer]:
+                - /url: /plans/family-value
+        - article [ref=f41e420]:
+          - generic [ref=f41e421]: SLA Backed
+          - generic [ref=f41e424]:
+            - generic [ref=f41e425]:
+              - generic [ref=f41e426]:
+                - generic [ref=f41e427]:
+                  - heading "Business Suite" [level=3] [ref=f41e428]
+                  - paragraph [ref=f41e429]: Keep your business always-on
+                - button "Add Business Suite to comparison" [ref=f41e430]
+              - generic [ref=f41e439]:
+                - generic [ref=f41e440]: 200Mbps
+                - generic [ref=f41e441]: High-Speed Internet
+              - generic [ref=f41e442]:
+                - generic [ref=f41e443]: $4,500
+                - generic [ref=f41e444]: / month
+              - list [ref=f41e445]:
+                - listitem [ref=f41e446]:
+                  - generic [ref=f41e449]:
+                    - text: 99.5% Uptime SLA
+                    - generic [ref=f41e450]: Service credits if missed
+                - listitem [ref=f41e451]:
+                  - generic [ref=f41e454]:
+                    - text: /29 Static IP Block
+                    - generic [ref=f41e455]: Host your own services
+                - listitem [ref=f41e456]:
+                  - generic [ref=f41e459]:
+                    - text: NBD On-site Support
+                    - generic [ref=f41e460]: Next-business-day visits
+              - generic [ref=f41e461]:
+                - paragraph [ref=f41e462]: Included Entertainment & Services
+                - generic [ref=f41e463]:
+                  - generic "1TB Business Vault" [ref=f41e464]: "1"
+                  - generic "IPTV Bundle" [ref=f41e466]: I
+            - generic [ref=f41e468]:
+              - link "Get This Plan" [ref=f41e469] [cursor=pointer]:
+                - /url: /plans/business-suite
+              - link "View plan details →" [ref=f41e472] [cursor=pointer]:
+                - /url: /plans/business-suite
+    - region [ref=f41e473]:
+      - generic [ref=f41e478]:
+        - heading "Ready for a Better Internet Experience?" [level=2] [ref=f41e479]
+        - paragraph [ref=f41e480]: Choose the plan that fits your lifestyle and get connected today.
+        - generic [ref=f41e481]:
+          - link "Get Started" [ref=f41e482] [cursor=pointer]:
+            - /url: /plans
+          - link "Contact Us" [ref=f41e485] [cursor=pointer]:
+            - /url: /contact

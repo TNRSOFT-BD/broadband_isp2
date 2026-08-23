@@ -53,5 +53,13 @@ class DatabaseSeeder extends Seeder
         HeroSetting::create(array_merge(HeroSetting::getDefaults(), [
             'is_active' => true,
         ]));
+
+        // Seed plans page content
+        $this->call([
+            PlansPageSettingsSeeder::class,
+            PlanCategorySeeder::class,
+            ServiceSeeder::class,
+            PlanSeeder::class,
+        ]);
     }
 }

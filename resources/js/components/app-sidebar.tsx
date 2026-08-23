@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, Globe, LayoutGrid, Settings } from 'lucide-react';
+import { BookOpen, Folder, Globe, LayoutGrid, Layers, Link2, Settings, Sparkles } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -12,6 +12,26 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         url: '/admin/dashboard',
         icon: LayoutGrid,
+    },
+    {
+        title: 'Plans',
+        url: '/admin/plans',
+        icon: Layers,
+    },
+    {
+        title: 'Services',
+        url: '/admin/services',
+        icon: Sparkles,
+    },
+    {
+        title: 'Plan Categories',
+        url: '/admin/plan-categories',
+        icon: Link2,
+    },
+    {
+        title: 'Plans Page',
+        url: '/admin/pages/plans',
+        icon: Globe,
     },
     {
         title: 'Hero Config',

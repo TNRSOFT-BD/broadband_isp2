@@ -1,0 +1,366 @@
+[     263ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[     297ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[     352ms] TypeError: categories.map is not a function
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+    at renderRootSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10675:13)
+    at performWorkOnRoot (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10323:46)
+[     352ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   39704ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   39752ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   39811ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   39810ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   40375ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   40416ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   40466ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   40466ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   41182ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   41216ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   41309ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   41309ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   42203ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   42281ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   42336ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   42336ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   43855ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   43879ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   43918ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   43918ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   44661ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   44698ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   44793ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   44782ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   45576ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   45624ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   45700ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   45701ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   46476ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   46534ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   46598ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   46597ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   47326ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   47385ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   47438ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   47438ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   48222ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   48322ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   48385ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   48385ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   50008ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   50090ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   50166ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   50165ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   51832ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   51881ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   51953ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   51953ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   52780ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   52816ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   52902ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   52898ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   53707ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   53745ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   53790ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   53790ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   54460ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   54526ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   54595ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   54595ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   55335ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   55386ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   55455ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   55453ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   56207ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   56267ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   56385ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   56378ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   57705ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   57738ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   57804ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   57803ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   59230ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   59257ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   59315ms] TypeError: c.replace is not a function
+    at http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:344:83
+    at Array.map (<anonymous>)
+    at ServicesIndex (http://[::1]:5173/resources/js/pages/Admin/Services/Index.tsx?t=1787483078817:343:38)
+    at react-stack-bottom-frame (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:16192:20)
+    at renderWithHooks (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:4306:24)
+    at updateFunctionComponent (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:5972:21)
+    at beginWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:7048:20)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:726:18)
+    at performUnitOfWork (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10831:98)
+    at workLoopSync (http://[::1]:5173/node_modules/.vite/deps/react-dom_client.js?v=2c4ea2cb:10692:43)
+[   59315ms] [WARNING] %s
+
+%s
+ An error occurred in the <ServicesIndex> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:8899/admin/services:96
+[   60254ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   60328ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   61801ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   61830ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
+[   77980ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/admin/services:26
+[   78024ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/admin/services:96
