@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\FontService;
+use App\Services\HeroService;
+use App\Services\ThemeService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -38,6 +41,13 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $fontService = app(FontService::class);
+        $themeService = app(ThemeService::class);
+        $heroService = app(HeroService::class);
+
+        $activeFont = $fontService->getActiveFontDetails();
+        $themeColors = $themeService->getActiveThemeColors();
+
         return array_merge(parent::share($request), [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -45,6 +55,18 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'font' => $activeFont ? [
+                'name' => $activeFont['name'],
+                'family' => $activeFont['family'],
+                'url' => $activeFont['url'],
+                'weight' => $activeFont['weight'],
+                'font_style' => $activeFont['font_style'],
+                'css_family' => $activeFont['css_family'],
+            ] : null,
+            'theme' => [
+                'colors' => $themeColors,
+            ],
+            'hero' => $heroService->getActiveHero(),
         ]);
     }
 }

@@ -19,6 +19,8 @@
 /storage/pail
 /vendor
 auth.json
+isp_2
+/database/database.sqlite
 Homestead.json
 Homestead.yaml
 npm-debug.log
