@@ -1,3 +1,0 @@
-[     235ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8899/_boost/browser-logs @ http://127.0.0.1:8899/login:26
-[     257ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8899/login:96
-[   16393ms] [ERROR] Invalid DOM property `%s`. Did you mean `%s`? stroke-width strokeWidth @ http://127.0.0.1:8899/login:96
