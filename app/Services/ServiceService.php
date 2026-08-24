@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Service;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
+use App\Support\InteractsWithLocalImages;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
@@ -12,6 +13,8 @@ use Illuminate\Support\Str;
 
 class ServiceService
 {
+    use InteractsWithLocalImages;
+
     /**
      * Cache key for the public services payload.
      */
@@ -54,9 +57,14 @@ class ServiceService
     public function updateService(int $id, array $data): Service
     {
         $data['slug'] = $this->resolveUniqueSlug($data['slug'] ?? null, $data['name'], $id);
+        $previous = $this->serviceRepository->findById($id)?->only(['logo']) ?? [];
 
         try {
-            return $this->serviceRepository->update($id, $data);
+            $saved = $this->serviceRepository->update($id, $data);
+
+            $this->deleteReplacedImages($previous, $saved->only(['logo']), ['logo']);
+
+            return $saved;
         } finally {
             Cache::forget(self::CACHE_KEY);
             $this->planService->flushCache();

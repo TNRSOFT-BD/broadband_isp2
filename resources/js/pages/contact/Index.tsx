@@ -6,17 +6,18 @@ import OfficeHours from '@/components/contact/office-hours';
 import HelpfulResources from '@/components/contact/helpful-resources';
 import ContactFAQ from '@/components/contact/contact-faq';
 import PublicLayout from '@/layouts/public-layout';
-import { type ContactPageSettings, type ContactInquiryType, type OfficeLocation } from '@/types/contact';
+import { type ContactPageSettings, type ContactInquiryType, type OfficeLocation, type QuickContactMethod } from '@/types/contact';
 import { Head, usePage } from '@inertiajs/react';
 
 interface ContactIndexProps extends Record<string, unknown> {
     pageSettings: ContactPageSettings;
+    quickContactMethods: QuickContactMethod[];
     inquiryTypes: ContactInquiryType[];
     officeLocations: OfficeLocation[];
 }
 
 export default function ContactIndex() {
-    const { pageSettings, inquiryTypes, officeLocations } = usePage<ContactIndexProps>().props;
+    const { pageSettings, quickContactMethods, inquiryTypes, officeLocations } = usePage<ContactIndexProps>().props;
     const page = usePage();
     const flash = (page.props as Record<string, unknown>).flash as { success?: string } | undefined;
 
@@ -35,7 +36,7 @@ export default function ContactIndex() {
             <ContactHero settings={pageSettings} />
 
             {/* Quick Contact Methods */}
-            <QuickContactMethods settings={pageSettings} />
+            <QuickContactMethods settings={pageSettings} methods={quickContactMethods} />
 
             {/* Contact Form */}
             <ContactForm

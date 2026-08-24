@@ -51,7 +51,7 @@ class HeroSetting extends Model
     public static function getDefaults(): array
     {
         return [
-            'background_image' => 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
+            'background_image' => '/storage/hero/hero-default.avif',
             'badge_text' => 'Next Generation Internet',
             'heading_line1' => 'The Future of',
             'heading_highlight' => 'Connectivity',

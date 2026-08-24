@@ -92,10 +92,20 @@ export default function HeroConfig() {
 
     const [previewBg, setPreviewBg] = useState(hero.background_image ?? '');
     const [uploading, setUploading] = useState(false);
+    const [uploadError, setUploadError] = useState<string | null>(null);
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+        e.target.value = '';
         if (!file) return;
+
+        setUploadError(null);
+
+        const MAX_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
+        if (file.size > MAX_SIZE_BYTES) {
+            setUploadError('Image must not be larger than 2 MB.');
+            return;
+        }
 
         // Show instant preview
         setPreviewBg(URL.createObjectURL(file));
@@ -110,19 +120,26 @@ export default function HeroConfig() {
                 headers: {
                     'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
                     'X-Requested-With': 'XMLHttpRequest',
+                    Accept: 'application/json',
                 },
                 credentials: 'same-origin',
                 body: formData,
             });
 
-            const result = await response.json();
+            const result = await response.json().catch(() => null);
 
-            if (response.ok && result.url) {
+            if (response.ok && result?.url) {
                 form.setData('background_image', result.url);
                 setPreviewBg(result.url);
+            } else {
+                setPreviewBg(form.data.background_image ?? '');
+                setUploadError(
+                    result?.errors?.image?.[0] ?? result?.message ?? 'Upload failed. Please try again.',
+                );
             }
-        } catch (error) {
-            console.error('Upload failed:', error);
+        } catch {
+            setPreviewBg(form.data.background_image ?? '');
+            setUploadError('Upload failed. Please try again.');
         } finally {
             setUploading(false);
         }
@@ -188,7 +205,7 @@ export default function HeroConfig() {
                                 </p>
 
                                 {/* CTA Buttons */}
-                                <div className="flex gap-3">
+                                <div className="flex flex-wrap gap-3">
                                     <span
                                         className="inline-flex items-center rounded-full px-6 py-2 text-sm font-semibold"
                                         style={{ background: form.data.cta_primary_bg, color: form.data.cta_primary_text_color }}
@@ -218,16 +235,26 @@ export default function HeroConfig() {
                             <CardContent className="space-y-4">
                                 <div className="space-y-2">
                                     <Label>Upload Image</Label>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={handleImageUpload}
-                                        disabled={uploading}
-                                        className="block w-full text-sm text-muted-foreground file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-foreground hover:file:bg-primary/90 disabled:opacity-50"
-                                    />
-                                    <p className="text-xs text-muted-foreground">
-                                        {uploading ? 'Uploading...' : 'Upload a JPG, PNG, or WebP image (max 5MB)'}
-                                    </p>
+                                    <label
+                                        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-primary/30 bg-primary/[0.04] px-3 py-2.5 text-sm font-medium text-primary transition-colors disabled:pointer-events-none disabled:opacity-50"
+                                    >
+                                        {uploading ? 'Uploading...' : 'Click to upload image'}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageUpload}
+                                            disabled={uploading}
+                                            className="sr-only"
+                                            aria-label="Upload hero background image"
+                                        />
+                                    </label>
+                                    {uploadError ? (
+                                        <p className="text-xs font-medium text-destructive">{uploadError}</p>
+                                    ) : (
+                                        <p className="text-xs text-muted-foreground">
+                                            {uploading ? 'Uploading...' : 'Upload a JPG, PNG, or WebP image (max 2MB)'}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">
@@ -236,8 +263,8 @@ export default function HeroConfig() {
                                         value={form.data.background_image}
                                         onChange={(e) => {
                                             form.setData('background_image', e.target.value);
-                                            setImageFile(null);
                                             setPreviewBg(e.target.value);
+                                            setUploadError(null);
                                         }}
                                         placeholder="https://images.unsplash.com/..."
                                     />
@@ -337,9 +364,9 @@ export default function HeroConfig() {
                                         variant="outline"
                                         size="sm"
                                         onClick={handleApplyPrimaryColor}
-                                        className="gap-2"
+                                        className="h-auto w-full gap-2 py-2 text-left whitespace-normal sm:w-auto sm:whitespace-nowrap"
                                     >
-                                        <span className="inline-block h-3 w-3 rounded-full" style={{ background: primaryColor }} />
+                                        <span className="inline-block h-3 w-3 shrink-0 rounded-full" style={{ background: primaryColor }} />
                                         Apply Primary Color to Badge, Highlight & CTA
                                     </Button>
                                 </div>

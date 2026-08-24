@@ -2,9 +2,18 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\AboutPageSettingRepositoryInterface;
+use App\Repositories\Contracts\AboutStatisticRepositoryInterface;
+use App\Repositories\Contracts\AboutCoreValueRepositoryInterface;
+use App\Repositories\Contracts\AboutMilestoneRepositoryInterface;
+use App\Repositories\Contracts\AboutCapabilityRepositoryInterface;
+use App\Repositories\Contracts\AboutClientRepositoryInterface;
+use App\Repositories\Contracts\AboutCertificationRepositoryInterface;
+use App\Repositories\Contracts\AboutWhyChooseUsRepositoryInterface;
 use App\Repositories\Contracts\ContactInquiryTypeRepositoryInterface;
 use App\Repositories\Contracts\ContactMessageRepositoryInterface;
 use App\Repositories\Contracts\ContactPageSettingRepositoryInterface;
+use App\Repositories\Contracts\QuickContactMethodRepositoryInterface;
 use App\Repositories\Contracts\FontRepositoryInterface;
 use App\Repositories\Contracts\HeroSettingRepositoryInterface;
 use App\Repositories\Contracts\OfficeLocationRepositoryInterface;
@@ -13,9 +22,18 @@ use App\Repositories\Contracts\PlanRepositoryInterface;
 use App\Repositories\Contracts\PlansPageSettingRepositoryInterface;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
 use App\Repositories\Contracts\ThemeRepositoryInterface;
+use App\Repositories\Eloquent\EloquentAboutPageSettingRepository;
+use App\Repositories\Eloquent\EloquentAboutStatisticRepository;
+use App\Repositories\Eloquent\EloquentAboutCoreValueRepository;
+use App\Repositories\Eloquent\EloquentAboutMilestoneRepository;
+use App\Repositories\Eloquent\EloquentAboutCapabilityRepository;
+use App\Repositories\Eloquent\EloquentAboutClientRepository;
+use App\Repositories\Eloquent\EloquentAboutCertificationRepository;
+use App\Repositories\Eloquent\EloquentAboutWhyChooseUsRepository;
 use App\Repositories\Eloquent\EloquentContactInquiryTypeRepository;
 use App\Repositories\Eloquent\EloquentContactMessageRepository;
 use App\Repositories\Eloquent\EloquentContactPageSettingRepository;
+use App\Repositories\Eloquent\EloquentQuickContactMethodRepository;
 use App\Repositories\Eloquent\EloquentFontRepository;
 use App\Repositories\Eloquent\EloquentHeroSettingRepository;
 use App\Repositories\Eloquent\EloquentOfficeLocationRepository;
@@ -44,6 +62,15 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ContactMessageRepositoryInterface::class, EloquentContactMessageRepository::class);
         $this->app->bind(OfficeLocationRepositoryInterface::class, EloquentOfficeLocationRepository::class);
         $this->app->bind(ContactPageSettingRepositoryInterface::class, EloquentContactPageSettingRepository::class);
+        $this->app->bind(QuickContactMethodRepositoryInterface::class, EloquentQuickContactMethodRepository::class);
+        $this->app->bind(AboutPageSettingRepositoryInterface::class, EloquentAboutPageSettingRepository::class);
+        $this->app->bind(AboutStatisticRepositoryInterface::class, EloquentAboutStatisticRepository::class);
+        $this->app->bind(AboutCoreValueRepositoryInterface::class, EloquentAboutCoreValueRepository::class);
+        $this->app->bind(AboutMilestoneRepositoryInterface::class, EloquentAboutMilestoneRepository::class);
+        $this->app->bind(AboutCapabilityRepositoryInterface::class, EloquentAboutCapabilityRepository::class);
+        $this->app->bind(AboutClientRepositoryInterface::class, EloquentAboutClientRepository::class);
+        $this->app->bind(AboutCertificationRepositoryInterface::class, EloquentAboutCertificationRepository::class);
+        $this->app->bind(AboutWhyChooseUsRepositoryInterface::class, EloquentAboutWhyChooseUsRepository::class);
     }
 
     /**

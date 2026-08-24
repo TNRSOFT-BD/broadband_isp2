@@ -1,58 +1,30 @@
-import { type ContactPageSettings } from '@/types/contact';
-import { Phone, Mail, MessageCircle, Headphones } from 'lucide-react';
+import { type ContactPageSettings, type QuickContactMethod } from '@/types/contact';
+import { Phone, Mail, MessageCircle, Headphones, MapPin, Globe, Clock, HelpCircle } from 'lucide-react';
+
+const iconMap: Record<string, React.ReactNode> = {
+    Phone: <Phone className="h-6 w-6" />,
+    Mail: <Mail className="h-6 w-6" />,
+    MessageCircle: <MessageCircle className="h-6 w-6" />,
+    Headphones: <Headphones className="h-6 w-6" />,
+    MapPin: <MapPin className="h-6 w-6" />,
+    Globe: <Globe className="h-6 w-6" />,
+    Clock: <Clock className="h-6 w-6" />,
+    HelpCircle: <HelpCircle className="h-6 w-6" />,
+};
 
 interface QuickContactMethodsProps {
     settings: ContactPageSettings;
+    methods: QuickContactMethod[];
 }
 
-interface ContactMethod {
-    icon: React.ReactNode;
-    label: string;
-    value: string;
-    description: string;
-    href: string;
-    color: string;
-}
-
-export default function QuickContactMethods({ settings }: QuickContactMethodsProps) {
+export default function QuickContactMethods({ settings, methods }: QuickContactMethodsProps) {
     if (!settings.quick_contact_enabled) return null;
 
-    const accent = 'var(--isp-primary)';
+    // Hide entire section if no active methods with valid data exist
+    const validMethods = methods.filter((m) => m.label && m.value);
+    if (validMethods.length === 0) return null;
 
-    const methods: ContactMethod[] = [
-        {
-            icon: <Phone className="h-6 w-6" />,
-            label: 'Call Us',
-            value: '+1 (800) 123-4567',
-            description: 'Available during support hours.',
-            href: 'tel:+18001234567',
-            color: accent,
-        },
-        {
-            icon: <Mail className="h-6 w-6" />,
-            label: 'Email Us',
-            value: 'support@vibranet.com',
-            description: 'Send us your questions anytime.',
-            href: 'mailto:support@vibranet.com',
-            color: accent,
-        },
-        {
-            icon: <MessageCircle className="h-6 w-6" />,
-            label: 'WhatsApp',
-            value: 'Chat with us',
-            description: 'Chat with our support team.',
-            href: 'https://wa.me/18001234567',
-            color: accent,
-        },
-        {
-            icon: <Headphones className="h-6 w-6" />,
-            label: 'Customer Support',
-            value: '24/7 Available',
-            description: 'Get help whenever you need it.',
-            href: '#contact-form',
-            color: accent,
-        },
-    ];
+    const accent = 'var(--isp-primary)';
 
     return (
         <section className="relative bg-white py-10 sm:py-14">
@@ -70,34 +42,36 @@ export default function QuickContactMethods({ settings }: QuickContactMethodsPro
                 </div>
 
                 {/* Contact method cards */}
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {methods.map((method) => (
+                <div className="flex flex-wrap justify-center gap-6">
+                    {validMethods.map((method) => (
                         <a
-                            key={method.label}
-                            href={method.href}
-                            className="group relative rounded-2xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:border-[var(--isp-primary)]/30 hover:shadow-lg hover:shadow-gray-200/50"
+                            key={method.id}
+                            href={method.href ?? '#'}
+                            className="group w-full rounded-2xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:border-[var(--isp-primary)]/30 hover:shadow-lg hover:shadow-gray-200/50 sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
                         >
                             {/* Icon */}
                             <div
                                 className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-300"
                                 style={{
-                                    background: `color-mix(in srgb, ${method.color} 10%, transparent)`,
-                                    color: method.color,
+                                    background: `color-mix(in srgb, ${accent} 10%, transparent)`,
+                                    color: accent,
                                 }}
                             >
-                                {method.icon}
+                                {iconMap[method.icon] ?? <Phone className="h-6 w-6" />}
                             </div>
 
                             {/* Content */}
                             <h3 className="text-lg font-bold text-gray-900">{method.label}</h3>
-                            <p className="mt-1 text-sm font-semibold" style={{ color: method.color }}>
+                            <p className="mt-1 text-sm font-semibold" style={{ color: accent }}>
                                 {method.value}
                             </p>
-                            <p className="mt-2 text-sm text-gray-500">{method.description}</p>
+                            {method.description && (
+                                <p className="mt-2 text-sm text-gray-500">{method.description}</p>
+                            )}
 
                             {/* Hover arrow */}
                             <div className="absolute right-4 top-6 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
-                                <svg className="h-5 w-5" style={{ color: method.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="h-5 w-5" style={{ color: accent }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                 </svg>
                             </div>

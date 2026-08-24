@@ -9,6 +9,7 @@ use App\Services\ContactInquiryTypeService;
 use App\Services\ContactMessageService;
 use App\Services\ContactPageSettingsService;
 use App\Services\OfficeLocationService;
+use App\Services\QuickContactMethodService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -23,6 +24,7 @@ class ContactController extends Controller
         private ContactInquiryTypeService $inquiryTypeService,
         private ContactMessageService $messageService,
         private OfficeLocationService $officeLocationService,
+        private QuickContactMethodService $quickContactMethodService,
     ) {}
 
     /**
@@ -34,6 +36,8 @@ class ContactController extends Controller
 
         return Inertia::render('contact/Index', [
             'pageSettings' => $settings,
+            'quickContactMethods' => $this->quickContactMethodService->getActiveMethods()
+                ->map(fn ($method) => $method->only(['id', 'icon', 'label', 'value', 'description', 'href'])),
             'inquiryTypes' => $this->inquiryTypeService->getActiveTypes()
                 ->map(fn ($type) => $type->only(['id', 'name', 'slug', 'description'])),
             'officeLocations' => $this->officeLocationService->getActiveLocations()

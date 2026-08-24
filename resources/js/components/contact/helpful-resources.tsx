@@ -1,61 +1,39 @@
 import { type ContactPageSettings } from '@/types/contact';
 import { Link } from '@inertiajs/react';
-import { HelpCircle, Wifi, MapPin, Headphones, CreditCard, Wrench } from 'lucide-react';
+import { HelpCircle, Wifi, MapPin, Headphones, CreditCard, Wrench, Phone, Mail, MessageCircle, Globe, Clock, ExternalLink, Send, CheckCircle2, Star, Shield, Zap, Heart } from 'lucide-react';
+
+const iconMap: Record<string, React.ReactNode> = {
+    Phone: <Phone className="h-5 w-5" />,
+    Mail: <Mail className="h-5 w-5" />,
+    MessageCircle: <MessageCircle className="h-5 w-5" />,
+    Headphones: <Headphones className="h-5 w-5" />,
+    MapPin: <MapPin className="h-5 w-5" />,
+    Globe: <Globe className="h-5 w-5" />,
+    Clock: <Clock className="h-5 w-5" />,
+    HelpCircle: <HelpCircle className="h-5 w-5" />,
+    Wifi: <Wifi className="h-5 w-5" />,
+    CreditCard: <CreditCard className="h-5 w-5" />,
+    Wrench: <Wrench className="h-5 w-5" />,
+    ExternalLink: <ExternalLink className="h-5 w-5" />,
+    Send: <Send className="h-5 w-5" />,
+    CheckCircle2: <CheckCircle2 className="h-5 w-5" />,
+    Star: <Star className="h-5 w-5" />,
+    Shield: <Shield className="h-5 w-5" />,
+    Zap: <Zap className="h-5 w-5" />,
+    Heart: <Heart className="h-5 w-5" />,
+};
 
 interface HelpfulResourcesProps {
     settings: ContactPageSettings;
 }
 
-interface Resource {
-    icon: React.ReactNode;
-    title: string;
-    description: string;
-    href: string;
-}
-
 export default function HelpfulResources({ settings }: HelpfulResourcesProps) {
     if (!settings.resources_enabled) return null;
 
-    const accent = 'var(--isp-primary)';
+    const resources = settings.helpful_resources ?? [];
+    if (resources.length === 0) return null;
 
-    const resources: Resource[] = [
-        {
-            icon: <HelpCircle className="h-5 w-5" />,
-            title: 'FAQs',
-            description: 'Find answers to commonly asked questions about our services.',
-            href: '#faq',
-        },
-        {
-            icon: <Wifi className="h-5 w-5" />,
-            title: 'Internet Plans',
-            description: 'Explore our range of high-speed internet packages.',
-            href: '/plans',
-        },
-        {
-            icon: <MapPin className="h-5 w-5" />,
-            title: 'Coverage Area',
-            description: 'Check if our service is available in your area.',
-            href: '#locations',
-        },
-        {
-            icon: <Headphones className="h-5 w-5" />,
-            title: 'Support Center',
-            description: 'Get technical help and troubleshooting guides.',
-            href: '#',
-        },
-        {
-            icon: <CreditCard className="h-5 w-5" />,
-            title: 'Billing Info',
-            description: 'Learn about payment methods and billing cycles.',
-            href: '#',
-        },
-        {
-            icon: <Wrench className="h-5 w-5" />,
-            title: 'Installation',
-            description: 'Understand our installation process and requirements.',
-            href: '#',
-        },
-    ];
+    const accent = 'var(--isp-primary)';
 
     return (
         <section className="relative bg-white py-10 sm:py-14">
@@ -74,9 +52,9 @@ export default function HelpfulResources({ settings }: HelpfulResourcesProps) {
 
                 {/* Resources grid */}
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {resources.map((resource) => (
+                    {resources.map((resource, index) => (
                         <Link
-                            key={resource.title}
+                            key={index}
                             href={resource.href}
                             className="group flex items-start gap-4 rounded-2xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:border-[var(--isp-primary)]/30 hover:shadow-lg hover:shadow-gray-200/50"
                         >
@@ -87,7 +65,7 @@ export default function HelpfulResources({ settings }: HelpfulResourcesProps) {
                                     color: accent,
                                 }}
                             >
-                                {resource.icon}
+                                {iconMap[resource.icon] ?? <HelpCircle className="h-5 w-5" />}
                             </div>
                             <div>
                                 <h3 className="text-base font-bold text-gray-900 group-hover:text-[var(--isp-primary)]">

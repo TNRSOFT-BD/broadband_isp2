@@ -20,7 +20,7 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
     { title: 'Home', href: '/' },
-    { title: 'About', href: '#' },
+    { title: 'About', href: '/about' },
     { title: 'Services', href: '/services' },
     { title: 'Plans', href: '/plans' },
     { title: 'Blog', href: '/blog' },
@@ -36,7 +36,7 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
     const currentUrl = page.url;
 
     return (
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col overflow-x-hidden">
             {/* Top Info Bar */}
             <div className="border-b border-white/10 bg-[#0f172a] text-sm text-slate-400">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">

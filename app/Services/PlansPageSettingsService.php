@@ -4,11 +4,19 @@ namespace App\Services;
 
 use App\Models\PlansPageSetting;
 use App\Repositories\Contracts\PlansPageSettingRepositoryInterface;
+use App\Support\InteractsWithLocalImages;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class PlansPageSettingsService
 {
+    use InteractsWithLocalImages;
+
     private const CACHE_KEY = 'plans.public.page_settings';
+
+    /** @var list<string> */
+    private const IMAGE_FIELDS = ['background_image', 'cta_section_background_image'];
 
     public function __construct(
         private PlansPageSettingRepositoryInterface $settingsRepository,
@@ -40,17 +48,28 @@ class PlansPageSettingsService
     {
         try {
             $existing = $this->settingsRepository->getActive();
+            $previous = $existing?->only(self::IMAGE_FIELDS) ?? [];
 
-            if ($existing) {
-                return $this->settingsRepository->update($existing->id, $data);
-            }
+            $saved = $existing
+                ? $this->settingsRepository->update($existing->id, $data)
+                : $this->settingsRepository->create([
+                    ...$data,
+                    'is_active' => true,
+                ]);
 
-            return $this->settingsRepository->create([
-                ...$data,
-                'is_active' => true,
-            ]);
+            $this->deleteReplacedImages($previous, $saved->only(self::IMAGE_FIELDS), self::IMAGE_FIELDS);
+
+            return $saved;
         } finally {
             Cache::forget(self::CACHE_KEY);
         }
+    }
+
+    /**
+     * Store an uploaded page image and return its public URL.
+     */
+    public function storeImage(UploadedFile $file): string
+    {
+        return '/storage/'.$file->store('plans-page', 'public');
     }
 }

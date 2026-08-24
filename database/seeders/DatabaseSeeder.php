@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
             PlanCategorySeeder::class,
             ServiceSeeder::class,
             PlanSeeder::class,
+            AboutUsSeeder::class,
         ]);
     }
 }

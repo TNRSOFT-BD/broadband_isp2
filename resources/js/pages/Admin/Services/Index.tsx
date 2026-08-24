@@ -95,10 +95,18 @@ export default function ServicesIndex() {
 
     const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+        e.target.value = '';
         if (!file) return;
 
         setUploading(true);
         setLogoError('');
+
+        const MAX_SIZE_BYTES = 1024 * 1024; // 1 MB
+        if (file.size > MAX_SIZE_BYTES) {
+            setLogoError('Logo must not be larger than 1 MB.');
+            setUploading(false);
+            return;
+        }
 
         try {
             const formData = new FormData();
@@ -109,17 +117,20 @@ export default function ServicesIndex() {
                 headers: {
                     'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
                     'X-Requested-With': 'XMLHttpRequest',
+                    Accept: 'application/json',
                 },
                 credentials: 'same-origin',
                 body: formData,
             });
 
-            const result = await response.json();
+            const result = await response.json().catch(() => null);
 
-            if (response.ok && result.url) {
+            if (response.ok && result?.url) {
                 form.setData('logo', result.url);
             } else {
-                setLogoError(result.message ?? result.errors?.logo ?? 'Upload failed.');
+                setLogoError(
+                    result?.errors?.logo?.[0] ?? result?.message ?? 'Upload failed.',
+                );
             }
         } catch {
             setLogoError('Logo upload failed. Please try again.');
@@ -261,25 +272,25 @@ export default function ServicesIndex() {
                         {/* Logo */}
                         <div className="space-y-2">
                             <Label>Logo</Label>
-                            <div className="flex items-center gap-4">
+                            <div className="flex min-w-0 items-center gap-4">
                                 {form.data.logo ? (
-                                    <img src={form.data.logo} alt="" className="h-14 w-14 rounded-lg border object-contain p-1" />
+                                    <img src={form.data.logo} alt="" className="h-14 w-14 shrink-0 rounded-lg border object-contain p-1" />
                                 ) : (
-                                    <span className="flex h-14 w-14 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
+                                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border border-dashed text-muted-foreground">
                                         <ImagePlus className="h-5 w-5" />
                                     </span>
                                 )}
-                                <div className="flex-1 space-y-1">
+                                <div className="min-w-0 flex-1 space-y-1">
                                     <input
                                         type="file"
                                         accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml"
                                         onChange={handleLogoUpload}
                                         disabled={uploading}
-                                        className="block w-full text-sm text-muted-foreground file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-foreground hover:file:bg-primary/90 disabled:opacity-50"
+                                        className="block w-full min-w-0 text-sm text-muted-foreground file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-foreground hover:file:bg-primary/90 disabled:opacity-50"
                                         aria-label="Upload service logo"
                                     />
                                     <p className="text-xs text-muted-foreground">
-                                        {uploading ? 'Uploading...' : 'JPG, PNG, WebP or SVG (max 10KB)'}
+                                        {uploading ? 'Uploading...' : 'JPG, PNG, WebP or SVG (max 1 MB)'}
                                     </p>
                                 </div>
                             </div>

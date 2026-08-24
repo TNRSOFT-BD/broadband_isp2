@@ -8,6 +8,7 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import type { PlansPageSettings } from '@/types/plans';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Globe } from 'lucide-react';
+import PageImageField from '@/components/admin/page-image-field';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/admin/dashboard' },
@@ -53,6 +54,7 @@ export default function PlansPageSettingsIndex() {
         hero_highlight: settings.hero_highlight ?? '',
         hero_description: settings.hero_description ?? '',
         background_image: settings.background_image ?? '',
+        cta_section_background_image: settings.cta_section_background_image ?? '',
         cta_primary_text: settings.cta_primary_text ?? '',
         cta_primary_url: settings.cta_primary_url ?? '',
         cta_secondary_text: settings.cta_secondary_text ?? '',
@@ -157,10 +159,12 @@ export default function PlansPageSettingsIndex() {
                                 <Input id="cta_secondary_url" value={form.data.cta_secondary_url} onChange={(e) => form.setData('cta_secondary_url', e.target.value)} />
                             </div>
                         </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="background_image">Background Image URL</Label>
-                            <Input id="background_image" value={form.data.background_image} onChange={(e) => form.setData('background_image', e.target.value)} placeholder="https://..." />
-                        </div>
+                        <PageImageField
+                            label="Background Image"
+                            value={form.data.background_image}
+                            onChange={(v) => form.setData('background_image', v)}
+                            uploadUrl={route('admin.pages.plans.upload')}
+                        />
                     </SectionCard>
 
                     {/* Sections + CTA */}
@@ -225,12 +229,18 @@ export default function PlansPageSettingsIndex() {
                                     <Label htmlFor="cs_secondary_text">Secondary Text</Label>
                                     <Input id="cs_secondary_text" value={form.data.cta_section_secondary_text} onChange={(e) => form.setData('cta_section_secondary_text', e.target.value)} />
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="cs_secondary_url">Secondary URL</Label>
-                                    <Input id="cs_secondary_url" value={form.data.cta_section_secondary_url} onChange={(e) => form.setData('cta_section_secondary_url', e.target.value)} />
-                                </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="cs_secondary_url">Secondary URL</Label>
+                                <Input id="cs_secondary_url" value={form.data.cta_section_secondary_url} onChange={(e) => form.setData('cta_section_secondary_url', e.target.value)} />
                             </div>
-                        </SectionCard>
+                        </div>
+                        <PageImageField
+                            label="CTA Background Image"
+                            value={form.data.cta_section_background_image}
+                            onChange={(v) => form.setData('cta_section_background_image', v)}
+                            uploadUrl={route('admin.pages.plans.upload')}
+                        />
+                    </SectionCard>
                     </div>
 
                     {/* Currency + SEO */}

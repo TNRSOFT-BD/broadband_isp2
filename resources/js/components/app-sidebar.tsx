@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavGroup, type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, Globe, LayoutGrid, Layers, Link2, Settings, Sparkles, MessageSquare, Headphones, MapPin, HelpCircle } from 'lucide-react';
+import { BookOpen, Folder, Globe, LayoutGrid, Layers, Link2, Settings, Sparkles, MessageSquare, Headphones, MapPin, HelpCircle, Zap, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const navGroups: NavGroup[] = [
@@ -26,6 +26,7 @@ const navGroups: NavGroup[] = [
         title: 'Content Pages',
         items: [
             { title: 'Plans Page', url: '/admin/pages/plans', icon: Globe },
+            { title: 'About Page', url: '/admin/pages/about', icon: Users },
             { title: 'Contact Page', url: '/admin/pages/contact', icon: Headphones },
         ],
     },
@@ -33,6 +34,7 @@ const navGroups: NavGroup[] = [
         title: 'Contact Management',
         items: [
             { title: 'Messages', url: '/admin/contact-messages', icon: MessageSquare },
+            { title: 'Quick Contact Methods', url: '/admin/contact/quick-methods', icon: Zap },
             { title: 'Inquiry Types', url: '/admin/contact/inquiry-types', icon: HelpCircle },
             { title: 'Office Locations', url: '/admin/contact/locations', icon: MapPin },
         ],

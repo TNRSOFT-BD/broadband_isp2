@@ -6,42 +6,13 @@ interface ContactFAQProps {
     settings: ContactPageSettings;
 }
 
-interface FAQItem {
-    question: string;
-    answer: string;
-}
-
 export default function ContactFAQ({ settings }: ContactFAQProps) {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     if (!settings.faq_enabled) return null;
 
-    const faqs: FAQItem[] = [
-        {
-            question: 'How can I get a new internet connection?',
-            answer: 'You can request a new connection by filling out our contact form, calling our sales team, or visiting any of our office locations. Our team will guide you through available plans in your area and schedule an installation at your convenience.',
-        },
-        {
-            question: 'What should I do if my internet is down?',
-            answer: 'First, try restarting your router and modem. If the issue persists, check our coverage page for any known outages in your area. You can then contact our 24/7 customer support team for immediate assistance.',
-        },
-        {
-            question: 'How can I pay my bill?',
-            answer: 'We accept multiple payment methods including online payments through our portal, bank transfers, mobile banking, and cash payments at our office locations. You can also set up automatic payments for convenience.',
-        },
-        {
-            question: 'How long does installation take?',
-            answer: 'Standard residential installation typically takes 2-4 hours. Business installations may take longer depending on the complexity of the setup. Our technician will provide a more accurate estimate during the scheduling process.',
-        },
-        {
-            question: 'Can I upgrade or downgrade my plan?',
-            answer: 'Yes, you can change your plan at any time. Upgrades take effect immediately, while downgrades are applied at the start of your next billing cycle. Contact our sales team to make any changes.',
-        },
-        {
-            question: 'Do you offer business solutions?',
-            answer: 'Yes, we offer dedicated business internet solutions with guaranteed bandwidth, static IPs, SLA agreements, and priority support. Contact our business solutions team for customized packages.',
-        },
-    ];
+    const faqs = settings.faq_items ?? [];
+    if (faqs.length === 0) return null;
 
     return (
         <section id="faq" className="relative bg-white py-10 sm:py-14">

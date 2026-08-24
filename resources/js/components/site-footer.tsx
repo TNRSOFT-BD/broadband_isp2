@@ -4,7 +4,7 @@ import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin, ArrowRight
 
 const quickLinks = [
     { title: 'Home', href: '/' },
-    { title: 'About Us', href: '#' },
+    { title: 'About Us', href: '/about' },
     { title: 'Plans', href: '/plans' },
     { title: 'Contact', href: '/contact' },
 ];

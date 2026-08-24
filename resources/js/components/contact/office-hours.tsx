@@ -1,48 +1,40 @@
 import { type ContactPageSettings } from '@/types/contact';
-import { Clock, Headphones, Users, TrendingUp } from 'lucide-react';
+import { Clock, Headphones, Users, TrendingUp, MapPin, Globe, HelpCircle, Phone, Mail, MessageCircle, CreditCard, Wrench, Wifi, ExternalLink, Send, CheckCircle2, Star, Shield, Zap, Heart } from 'lucide-react';
+
+const iconMap: Record<string, React.ReactNode> = {
+    Phone: <Phone className="h-5 w-5" />,
+    Mail: <Mail className="h-5 w-5" />,
+    MessageCircle: <MessageCircle className="h-5 w-5" />,
+    Headphones: <Headphones className="h-5 w-5" />,
+    MapPin: <MapPin className="h-5 w-5" />,
+    Globe: <Globe className="h-5 w-5" />,
+    Clock: <Clock className="h-5 w-5" />,
+    HelpCircle: <HelpCircle className="h-5 w-5" />,
+    Users: <Users className="h-5 w-5" />,
+    TrendingUp: <TrendingUp className="h-5 w-5" />,
+    CreditCard: <CreditCard className="h-5 w-5" />,
+    Wrench: <Wrench className="h-5 w-5" />,
+    Wifi: <Wifi className="h-5 w-5" />,
+    ExternalLink: <ExternalLink className="h-5 w-5" />,
+    Send: <Send className="h-5 w-5" />,
+    CheckCircle2: <CheckCircle2 className="h-5 w-5" />,
+    Star: <Star className="h-5 w-5" />,
+    Shield: <Shield className="h-5 w-5" />,
+    Zap: <Zap className="h-5 w-5" />,
+    Heart: <Heart className="h-5 w-5" />,
+};
 
 interface OfficeHoursProps {
     settings: ContactPageSettings;
 }
 
-interface HoursEntry {
-    icon: React.ReactNode;
-    title: string;
-    schedule: string;
-    note?: string;
-}
-
 export default function OfficeHours({ settings }: OfficeHoursProps) {
     if (!settings.hours_enabled) return null;
 
-    const accent = 'var(--isp-primary)';
+    const entries = settings.office_hours_entries ?? [];
+    if (entries.length === 0) return null;
 
-    const entries: HoursEntry[] = [
-        {
-            icon: <Headphones className="h-5 w-5" />,
-            title: 'Customer Support',
-            schedule: 'Available 24/7',
-            note: 'For urgent technical issues',
-        },
-        {
-            icon: <Users className="h-5 w-5" />,
-            title: 'Sales Department',
-            schedule: 'Saturday – Thursday',
-            note: '9:00 AM – 8:00 PM',
-        },
-        {
-            icon: <TrendingUp className="h-5 w-5" />,
-            title: 'Business Solutions',
-            schedule: 'Saturday – Thursday',
-            note: '10:00 AM – 6:00 PM',
-        },
-        {
-            icon: <Clock className="h-5 w-5" />,
-            title: 'Billing Support',
-            schedule: 'Saturday – Thursday',
-            note: '9:00 AM – 7:00 PM',
-        },
-    ];
+    const accent = 'var(--isp-primary)';
 
     return (
         <section className="relative bg-white py-10 sm:py-14">
@@ -61,9 +53,9 @@ export default function OfficeHours({ settings }: OfficeHoursProps) {
 
                 {/* Hours grid */}
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {entries.map((entry) => (
+                    {entries.map((entry, index) => (
                         <div
-                            key={entry.title}
+                            key={index}
                             className="rounded-2xl border border-gray-200 bg-white p-6 text-center transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/50"
                         >
                             <div
@@ -73,7 +65,7 @@ export default function OfficeHours({ settings }: OfficeHoursProps) {
                                     color: accent,
                                 }}
                             >
-                                {entry.icon}
+                                {iconMap[entry.icon] ?? <Clock className="h-5 w-5" />}
                             </div>
                             <h3 className="text-lg font-bold text-gray-900">{entry.title}</h3>
                             <p className="mt-2 text-base font-semibold" style={{ color: accent }}>

@@ -4,11 +4,14 @@ namespace App\Services;
 
 use App\Models\HeroSetting;
 use App\Repositories\Contracts\HeroSettingRepositoryInterface;
+use App\Support\InteractsWithLocalImages;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class HeroService
 {
+    use InteractsWithLocalImages;
+
     public function __construct(
         private HeroSettingRepositoryInterface $heroRepository,
     ) {}
@@ -33,44 +36,26 @@ class HeroService
     public function saveHero(array $data): HeroSetting
     {
         $existing = $this->heroRepository->getActive();
+        $previous = $existing?->only(['background_image']) ?? [];
 
-        if ($existing) {
-            return $this->heroRepository->update($existing->id, $data);
+        if (! $existing) {
+            $data['is_active'] = true;
         }
 
-        $data['is_active'] = true;
+        $saved = $existing
+            ? $this->heroRepository->update($existing->id, $data)
+            : $this->heroRepository->create($data);
 
-        return $this->heroRepository->create($data);
+        $this->deleteReplacedImages($previous, $saved->only(['background_image']), ['background_image']);
+
+        return $saved;
     }
 
     /**
      * Store an uploaded hero background image and return its public URL.
-     * Deletes the previous locally stored image (if any).
      */
     public function storeImage(UploadedFile $file): string
     {
-        $this->deleteOldLocalImage();
-
-        $path = $file->store('hero', 'public');
-
-        return '/storage/'.$path;
-    }
-
-    /**
-     * Delete the active hero's background image from local storage.
-     */
-    private function deleteOldLocalImage(): void
-    {
-        $hero = $this->heroRepository->getActive();
-
-        if (! $hero?->background_image) {
-            return;
-        }
-
-        if (str_starts_with($hero->background_image, '/storage/')) {
-            Storage::disk('public')->delete(
-                str_replace('/storage/', '', $hero->background_image)
-            );
-        }
+        return '/storage/'.$file->store('hero', 'public');
     }
 }

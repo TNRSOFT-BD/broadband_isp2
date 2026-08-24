@@ -23,7 +23,18 @@ class StoreHeroImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => ['required', 'image', 'max:5120'],
+            'image' => ['required', 'image', 'max:2048'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'image.max' => 'The image must not be larger than 2 MB.',
+            'image.image' => 'The file must be an image (JPG, PNG, WebP, etc.).',
         ];
     }
 }

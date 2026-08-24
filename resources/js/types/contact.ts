@@ -1,3 +1,12 @@
+export interface QuickContactMethod {
+    id: number;
+    icon: string;
+    label: string;
+    value: string;
+    description?: string | null;
+    href?: string | null;
+}
+
 export interface ContactInquiryType {
     id: number;
     name: string;
@@ -83,5 +92,28 @@ export interface ContactPageSettings {
     meta_description?: string | null;
     meta_keywords?: string | null;
 
+    office_hours_entries?: OfficeHoursEntry[];
+    helpful_resources?: HelpfulResource[];
+    faq_items?: FAQItem[];
+
     is_active: boolean;
+}
+
+export interface OfficeHoursEntry {
+    icon: string;
+    title: string;
+    schedule: string;
+    note?: string;
+}
+
+export interface HelpfulResource {
+    icon: string;
+    title: string;
+    description: string;
+    href: string;
+}
+
+export interface FAQItem {
+    question: string;
+    answer: string;
 }

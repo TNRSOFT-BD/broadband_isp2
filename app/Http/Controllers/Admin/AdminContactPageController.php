@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StorePageImageRequest;
 use App\Http\Requests\Admin\UpdateContactPageSettingsRequest;
 use App\Services\ContactPageSettingsService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,6 +21,13 @@ class AdminContactPageController extends Controller
     {
         return Inertia::render('Admin/ContactPage/Index', [
             'settings' => $this->pageSettingsService->getSettings(),
+        ]);
+    }
+
+    public function upload(StorePageImageRequest $request): JsonResponse
+    {
+        return response()->json([
+            'url' => $this->pageSettingsService->storeImage($request->file('image')),
         ]);
     }
 
