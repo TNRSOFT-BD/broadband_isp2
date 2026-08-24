@@ -4,7 +4,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { route as routeFn } from 'ziggy-js';
-import { initializeTheme } from './hooks/use-appearance';
+
 
 declare global {
     const route: typeof routeFn;
@@ -12,10 +12,16 @@ declare global {
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+let companyName = appName;
+
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title} - ${companyName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
     setup({ el, App, props }) {
+        const site = props.initialPage.props.site as { site_name?: string | null } | undefined;
+        if (site?.site_name) {
+            companyName = site.site_name;
+        }
         const root = createRoot(el);
         root.render(<App {...props} />);
     },
@@ -24,5 +30,4 @@ createInertiaApp({
     },
 });
 
-// This will set light / dark mode on load...
-initializeTheme();
+

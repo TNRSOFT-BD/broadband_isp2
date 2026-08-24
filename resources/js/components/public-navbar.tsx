@@ -27,6 +27,15 @@ const navLinks: NavLink[] = [
     { title: 'Contact', href: '/contact' },
 ];
 
+interface QuickContactMethod {
+    id: number;
+    icon: string;
+    label: string;
+    value: string;
+    description?: string | null;
+    href?: string | null;
+}
+
 interface PublicNavbarProps {
     children?: ReactNode;
 }
@@ -34,6 +43,14 @@ interface PublicNavbarProps {
 export function PublicNavbar({ children }: PublicNavbarProps) {
     const page = usePage();
     const currentUrl = page.url;
+    const quickContactMethods = (page.props.footerContactMethods as QuickContactMethod[] | undefined) ?? [];
+
+    // Only show contact methods that have both label and value
+    const validContactMethods = quickContactMethods.filter((m) => m.label && m.value);
+
+    // Extract phone and email for the top bar
+    const phoneMethod = validContactMethods.find((m) => m.icon === 'Phone');
+    const emailMethod = validContactMethods.find((m) => m.icon === 'Mail');
 
     return (
         <div className="flex min-h-screen flex-col overflow-x-hidden">
@@ -41,14 +58,18 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
             <div className="border-b border-white/10 bg-[#0f172a] text-sm text-slate-400">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-6">
-                        <a href="tel:+18001234567" className="flex items-center gap-2 transition-colors hover:text-white">
-                            <Phone className="h-3.5 w-3.5" />
-                            <span>+1 (800) 123-4567</span>
-                        </a>
-                        <a href="mailto:support@vibranet.com" className="hidden items-center gap-2 transition-colors hover:text-white sm:flex">
-                            <Mail className="h-3.5 w-3.5" />
-                            <span>support@vibranet.com</span>
-                        </a>
+                        {phoneMethod && (
+                            <a href={phoneMethod.href ?? `tel:${phoneMethod.value}`} className="flex items-center gap-2 transition-colors hover:text-white">
+                                <Phone className="h-3.5 w-3.5" />
+                                <span>{phoneMethod.value}</span>
+                            </a>
+                        )}
+                        {emailMethod && (
+                            <a href={emailMethod.href ?? `mailto:${emailMethod.value}`} className="hidden items-center gap-2 transition-colors hover:text-white sm:flex">
+                                <Mail className="h-3.5 w-3.5" />
+                                <span>{emailMethod.value}</span>
+                            </a>
+                        )}
                     </div>
                     <div className="flex items-center gap-4">
                         <a href="#" className="transition-colors hover:text-white" aria-label="Facebook">
@@ -166,7 +187,8 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
                                     <Menu className="h-6 w-6" />
                                     <span className="sr-only">Open menu</span>
                                 </Button>
-                            </SheetTrigger>                                <SheetContent side="right" className="w-[300px] bg-white p-0">
+                            </SheetTrigger>
+                                <SheetContent side="right" className="w-[300px] bg-white p-0">
                                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                                 <div className="flex h-full flex-col">
                                     {/* Mobile Header */}

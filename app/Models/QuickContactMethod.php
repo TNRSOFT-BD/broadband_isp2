@@ -28,10 +28,12 @@ class QuickContactMethod extends Model
         'href',
         'sort_order',
         'is_active',
+        'show_in_footer',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'show_in_footer' => 'boolean',
         'sort_order' => 'integer',
     ];
 

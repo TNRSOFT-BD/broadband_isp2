@@ -21,6 +21,7 @@ use App\Repositories\Contracts\PlanCategoryRepositoryInterface;
 use App\Repositories\Contracts\PlanRepositoryInterface;
 use App\Repositories\Contracts\PlansPageSettingRepositoryInterface;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
+use App\Repositories\Contracts\SiteSettingRepositoryInterface;
 use App\Repositories\Contracts\ThemeRepositoryInterface;
 use App\Repositories\Eloquent\EloquentAboutPageSettingRepository;
 use App\Repositories\Eloquent\EloquentAboutStatisticRepository;
@@ -41,6 +42,7 @@ use App\Repositories\Eloquent\EloquentPlanCategoryRepository;
 use App\Repositories\Eloquent\EloquentPlanRepository;
 use App\Repositories\Eloquent\EloquentPlansPageSettingRepository;
 use App\Repositories\Eloquent\EloquentServiceRepository;
+use App\Repositories\Eloquent\EloquentSiteSettingRepository;
 use App\Repositories\Eloquent\EloquentThemeRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -57,6 +59,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PlanRepositoryInterface::class, EloquentPlanRepository::class);
         $this->app->bind(PlanCategoryRepositoryInterface::class, EloquentPlanCategoryRepository::class);
         $this->app->bind(ServiceRepositoryInterface::class, EloquentServiceRepository::class);
+        $this->app->bind(SiteSettingRepositoryInterface::class, EloquentSiteSettingRepository::class);
         $this->app->bind(PlansPageSettingRepositoryInterface::class, EloquentPlansPageSettingRepository::class);
         $this->app->bind(ContactInquiryTypeRepositoryInterface::class, EloquentContactInquiryTypeRepository::class);
         $this->app->bind(ContactMessageRepositoryInterface::class, EloquentContactMessageRepository::class);

@@ -163,6 +163,14 @@ class AboutUsService
 
     /* ─── Statistics CRUD ─── */
 
+    private function mutateAndClearCache(callable $mutation)
+    {
+        $result = $mutation();
+        $this->clearCache();
+
+        return $result;
+    }
+
     public function getAllStatistics()
     {
         return $this->statisticRepository->getAll();
@@ -170,22 +178,22 @@ class AboutUsService
 
     public function createStatistic(array $data)
     {
-        return $this->statisticRepository->create($data);
+        return $this->mutateAndClearCache(fn () => $this->statisticRepository->create($data));
     }
 
     public function updateStatistic(int $id, array $data)
     {
-        return $this->statisticRepository->update($id, $data);
+        return $this->mutateAndClearCache(fn () => $this->statisticRepository->update($id, $data));
     }
 
     public function deleteStatistic(int $id): bool
     {
-        return $this->statisticRepository->delete($id);
+        return $this->mutateAndClearCache(fn () => $this->statisticRepository->delete($id));
     }
 
     public function toggleStatisticStatus(int $id)
     {
-        return $this->statisticRepository->toggleStatus($id);
+        return $this->mutateAndClearCache(fn () => $this->statisticRepository->toggleStatus($id));
     }
 
     /* ─── Core Values CRUD ─── */
@@ -197,22 +205,22 @@ class AboutUsService
 
     public function createCoreValue(array $data)
     {
-        return $this->coreValueRepository->create($data);
+        return $this->mutateAndClearCache(fn () => $this->coreValueRepository->create($data));
     }
 
     public function updateCoreValue(int $id, array $data)
     {
-        return $this->coreValueRepository->update($id, $data);
+        return $this->mutateAndClearCache(fn () => $this->coreValueRepository->update($id, $data));
     }
 
     public function deleteCoreValue(int $id): bool
     {
-        return $this->coreValueRepository->delete($id);
+        return $this->mutateAndClearCache(fn () => $this->coreValueRepository->delete($id));
     }
 
     public function toggleCoreValueStatus(int $id)
     {
-        return $this->coreValueRepository->toggleStatus($id);
+        return $this->mutateAndClearCache(fn () => $this->coreValueRepository->toggleStatus($id));
     }
 
     /* ─── Milestones CRUD ─── */
@@ -224,22 +232,22 @@ class AboutUsService
 
     public function createMilestone(array $data)
     {
-        return $this->milestoneRepository->create($data);
+        return $this->mutateAndClearCache(fn () => $this->milestoneRepository->create($data));
     }
 
     public function updateMilestone(int $id, array $data)
     {
-        return $this->milestoneRepository->update($id, $data);
+        return $this->mutateAndClearCache(fn () => $this->milestoneRepository->update($id, $data));
     }
 
     public function deleteMilestone(int $id): bool
     {
-        return $this->milestoneRepository->delete($id);
+        return $this->mutateAndClearCache(fn () => $this->milestoneRepository->delete($id));
     }
 
     public function toggleMilestoneStatus(int $id)
     {
-        return $this->milestoneRepository->toggleStatus($id);
+        return $this->mutateAndClearCache(fn () => $this->milestoneRepository->toggleStatus($id));
     }
 
     /* ─── Capabilities CRUD ─── */
@@ -251,22 +259,22 @@ class AboutUsService
 
     public function createCapability(array $data)
     {
-        return $this->capabilityRepository->create($data);
+        return $this->mutateAndClearCache(fn () => $this->capabilityRepository->create($data));
     }
 
     public function updateCapability(int $id, array $data)
     {
-        return $this->capabilityRepository->update($id, $data);
+        return $this->mutateAndClearCache(fn () => $this->capabilityRepository->update($id, $data));
     }
 
     public function deleteCapability(int $id): bool
     {
-        return $this->capabilityRepository->delete($id);
+        return $this->mutateAndClearCache(fn () => $this->capabilityRepository->delete($id));
     }
 
     public function toggleCapabilityStatus(int $id)
     {
-        return $this->capabilityRepository->toggleStatus($id);
+        return $this->mutateAndClearCache(fn () => $this->capabilityRepository->toggleStatus($id));
     }
 
     /* ─── Clients CRUD ─── */
@@ -278,22 +286,22 @@ class AboutUsService
 
     public function createClient(array $data)
     {
-        return $this->clientRepository->create($data);
+        return $this->mutateAndClearCache(fn () => $this->clientRepository->create($data));
     }
 
     public function updateClient(int $id, array $data)
     {
-        return $this->clientRepository->update($id, $data);
+        return $this->mutateAndClearCache(fn () => $this->clientRepository->update($id, $data));
     }
 
     public function deleteClient(int $id): bool
     {
-        return $this->clientRepository->delete($id);
+        return $this->mutateAndClearCache(fn () => $this->clientRepository->delete($id));
     }
 
     public function toggleClientStatus(int $id)
     {
-        return $this->clientRepository->toggleStatus($id);
+        return $this->mutateAndClearCache(fn () => $this->clientRepository->toggleStatus($id));
     }
 
     /* ─── Certifications CRUD ─── */
@@ -305,22 +313,22 @@ class AboutUsService
 
     public function createCertification(array $data)
     {
-        return $this->certificationRepository->create($data);
+        return $this->mutateAndClearCache(fn () => $this->certificationRepository->create($data));
     }
 
     public function updateCertification(int $id, array $data)
     {
-        return $this->certificationRepository->update($id, $data);
+        return $this->mutateAndClearCache(fn () => $this->certificationRepository->update($id, $data));
     }
 
     public function deleteCertification(int $id): bool
     {
-        return $this->certificationRepository->delete($id);
+        return $this->mutateAndClearCache(fn () => $this->certificationRepository->delete($id));
     }
 
     public function toggleCertificationStatus(int $id)
     {
-        return $this->certificationRepository->toggleStatus($id);
+        return $this->mutateAndClearCache(fn () => $this->certificationRepository->toggleStatus($id));
     }
 
     /* ─── Why Choose Us CRUD ─── */
@@ -332,22 +340,22 @@ class AboutUsService
 
     public function createWhyChooseUs(array $data)
     {
-        return $this->whyChooseUsRepository->create($data);
+        return $this->mutateAndClearCache(fn () => $this->whyChooseUsRepository->create($data));
     }
 
     public function updateWhyChooseUs(int $id, array $data)
     {
-        return $this->whyChooseUsRepository->update($id, $data);
+        return $this->mutateAndClearCache(fn () => $this->whyChooseUsRepository->update($id, $data));
     }
 
     public function deleteWhyChooseUs(int $id): bool
     {
-        return $this->whyChooseUsRepository->delete($id);
+        return $this->mutateAndClearCache(fn () => $this->whyChooseUsRepository->delete($id));
     }
 
     public function toggleWhyChooseUsStatus(int $id)
     {
-        return $this->whyChooseUsRepository->toggleStatus($id);
+        return $this->mutateAndClearCache(fn () => $this->whyChooseUsRepository->toggleStatus($id));
     }
 
     /* ─── Image Upload ─── */

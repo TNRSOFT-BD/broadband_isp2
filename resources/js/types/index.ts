@@ -25,6 +25,7 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    site?: { site_name: string | null; logo: string | null; favicon: string | null };
     flash?: { success?: string; error?: string };
     [key: string]: unknown;
 }

@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { type SVGAttributes } from 'react';
 
 interface IspLogoProps extends SVGAttributes<SVGElement> {
@@ -5,6 +6,33 @@ interface IspLogoProps extends SVGAttributes<SVGElement> {
 }
 
 export default function IspLogo({ variant = 'full', className, ...props }: IspLogoProps) {
+    const site = usePage().props.site as
+        | { site_name?: string | null; logo?: string | null }
+        | undefined;
+    const logoUrl = site?.logo ?? null;
+
+    if (logoUrl) {
+        if (variant === 'icon') {
+            return (
+                <img
+                    src={logoUrl}
+                    alt="Company logo"
+                    {...(props as React.ImgHTMLAttributes<HTMLImageElement>)}
+                    className={className ?? 'h-10 w-10 rounded-lg object-contain'}
+                />
+            );
+        }
+
+        return (
+            <img
+                src={logoUrl}
+                alt="Company logo"
+                {...(props as React.ImgHTMLAttributes<HTMLImageElement>)}
+                className={className ?? 'h-12 w-auto max-w-[180px] object-contain'}
+            />
+        );
+    }
+
     if (variant === 'icon') {
         return (
             <svg
@@ -69,7 +97,13 @@ export default function IspLogo({ variant = 'full', className, ...props }: IspLo
             </svg>
             <div className="flex flex-col">
                 <span className="text-xl font-bold leading-tight text-white">
-                    Vibra<span className="text-[var(--isp-primary)]">net</span>
+                    {site?.site_name ? (
+                        site.site_name
+                    ) : (
+                        <>
+                            Vibra<span className="text-[var(--isp-primary)]">net</span>
+                        </>
+                    )}
                 </span>
                 <span className="text-[10px] font-medium uppercase tracking-widest text-slate-400">
                     Internet Provider

@@ -6,7 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { CheckCircle2, Type, Palette } from 'lucide-react';
+import PageImageField from '@/components/admin/page-image-field';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/admin/dashboard' },
@@ -55,9 +58,13 @@ const colorFields: { key: keyof HeroData; label: string; description: string; se
     { key: 'overlay_color', label: 'Overlay Color', description: 'Dark overlay behind hero', section: 'Background' },
 ];
 
+const TABS = ['Content', 'Colors'] as const;
+
 export default function HeroConfig() {
-    const { hero, theme } = usePage().props as { hero: HeroData; theme?: { colors: { primary: string } } };
+    const { hero, theme } = usePage().props as unknown as { hero: HeroData; theme?: { colors: { primary: string } } };
     const primaryColor = theme?.colors?.primary ?? '#2563EB';
+
+    const [activeTab, setActiveTab] = useState<(typeof TABS)[number]>('Content');
 
     const form = useForm({
         background_image: hero.background_image ?? '',
@@ -91,59 +98,6 @@ export default function HeroConfig() {
     };
 
     const [previewBg, setPreviewBg] = useState(hero.background_image ?? '');
-    const [uploading, setUploading] = useState(false);
-    const [uploadError, setUploadError] = useState<string | null>(null);
-
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        e.target.value = '';
-        if (!file) return;
-
-        setUploadError(null);
-
-        const MAX_SIZE_BYTES = 2 * 1024 * 1024; // 2 MB
-        if (file.size > MAX_SIZE_BYTES) {
-            setUploadError('Image must not be larger than 2 MB.');
-            return;
-        }
-
-        // Show instant preview
-        setPreviewBg(URL.createObjectURL(file));
-        setUploading(true);
-
-        try {
-            const formData = new FormData();
-            formData.append('image', file);
-
-            const response = await fetch(route('admin.hero-config.upload'), {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    Accept: 'application/json',
-                },
-                credentials: 'same-origin',
-                body: formData,
-            });
-
-            const result = await response.json().catch(() => null);
-
-            if (response.ok && result?.url) {
-                form.setData('background_image', result.url);
-                setPreviewBg(result.url);
-            } else {
-                setPreviewBg(form.data.background_image ?? '');
-                setUploadError(
-                    result?.errors?.image?.[0] ?? result?.message ?? 'Upload failed. Please try again.',
-                );
-            }
-        } catch {
-            setPreviewBg(form.data.background_image ?? '');
-            setUploadError('Upload failed. Please try again.');
-        } finally {
-            setUploading(false);
-        }
-    };
 
     const handleApplyPrimaryColor = () => {
         form.setData({
@@ -154,14 +108,22 @@ export default function HeroConfig() {
         });
     };
 
-    // Group colors by section
     const sections = [...new Set(colorFields.map((f) => f.section))];
+    const inputCls = 'rounded-lg border-gray-200 focus:border-[var(--isp-primary)] focus:ring-[var(--isp-primary)]';
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Hero Configuration" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-6">
+            <div className="flex flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+                {/* Header */}
+                <div>
+                    <h1 className="text-2xl font-bold tracking-tight">Hero Section</h1>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                        Configure the hero banner on the homepage.
+                    </p>
+                </div>
+
                 {/* Live Preview */}
                 <Card>
                     <CardHeader>
@@ -182,7 +144,6 @@ export default function HeroConfig() {
                             <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${form.data.overlay_color}e6, ${form.data.overlay_color}70, ${form.data.overlay_color}f5)` }} />
 
                             <div className="relative z-10 flex flex-col items-center justify-center px-8 py-16 text-center">
-                                {/* Badge */}
                                 <span
                                     className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium"
                                     style={{ color: form.data.badge_color, border: `1px solid ${form.data.badge_color}40`, background: `${form.data.badge_color}15` }}
@@ -191,7 +152,6 @@ export default function HeroConfig() {
                                     {form.data.badge_text}
                                 </span>
 
-                                {/* Heading */}
                                 <h2 className="mb-3 text-2xl font-bold sm:text-3xl">
                                     <span style={{ color: form.data.heading_color }}>{form.data.heading_line1} </span>
                                     <span style={{ color: form.data.highlight_color }}>{form.data.heading_highlight}</span>
@@ -199,12 +159,10 @@ export default function HeroConfig() {
                                     <span style={{ color: form.data.heading_color }}>{form.data.heading_line2}</span>
                                 </h2>
 
-                                {/* Subtitle */}
                                 <p className="mb-6 max-w-lg text-sm" style={{ color: form.data.subtitle_color }}>
                                     {form.data.subtitle}
                                 </p>
 
-                                {/* CTA Buttons */}
                                 <div className="flex flex-wrap gap-3">
                                     <span
                                         className="inline-flex items-center rounded-full px-6 py-2 text-sm font-semibold"
@@ -224,149 +182,137 @@ export default function HeroConfig() {
                     </CardContent>
                 </Card>
 
-                <form onSubmit={handleSubmit}>
-                    <div className="grid gap-6 lg:grid-cols-2">
-                        {/* Content Settings */}
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Content Settings</CardTitle>
-                                <CardDescription>Edit hero text content and links</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label>Upload Image</Label>
-                                    <label
-                                        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-primary/30 bg-primary/[0.04] px-3 py-2.5 text-sm font-medium text-primary transition-colors disabled:pointer-events-none disabled:opacity-50"
-                                    >
-                                        {uploading ? 'Uploading...' : 'Click to upload image'}
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={handleImageUpload}
-                                            disabled={uploading}
-                                            className="sr-only"
-                                            aria-label="Upload hero background image"
-                                        />
-                                    </label>
-                                    {uploadError ? (
-                                        <p className="text-xs font-medium text-destructive">{uploadError}</p>
-                                    ) : (
-                                        <p className="text-xs text-muted-foreground">
-                                            {uploading ? 'Uploading...' : 'Upload a JPG, PNG, or WebP image (max 2MB)'}
-                                        </p>
-                                    )}
-                                </div>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Tab Bar */}
+                    <div className="flex flex-wrap gap-2 rounded-xl border border-gray-200 bg-white p-2">
+                        {TABS.map((tab) => (
+                            <button
+                                key={tab}
+                                type="button"
+                                onClick={() => setActiveTab(tab)}
+                                aria-current={activeTab === tab}
+                                className={cn(
+                                    'rounded-lg px-4 py-2 text-sm font-medium transition-colors',
+                                    activeTab === tab
+                                        ? 'bg-primary text-primary-foreground shadow'
+                                        : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+                                )}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
 
-                                <div className="space-y-2">
-                                    <Label>Or paste Image URL</Label>
-                                    <Input
+                    {/* ═══════ CONTENT TAB ═══════ */}
+                    {activeTab === 'Content' && (
+                        <div className="grid gap-6 lg:grid-cols-2">
+                            <Card>
+                                <CardHeader>
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--isp-primary)]/10 text-[var(--isp-primary)]">
+                                            <Type className="h-4 w-4" />
+                                        </div>
+                                        <div>
+                                            <CardTitle className="text-base">Content Settings</CardTitle>
+                                            <CardDescription className="text-xs">Edit hero text content and links</CardDescription>
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <PageImageField
+                                        label="Background Image"
                                         value={form.data.background_image}
-                                        onChange={(e) => {
-                                            form.setData('background_image', e.target.value);
-                                            setPreviewBg(e.target.value);
-                                            setUploadError(null);
+                                        onChange={(v) => {
+                                            form.setData('background_image', v);
+                                            setPreviewBg(v);
                                         }}
-                                        placeholder="https://images.unsplash.com/..."
+                                        uploadUrl={route('admin.hero-config.upload')}
                                     />
-                                </div>
 
-                                <Separator />
+                                    <Separator className="my-1" />
 
-                                <div className="space-y-2">
-                                    <Label>Badge Text</Label>
-                                    <Input
-                                        value={form.data.badge_text}
-                                        onChange={(e) => form.setData('badge_text', e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-2">
-                                        <Label>Heading Line 1</Label>
-                                        <Input
-                                            value={form.data.heading_line1}
-                                            onChange={(e) => form.setData('heading_line1', e.target.value)}
+                                        <Label>Badge Text</Label>
+                                        <Input value={form.data.badge_text} onChange={(e) => form.setData('badge_text', e.target.value)} className={inputCls} />
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="space-y-2">
+                                            <Label>Heading Line 1</Label>
+                                            <Input value={form.data.heading_line1} onChange={(e) => form.setData('heading_line1', e.target.value)} className={inputCls} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Heading Highlight</Label>
+                                            <Input value={form.data.heading_highlight} onChange={(e) => form.setData('heading_highlight', e.target.value)} className={inputCls} />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label>Heading Line 2</Label>
+                                        <Input value={form.data.heading_line2} onChange={(e) => form.setData('heading_line2', e.target.value)} className={inputCls} />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label>Subtitle</Label>
+                                        <textarea
+                                            value={form.data.subtitle}
+                                            onChange={(e) => form.setData('subtitle', e.target.value)}
+                                            rows={3}
+                                            className="flex w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label>Heading Highlight</Label>
-                                        <Input
-                                            value={form.data.heading_highlight}
-                                            onChange={(e) => form.setData('heading_highlight', e.target.value)}
-                                        />
+
+                                    <Separator className="my-1" />
+                                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Call-to-Action Buttons</p>
+
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="space-y-2">
+                                            <Label>Primary CTA Text</Label>
+                                            <Input value={form.data.cta_primary_text} onChange={(e) => form.setData('cta_primary_text', e.target.value)} className={inputCls} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Primary CTA URL</Label>
+                                            <Input value={form.data.cta_primary_url} onChange={(e) => form.setData('cta_primary_url', e.target.value)} className={inputCls} />
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="space-y-2">
-                                    <Label>Heading Line 2</Label>
-                                    <Input
-                                        value={form.data.heading_line2}
-                                        onChange={(e) => form.setData('heading_line2', e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label>Subtitle</Label>
-                                    <textarea
-                                        value={form.data.subtitle}
-                                        onChange={(e) => form.setData('subtitle', e.target.value)}
-                                        rows={3}
-                                        className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                                    />
-                                </div>
-
-                                <Separator />
-
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="space-y-2">
-                                        <Label>Primary CTA Text</Label>
-                                        <Input
-                                            value={form.data.cta_primary_text}
-                                            onChange={(e) => form.setData('cta_primary_text', e.target.value)}
-                                        />
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div className="space-y-2">
+                                            <Label>Secondary CTA Text</Label>
+                                            <Input value={form.data.cta_secondary_text} onChange={(e) => form.setData('cta_secondary_text', e.target.value)} className={inputCls} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label>Secondary CTA URL</Label>
+                                            <Input value={form.data.cta_secondary_url} onChange={(e) => form.setData('cta_secondary_url', e.target.value)} className={inputCls} />
+                                        </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <Label>Primary CTA URL</Label>
-                                        <Input
-                                            value={form.data.cta_primary_url}
-                                            onChange={(e) => form.setData('cta_primary_url', e.target.value)}
-                                        />
-                                    </div>
-                                </div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    )}
 
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div className="space-y-2">
-                                        <Label>Secondary CTA Text</Label>
-                                        <Input
-                                            value={form.data.cta_secondary_text}
-                                            onChange={(e) => form.setData('cta_secondary_text', e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label>Secondary CTA URL</Label>
-                                        <Input
-                                            value={form.data.cta_secondary_url}
-                                            onChange={(e) => form.setData('cta_secondary_url', e.target.value)}
-                                        />
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {/* Color Settings */}
+                    {/* ═══════ COLORS TAB ═══════ */}
+                    {activeTab === 'Colors' && (
                         <Card>
                             <CardHeader>
-                                <CardTitle>Color Settings</CardTitle>
-                                <CardDescription>Customize colors for each section of the hero</CardDescription>
+                                <div className="flex items-center gap-3">
+                                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--isp-primary)]/10 text-[var(--isp-primary)]">
+                                        <Palette className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                        <CardTitle className="text-base">Color Settings</CardTitle>
+                                        <CardDescription className="text-xs">Customize colors for each section of the hero</CardDescription>
+                                    </div>
+                                </div>
                                 <div className="mt-2">
                                     <Button
                                         type="button"
                                         variant="outline"
                                         size="sm"
                                         onClick={handleApplyPrimaryColor}
-                                        className="h-auto w-full gap-2 py-2 text-left whitespace-normal sm:w-auto sm:whitespace-nowrap"
+                                        className="gap-2"
                                     >
-                                        <span className="inline-block h-3 w-3 shrink-0 rounded-full" style={{ background: primaryColor }} />
+                                        <span className="inline-block h-3 w-3 rounded-full" style={{ background: primaryColor }} />
                                         Apply Primary Color to Badge, Highlight & CTA
                                     </Button>
                                 </div>
@@ -376,14 +322,14 @@ export default function HeroConfig() {
                                     const fields = colorFields.filter((f) => f.section === section);
                                     return (
                                         <div key={section}>
-                                            <h4 className="mb-3 text-sm font-semibold text-muted-foreground uppercase tracking-wider">{section}</h4>
+                                            <h4 className="mb-3 text-sm font-semibold text-gray-400 uppercase tracking-wider">{section}</h4>
                                             <div className="space-y-3">
                                                 {fields.map((field) => (
                                                     <div key={field.key} className="flex items-center gap-3">
                                                         <input
                                                             type="color"
                                                             value={form.data[field.key] as string}
-                                                            onChange={(e) => form.setData(field.key as string, e.target.value)}
+                                                            onChange={(e) => form.setData(field.key as keyof HeroData, e.target.value)}
                                                             className="h-9 w-9 cursor-pointer rounded-md border-0 p-0"
                                                         />
                                                         <div className="flex-1">
@@ -392,7 +338,7 @@ export default function HeroConfig() {
                                                         </div>
                                                         <Input
                                                             value={form.data[field.key] as string}
-                                                            onChange={(e) => form.setData(field.key as string, e.target.value)}
+                                                            onChange={(e) => form.setData(field.key as keyof HeroData, e.target.value)}
                                                             className="w-24 font-mono text-sm"
                                                         />
                                                     </div>
@@ -404,11 +350,25 @@ export default function HeroConfig() {
                                 })}
                             </CardContent>
                         </Card>
-                    </div>
+                    )}
 
-                    <div className="mt-6 flex justify-end">
-                        <Button type="submit" disabled={form.processing} className="min-w-[150px]">
-                            {form.processing ? 'Saving...' : 'Save Hero Settings'}
+                    {/* ═══════ SUBMIT ═══════ */}
+                    <div className="flex items-center justify-between gap-4 rounded-xl border border-gray-200 bg-gray-50/50 px-6 py-4">
+                        <p className="text-sm text-muted-foreground">
+                            Changes apply to the homepage instantly.
+                        </p>
+                        <Button type="submit" disabled={form.processing} size="lg" className="min-w-[200px] gap-2">
+                            {form.processing ? (
+                                <>
+                                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                                    Saving...
+                                </>
+                            ) : (
+                                <>
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    Save Hero Settings
+                                </>
+                            )}
                         </Button>
                     </div>
                 </form>

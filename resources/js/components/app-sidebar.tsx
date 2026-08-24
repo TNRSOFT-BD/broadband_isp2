@@ -4,37 +4,57 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavGroup, type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, Globe, LayoutGrid, Layers, Link2, Settings, Sparkles, MessageSquare, Headphones, MapPin, HelpCircle, Zap, Users } from 'lucide-react';
+import {
+    LayoutDashboard,
+    CreditCard,
+    Tag,
+    Tv,
+    Home,
+    Image,
+    Users,
+    PhoneCall,
+    MessageSquare,
+    Zap,
+    HelpCircle,
+    MapPin,
+    Palette,
+    Settings,
+    BookOpen,
+    Folder,
+    Globe,
+    ArrowUpRight,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 const navGroups: NavGroup[] = [
     {
-        title: 'Overview',
+        title: 'Dashboard',
         items: [
-            { title: 'Dashboard', url: '/admin/dashboard', icon: LayoutGrid },
+            { title: 'Overview', url: '/admin/dashboard', icon: LayoutDashboard },
         ],
     },
     {
         title: 'Plans & Services',
         items: [
-            { title: 'Plans', url: '/admin/plans', icon: Layers },
-            { title: 'Plan Categories', url: '/admin/plan-categories', icon: Link2 },
-            { title: 'Services', url: '/admin/services', icon: Sparkles },
+            { title: 'Plans', url: '/admin/plans', icon: CreditCard },
+            { title: 'Categories', url: '/admin/plan-categories', icon: Tag },
+            { title: 'OTT / Services', url: '/admin/services', icon: Tv },
         ],
     },
     {
-        title: 'Content Pages',
+        title: 'Pages',
         items: [
+            { title: 'Hero Section', url: '/admin/hero-config', icon: Home },
             { title: 'Plans Page', url: '/admin/pages/plans', icon: Globe },
             { title: 'About Page', url: '/admin/pages/about', icon: Users },
-            { title: 'Contact Page', url: '/admin/pages/contact', icon: Headphones },
+            { title: 'Contact Page', url: '/admin/pages/contact', icon: PhoneCall },
         ],
     },
     {
-        title: 'Contact Management',
+        title: 'Contact',
         items: [
             { title: 'Messages', url: '/admin/contact-messages', icon: MessageSquare },
-            { title: 'Quick Contact Methods', url: '/admin/contact/quick-methods', icon: Zap },
+            { title: 'Quick Methods', url: '/admin/contact/quick-methods', icon: Zap },
             { title: 'Inquiry Types', url: '/admin/contact/inquiry-types', icon: HelpCircle },
             { title: 'Office Locations', url: '/admin/contact/locations', icon: MapPin },
         ],
@@ -42,17 +62,16 @@ const navGroups: NavGroup[] = [
     {
         title: 'Configuration',
         items: [
-            { title: 'Hero Config', url: '/admin/hero-config', icon: Globe },
-            { title: 'Website Config', url: '/admin/website-config', icon: Settings },
+            { title: 'Website Config', url: '/admin/website-config', icon: Palette },
         ],
     },
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        url: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
+        title: 'View Site',
+        url: '/',
+        icon: ArrowUpRight,
     },
     {
         title: 'Documentation',

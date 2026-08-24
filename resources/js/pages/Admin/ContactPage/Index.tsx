@@ -22,7 +22,6 @@ import {
     Search,
     ChevronRight,
     GripVertical,
-    Zap,
 } from 'lucide-react';
 import PageImageField from '@/components/admin/page-image-field';
 
@@ -391,31 +390,6 @@ export default function ContactPageIndex() {
                     {/* ═══════ SECTIONS TAB ═══════ */}
                     {activeTab === 'Sections' && (
                         <div className="grid gap-6 xl:grid-cols-2">
-                            <SectionCard
-                                title="Quick Contact"
-                                description="Method cards below the hero"
-                                icon={<MessageSquare className="h-4 w-4" />}
-                            >
-                                <ToggleField
-                                    label="Show Section"
-                                    checked={form.data.quick_contact_enabled}
-                                    onChange={(v) => form.setData('quick_contact_enabled', v)}
-                                    hint="Manage individual cards on the Quick Contact Methods page"
-                                />
-                                <FieldGroup label="Section Title">
-                                    <Input value={form.data.quick_contact_title} onChange={(e) => form.setData('quick_contact_title', e.target.value)} className={inputCls} />
-                                </FieldGroup>
-                                <FieldGroup label="Description">
-                                    <Input value={form.data.quick_contact_description ?? ''} onChange={(e) => form.setData('quick_contact_description', e.target.value)} className={inputCls} />
-                                </FieldGroup>
-                                <Button asChild variant="outline" size="sm" className="gap-2">
-                                    <a href="/admin/contact/quick-methods">
-                                        <Zap className="h-3.5 w-3.5" /> Manage Quick Contact Methods
-                                        <ChevronRight className="h-3.5 w-3.5 opacity-50" />
-                                    </a>
-                                </Button>
-                            </SectionCard>
-
                             <SectionCard
                                 title="Contact Form"
                                 description="The message submission form"

@@ -10,16 +10,23 @@ export function NavMain({ groups = [] }: { groups: NavGroup[] }) {
                 <SidebarGroup key={group.title} className="px-2 py-0">
                     <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
                     <SidebarMenu>
-                        {group.items.map((item) => (
-                            <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild isActive={item.url === page.url}>
-                                    <Link href={item.url} prefetch>
-                                        {item.icon && <item.icon />}
-                                        <span>{item.title}</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        ))}
+                        {group.items.map((item) => {
+                            const isActive = item.url === page.url;
+                            return (
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton asChild isActive={isActive}>
+                                        <Link
+                                            href={item.url}
+                                            prefetch
+                                            className={isActive ? 'bg-[var(--isp-primary)]/10 text-[var(--isp-primary)] font-medium' : ''}
+                                        >
+                                            {item.icon && <item.icon />}
+                                            <span>{item.title}</span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            );
+                        })}
                     </SidebarMenu>
                 </SidebarGroup>
             ))}

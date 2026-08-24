@@ -19,7 +19,7 @@ class AdminQuickContactMethodController extends Controller
     {
         return Inertia::render('Admin/QuickContactMethods/Index', [
             'methods' => $this->methodService->getAllMethods()
-                ->map(fn ($method) => $method->only(['id', 'icon', 'label', 'value', 'description', 'href', 'sort_order', 'is_active'])),
+                ->map(fn ($method) => $method->only(['id', 'icon', 'label', 'value', 'description', 'href', 'sort_order', 'is_active', 'show_in_footer'])),
             'icons' => \App\Models\QuickContactMethod::ICONS,
         ]);
     }

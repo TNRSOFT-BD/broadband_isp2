@@ -1,6 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
+import PageImageField from '@/components/admin/page-image-field';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -45,6 +46,7 @@ interface PageProps {
     fonts: FontData[];
     activeTheme: ThemeData | null;
     activeFont: FontData | null;
+    siteSettings?: { site_name: string | null; logo: string | null; favicon: string | null };
 }
 
 const defaultColors: ThemeColors = {
@@ -83,7 +85,7 @@ const fontStyleMap: Record<string, string> = {
 };
 
 export default function WebsiteConfig() {
-    const { activeTheme, activeFont } = usePage().props as unknown as PageProps;
+    const { activeTheme, activeFont, siteSettings } = usePage().props as unknown as PageProps;
 
     const [previewColors, setPreviewColors] = useState<ThemeColors>(
         activeTheme?.colors ?? defaultColors
@@ -103,6 +105,17 @@ export default function WebsiteConfig() {
     });
 
     const resetForm = useForm({});
+
+    const brandingForm = useForm({
+        site_name: siteSettings?.site_name ?? '',
+        logo: siteSettings?.logo ?? '',
+        favicon: siteSettings?.favicon ?? '',
+    });
+
+    const handleBrandingSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        brandingForm.put(route('admin.website-config.branding.update'));
+    };
 
     const handleColorChange = (key: keyof ThemeColors, value: string) => {
         const newColors = { ...previewColors, [key]: value };
@@ -211,6 +224,67 @@ export default function WebsiteConfig() {
                                 </span>
                             </div>
                         </div>
+                    </CardContent>
+                </Card>
+
+                {/* Branding */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Branding</CardTitle>
+                        <CardDescription>
+                            Upload your website logo and favicon. Uploading a new image replaces the old one after saving.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <form onSubmit={handleBrandingSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="site-name">Company Name</Label>
+                                <Input
+                                    id="site-name"
+                                    value={brandingForm.data.site_name}
+                                    onChange={(e) => brandingForm.setData('site_name', e.target.value)}
+                                    placeholder="VibraNet"
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    This name appears in the website header, footer, browser tab title, and other public areas.
+                                </p>
+                                {brandingForm.errors.site_name && (
+                                    <p className="text-sm text-destructive">{brandingForm.errors.site_name}</p>
+                                )}
+                            </div>
+
+                            <div className="grid gap-6 lg:grid-cols-2">
+                                <PageImageField
+                                    label="Website Logo"
+                                    value={brandingForm.data.logo}
+                                    onChange={(v) => brandingForm.setData('logo', v)}
+                                    uploadUrl={route('admin.website-config.upload')}
+                                />
+                                <PageImageField
+                                    label="Favicon"
+                                    value={brandingForm.data.favicon}
+                                    onChange={(v) => brandingForm.setData('favicon', v)}
+                                    uploadUrl={route('admin.website-config.upload')}
+                                />
+                            </div>
+
+                            <p className="text-xs text-muted-foreground">
+                                Logo appears in the public navbar &amp; footer (SVG or PNG, transparent background
+                                recommended). Favicon shows in the browser tab (ICO, PNG or SVG, 32×32 or larger).
+                                Max size 1&nbsp;MB each.
+                            </p>
+
+                            {brandingForm.errors.logo && (
+                                <p className="text-sm text-destructive">{brandingForm.errors.logo}</p>
+                            )}
+                            {brandingForm.errors.favicon && (
+                                <p className="text-sm text-destructive">{brandingForm.errors.favicon}</p>
+                            )}
+
+                            <Button type="submit" disabled={brandingForm.processing}>
+                                {brandingForm.processing ? 'Saving...' : 'Save Branding'}
+                            </Button>
+                        </form>
                     </CardContent>
                 </Card>
 

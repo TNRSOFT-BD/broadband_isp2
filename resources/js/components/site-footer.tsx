@@ -1,6 +1,7 @@
 import IspLogo from '@/components/isp-logo';
-import { Link } from '@inertiajs/react';
-import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin, MessageCircle, Headphones, Globe, Clock, HelpCircle, ArrowRight } from 'lucide-react';
+import { type ReactNode } from 'react';
 
 const quickLinks = [
     { title: 'Home', href: '/' },
@@ -23,7 +24,34 @@ const socialLinks = [
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
 ];
 
+const iconMap: Record<string, ReactNode> = {
+    Phone: <Phone className="h-4 w-4" />,
+    Mail: <Mail className="h-4 w-4" />,
+    MessageCircle: <MessageCircle className="h-4 w-4" />,
+    Headphones: <Headphones className="h-4 w-4" />,
+    MapPin: <MapPin className="h-4 w-4" />,
+    Globe: <Globe className="h-4 w-4" />,
+    Clock: <Clock className="h-4 w-4" />,
+    HelpCircle: <HelpCircle className="h-4 w-4" />,
+};
+
+interface QuickContactMethod {
+    id: number;
+    icon: string;
+    label: string;
+    value: string;
+    description?: string | null;
+    href?: string | null;
+}
+
 export default function SiteFooter() {
+    const page = usePage();
+    const site = page.props.site as { site_name?: string | null } | undefined;
+    const quickContactMethods = (page.props.footerContactMethods as QuickContactMethod[] | undefined) ?? [];
+
+    // Only show contact methods that have both label and value
+    const validContactMethods = quickContactMethods.filter((m) => m.label && m.value);
+
     return (
         <footer className="relative overflow-hidden bg-[#0b1120]">
             {/* Top glow accent */}
@@ -101,51 +129,53 @@ export default function SiteFooter() {
                         </ul>
                     </div>
 
-                    {/* Contact Info */}
-                    <div>
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-white">Contact Us</h3>
-                        <div className="mx-auto mt-1 mb-3 h-0.5 w-8 rounded-full bg-[var(--isp-primary)] md:mx-0" />
-                        <ul className="space-y-3">
-                            <li className="flex items-start justify-center gap-2.5 md:justify-start">
-                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--isp-primary)]/10 text-[var(--isp-primary)]">
-                                    <Phone className="h-4 w-4" />
-                                </div>
-                                <div>
-                                    <p className="text-xs font-medium text-slate-500">Call Us</p>
-                                    <a href="tel:+18001234567" className="text-sm text-slate-300 transition-colors hover:text-white">
-                                        +1 (800) 123-4567
-                                    </a>
-                                </div>
-                            </li>
-                            <li className="flex items-start justify-center gap-2.5 md:justify-start">
-                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--isp-primary)]/10 text-[var(--isp-primary)]">
-                                    <Mail className="h-4 w-4" />
-                                </div>
-                                <div>
-                                    <p className="text-xs font-medium text-slate-500">Email Us</p>
-                                    <a href="mailto:support@vibranet.com" className="text-sm text-slate-300 transition-colors hover:text-white">
-                                        support@vibranet.com
-                                    </a>
-                                </div>
-                            </li>
-                            <li className="flex items-start justify-center gap-2.5 md:justify-start">
-                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--isp-primary)]/10 text-[var(--isp-primary)]">
-                                    <MapPin className="h-4 w-4" />
-                                </div>
-                                <div>
-                                    <p className="text-xs font-medium text-slate-500">Visit Us</p>
-                                    <p className="text-sm text-slate-300">123 Tech Avenue, Digital City</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    {/* Contact Info - Dynamic from Quick Contact Methods */}
+                    {validContactMethods.length > 0 && (
+                        <div>
+                            <h3 className="text-sm font-bold uppercase tracking-wider text-white">Contact Us</h3>
+                            <div className="mx-auto mt-1 mb-3 h-0.5 w-8 rounded-full bg-[var(--isp-primary)] md:mx-0" />
+                            <ul className="space-y-3">
+                                {validContactMethods.map((method) => (
+                                    <li key={method.id} className="flex items-start justify-center gap-2.5 md:justify-start">
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--isp-primary)]/10 text-[var(--isp-primary)]">
+                                            {iconMap[method.icon] ?? <Phone className="h-4 w-4" />}
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-medium text-slate-500">{method.label}</p>
+                                            {(() => {
+                                                const resolvedHref = method.href && method.href !== '#'
+                                                    ? method.href
+                                                    : method.icon === 'Phone'
+                                                        ? `tel:${method.value}`
+                                                        : method.icon === 'Mail'
+                                                            ? `mailto:${method.value}`
+                                                            : null;
+                                                return resolvedHref ? (
+                                                    <a href={resolvedHref} className="text-sm text-slate-300 transition-colors hover:text-white">
+                                                        {method.value}
+                                                    </a>
+                                                ) : (
+                                                    <p className="text-sm text-slate-300">{method.value}</p>
+                                                );
+                                            })()}
+                                            {method.description && (
+                                                <p className="text-xs text-slate-500">{method.description}</p>
+                                            )}
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
 
                 {/* Bottom bar */}
                 <div className="mt-10 border-t border-white/10 pt-5">
                     <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                         <p className="text-xs text-slate-500">
-                            &copy; {new Date().getFullYear()} VibraNet. All rights reserved.
+                            &copy; {new Date().getFullYear()}{' '}
+                            {site?.site_name ?? 'VibraNet'}
+                            . All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
                             <a href="#" className="text-xs text-slate-500 transition-colors hover:text-slate-300">

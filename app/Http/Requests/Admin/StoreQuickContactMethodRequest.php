@@ -21,6 +21,7 @@ class StoreQuickContactMethodRequest extends FormRequest
             'href' => ['nullable', 'string', 'max:512'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
             'is_active' => ['boolean'],
+            'show_in_footer' => ['boolean'],
         ];
     }
 
@@ -28,6 +29,7 @@ class StoreQuickContactMethodRequest extends FormRequest
     {
         $this->merge([
             'is_active' => $this->boolean('is_active'),
+            'show_in_footer' => $this->boolean('show_in_footer'),
         ]);
     }
 }

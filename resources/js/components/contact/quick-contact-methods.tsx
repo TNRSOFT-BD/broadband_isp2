@@ -44,10 +44,9 @@ export default function QuickContactMethods({ settings, methods }: QuickContactM
                 {/* Contact method cards */}
                 <div className="flex flex-wrap justify-center gap-6">
                     {validMethods.map((method) => (
-                        <a
+                        <div
                             key={method.id}
-                            href={method.href ?? '#'}
-                            className="group w-full rounded-2xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:border-[var(--isp-primary)]/30 hover:shadow-lg hover:shadow-gray-200/50 sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
+                            className="w-full rounded-2xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:border-[var(--isp-primary)]/30 hover:shadow-lg hover:shadow-gray-200/50 sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
                         >
                             {/* Icon */}
                             <div
@@ -69,13 +68,8 @@ export default function QuickContactMethods({ settings, methods }: QuickContactM
                                 <p className="mt-2 text-sm text-gray-500">{method.description}</p>
                             )}
 
-                            {/* Hover arrow */}
-                            <div className="absolute right-4 top-6 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
-                                <svg className="h-5 w-5" style={{ color: accent }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                            </div>
-                        </a>
+
+                        </div>
                     ))}
                 </div>
             </div>

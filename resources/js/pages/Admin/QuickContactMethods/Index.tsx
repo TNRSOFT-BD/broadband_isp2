@@ -22,6 +22,7 @@ interface QuickContactMethod {
     href: string | null;
     sort_order: number;
     is_active: boolean;
+    show_in_footer: boolean;
 }
 
 interface PageProps extends Record<string, unknown> {
@@ -37,7 +38,20 @@ const emptyForm = {
     href: '',
     sort_order: 0 as number | string,
     is_active: true as boolean,
+    show_in_footer: false as boolean,
 };
+
+/** Pre-defined popular contact presets — selecting one auto-fills icon, label, and href. */
+const PRESETS = [
+    { label: 'Call Us', icon: 'Phone', href: 'tel:', placeholder: '+1 (800) 123-4567' },
+    { label: 'Email Us', icon: 'Mail', href: 'mailto:', placeholder: 'support@company.com' },
+    { label: 'WhatsApp', icon: 'MessageCircle', href: 'https://wa.me/', placeholder: '+18001234567' },
+    { label: 'Visit Us', icon: 'MapPin', href: 'https://maps.google.com/?q=', placeholder: '123 Tech Avenue, Digital City' },
+    { label: 'Live Chat', icon: 'Headphones', href: '#', placeholder: 'Available 24/7' },
+    { label: 'Support Center', icon: 'HelpCircle', href: '/contact', placeholder: 'Get help with your account' },
+    { label: 'Website', icon: 'Globe', href: 'https://', placeholder: 'www.company.com' },
+    { label: 'Business Hours', icon: 'Clock', href: '', placeholder: 'Mon-Fri 9AM-6PM' },
+];
 
 export default function QuickContactMethodsIndex() {
     const { methods, icons } = usePage<PageProps>().props;
@@ -78,6 +92,7 @@ export default function QuickContactMethodsIndex() {
             href: method.href ?? '',
             sort_order: method.sort_order,
             is_active: method.is_active,
+            show_in_footer: method.show_in_footer,
         });
         setShowForm(true);
     };
@@ -129,6 +144,29 @@ export default function QuickContactMethodsIndex() {
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
+                                <div className="sm:col-span-2">
+                                    <Label>Quick Select (optional)</Label>
+                                    <div className="mt-1 flex flex-wrap gap-2">
+                                        {PRESETS.map((preset) => (
+                                            <button
+                                                key={preset.label}
+                                                type="button"
+                                                onClick={() => {
+                                                    form.setData({
+                                                        ...form.data,
+                                                        icon: preset.icon,
+                                                        label: preset.label,
+                                                        href: preset.href,
+                                                        description: form.data.description || preset.placeholder,
+                                                    });
+                                                }}
+                                                className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 transition-colors hover:border-[var(--isp-primary)] hover:bg-[var(--isp-primary)]/5 hover:text-[var(--isp-primary)]"
+                                            >
+                                                {preset.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
                                 <div>
                                     <Label htmlFor="icon">Icon</Label>
                                     <select
@@ -196,7 +234,7 @@ export default function QuickContactMethodsIndex() {
                                         className="mt-1"
                                     />
                                 </div>
-                                <div className="flex items-end">
+                                <div className="flex items-end gap-4">
                                     <label className="flex cursor-pointer items-center gap-2">
                                         <input
                                             type="checkbox"
@@ -205,6 +243,15 @@ export default function QuickContactMethodsIndex() {
                                             className="h-4 w-4 accent-[var(--isp-primary)]"
                                         />
                                         <span className="text-sm font-medium">Active</span>
+                                    </label>
+                                    <label className="flex cursor-pointer items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            checked={form.data.show_in_footer}
+                                            onChange={(e) => form.setData('show_in_footer', e.target.checked)}
+                                            className="h-4 w-4 accent-[var(--isp-primary)]"
+                                        />
+                                        <span className="text-sm font-medium">Show in Footer</span>
                                     </label>
                                 </div>
                                 <div className="flex gap-2 sm:col-span-2">
@@ -241,6 +288,7 @@ export default function QuickContactMethodsIndex() {
                                             <th className="px-4 py-3 font-medium">Link</th>
                                             <th className="px-4 py-3 font-medium">Order</th>
                                             <th className="px-4 py-3 font-medium">Status</th>
+                                            <th className="px-4 py-3 font-medium">Footer</th>
                                             <th className="px-4 py-3 font-medium">Actions</th>
                                         </tr>
                                     </thead>
@@ -264,6 +312,15 @@ export default function QuickContactMethodsIndex() {
                                                     >
                                                         {method.is_active ? 'Active' : 'Inactive'}
                                                     </button>
+                                                </td>
+                                                <td className="px-4 py-3">
+                                                    {method.show_in_footer ? (
+                                                        <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                                                            Footer
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-xs text-gray-400">—</span>
+                                                    )}
                                                 </td>
                                                 <td className="px-4 py-3">
                                                     <div className="flex items-center gap-2">

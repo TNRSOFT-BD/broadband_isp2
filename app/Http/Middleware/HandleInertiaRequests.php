@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use App\Services\FontService;
 use App\Services\HeroService;
+use App\Services\QuickContactMethodService;
+use App\Services\SiteSettingsService;
 use App\Services\ThemeService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
@@ -44,6 +46,8 @@ class HandleInertiaRequests extends Middleware
         $fontService = app(FontService::class);
         $themeService = app(ThemeService::class);
         $heroService = app(HeroService::class);
+        $siteSettingsService = app(SiteSettingsService::class);
+        $quickContactMethodService = app(QuickContactMethodService::class);
 
         $activeFont = $fontService->getActiveFontDetails();
         $themeColors = $themeService->getActiveThemeColors();
@@ -67,6 +71,11 @@ class HandleInertiaRequests extends Middleware
                 'colors' => $themeColors,
             ],
             'hero' => $heroService->getActiveHero(),
+            'site' => $siteSettingsService->get(),
+            'quickContactMethods' => $quickContactMethodService->getActiveMethods()
+                ->map(fn ($method) => $method->only(['id', 'icon', 'label', 'value', 'description', 'href'])),
+            'footerContactMethods' => $quickContactMethodService->getFooterMethods()
+                ->map(fn ($method) => $method->only(['id', 'icon', 'label', 'value', 'description', 'href'])),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),

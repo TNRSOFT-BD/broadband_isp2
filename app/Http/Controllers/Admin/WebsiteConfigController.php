@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\StoreSiteImageRequest;
+use App\Http\Requests\Admin\StoreSiteBrandingRequest;
 use App\Http\Requests\UpdateFontRequest;
 use App\Http\Requests\UpdateThemeRequest;
 use App\Http\Resources\FontResource;
 use App\Http\Resources\ThemeResource;
 use App\Services\FontService;
+use App\Services\SiteSettingsService;
 use App\Services\ThemeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -19,6 +22,7 @@ class WebsiteConfigController extends Controller
     public function __construct(
         private ThemeService $themeService,
         private FontService $fontService,
+        private SiteSettingsService $siteSettingsService,
     ) {}
 
     /**
@@ -35,7 +39,30 @@ class WebsiteConfigController extends Controller
             'activeFont' => $this->fontService->getActiveFont()
                 ? FontResource::make($this->fontService->getActiveFont())->resolve()
                 : null,
+            'siteSettings' => $this->siteSettingsService->get(),
         ]);
+    }
+
+    /**
+     * Upload a branding image (logo/favicon) and return its URL.
+     */
+    public function uploadBranding(StoreSiteImageRequest $request): JsonResponse
+    {
+        return response()->json([
+            'url' => $this->siteSettingsService->storeImage($request->file('image')),
+        ]);
+    }
+
+    /**
+     * Save branding assets. Replaces stored local images that changed.
+     */
+    public function updateBranding(StoreSiteBrandingRequest $request): RedirectResponse
+    {
+        $this->siteSettingsService->save($request->validated());
+
+        return redirect()
+            ->route('admin.website-config')
+            ->with('success', 'Branding updated successfully.');
     }
 
     /**
