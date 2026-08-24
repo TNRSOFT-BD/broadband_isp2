@@ -2,15 +2,23 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\ContactInquiryTypeRepositoryInterface;
+use App\Repositories\Contracts\ContactMessageRepositoryInterface;
+use App\Repositories\Contracts\ContactPageSettingRepositoryInterface;
 use App\Repositories\Contracts\FontRepositoryInterface;
 use App\Repositories\Contracts\HeroSettingRepositoryInterface;
+use App\Repositories\Contracts\OfficeLocationRepositoryInterface;
 use App\Repositories\Contracts\PlanCategoryRepositoryInterface;
 use App\Repositories\Contracts\PlanRepositoryInterface;
 use App\Repositories\Contracts\PlansPageSettingRepositoryInterface;
 use App\Repositories\Contracts\ServiceRepositoryInterface;
 use App\Repositories\Contracts\ThemeRepositoryInterface;
+use App\Repositories\Eloquent\EloquentContactInquiryTypeRepository;
+use App\Repositories\Eloquent\EloquentContactMessageRepository;
+use App\Repositories\Eloquent\EloquentContactPageSettingRepository;
 use App\Repositories\Eloquent\EloquentFontRepository;
 use App\Repositories\Eloquent\EloquentHeroSettingRepository;
+use App\Repositories\Eloquent\EloquentOfficeLocationRepository;
 use App\Repositories\Eloquent\EloquentPlanCategoryRepository;
 use App\Repositories\Eloquent\EloquentPlanRepository;
 use App\Repositories\Eloquent\EloquentPlansPageSettingRepository;
@@ -32,6 +40,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PlanCategoryRepositoryInterface::class, EloquentPlanCategoryRepository::class);
         $this->app->bind(ServiceRepositoryInterface::class, EloquentServiceRepository::class);
         $this->app->bind(PlansPageSettingRepositoryInterface::class, EloquentPlansPageSettingRepository::class);
+        $this->app->bind(ContactInquiryTypeRepositoryInterface::class, EloquentContactInquiryTypeRepository::class);
+        $this->app->bind(ContactMessageRepositoryInterface::class, EloquentContactMessageRepository::class);
+        $this->app->bind(OfficeLocationRepositoryInterface::class, EloquentOfficeLocationRepository::class);
+        $this->app->bind(ContactPageSettingRepositoryInterface::class, EloquentContactPageSettingRepository::class);
     }
 
     /**

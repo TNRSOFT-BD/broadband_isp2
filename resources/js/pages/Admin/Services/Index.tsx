@@ -279,7 +279,7 @@ export default function ServicesIndex() {
                                         aria-label="Upload service logo"
                                     />
                                     <p className="text-xs text-muted-foreground">
-                                        {uploading ? 'Uploading...' : 'JPG, PNG, WebP or SVG (max 2MB)'}
+                                        {uploading ? 'Uploading...' : 'JPG, PNG, WebP or SVG (max 10KB)'}
                                     </p>
                                 </div>
                             </div>

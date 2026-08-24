@@ -173,7 +173,7 @@ class PlanService
         return collect($data)->except(['features', 'services'])->all();
     }
 
-    private function flushCache(): void
+    public function flushCache(): void
     {
         Cache::forget(self::CACHE_KEY.'.active');
         // Slug-level entries expire naturally; clear known ones defensively is not feasible,

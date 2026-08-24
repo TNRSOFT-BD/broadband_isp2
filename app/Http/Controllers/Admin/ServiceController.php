@@ -82,4 +82,5 @@ class ServiceController extends Controller
 
         return response()->json(['url' => $url]);
     }
+
 }

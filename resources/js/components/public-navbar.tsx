@@ -8,6 +8,7 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import SiteFooter from '@/components/site-footer';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu, Phone, Mail, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { type ReactNode } from 'react';
@@ -221,6 +222,9 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
 
             {/* Page Content */}
             <main className="flex-1">{children}</main>
+
+            {/* Footer */}
+            <SiteFooter />
         </div>
     );
 }

@@ -57,8 +57,8 @@ export default function PlanCard({ plan, currencySymbol, isSelectedForCompare = 
                     {/* Header */}
                     <div className="mb-1 flex items-start justify-between gap-3">
                         <div>
-                            <h3 className={cn('text-lg font-bold', featured ? 'text-white' : 'text-gray-900')}>{plan.name}</h3>
-                            {plan.tagline && <p className={cn('mt-0.5 text-sm', featured ? 'font-semibold text-white' : 'text-gray-500')}>{plan.tagline}</p>}
+                            <h3 className={cn('font-bold', featured ? 'text-xl text-white' : 'text-lg text-gray-900')}>{plan.name}</h3>
+                            {plan.tagline && <p className={cn('mt-0.5', featured ? 'text-sm font-bold text-white' : 'text-sm text-gray-500')}>{plan.tagline}</p>}
                         </div>
                         {onToggleCompare && (
                             <button
@@ -118,17 +118,17 @@ export default function PlanCard({ plan, currencySymbol, isSelectedForCompare = 
 
                     {/* Description (featured only) */}
                     {featured && plan.description && (
-                        <p className="mt-4 line-clamp-3 text-sm font-medium leading-relaxed text-white/90">{plan.description}</p>
+                        <p className="mt-4 line-clamp-3 text-base font-bold leading-relaxed text-white/90">{plan.description}</p>
                     )}
 
                     {/* Features */}
                     <ul className="mt-6 space-y-2.5">
                         {visibleFeatures.map((feature) => (
-                            <li key={feature.title} className="flex items-start gap-2 text-sm">
+                            <li key={feature.title} className="flex items-start gap-2">
                                 <Check className={cn('mt-0.5 h-4 w-4 shrink-0', featured ? 'text-white' : '')} style={featured ? undefined : { color: 'var(--isp-success)' }} aria-hidden="true" />
-                                <span className={featured ? 'font-medium text-white/95' : 'text-gray-600'}>
+                                <span className={cn(featured ? 'text-base font-bold text-white/95' : 'text-sm text-gray-600')}>
                                     {feature.title}
-                                    {feature.description && <span className={cn('block text-xs', featured ? 'text-white/70' : 'text-gray-400')}>{feature.description}</span>}
+                                    {feature.description && <span className={cn('block', featured ? 'text-sm font-semibold text-white/70' : 'text-xs text-gray-400')}>{feature.description}</span>}
                                 </span>
                             </li>
                         ))}
@@ -137,7 +137,7 @@ export default function PlanCard({ plan, currencySymbol, isSelectedForCompare = 
                     {/* Included services */}
                     {plan.services.length > 0 && (
                         <div className={cn('mt-6 border-t pt-5', featured ? 'border-white/20' : 'border-gray-100')}>
-                            <p className={cn('mb-3 text-xs font-semibold uppercase tracking-wider', featured ? 'text-white/60' : 'text-gray-400')}>Included Entertainment &amp; Services</p>
+                            <p className={cn('mb-3 text-xs font-semibold uppercase tracking-wider', featured ? 'text-white/80' : 'text-gray-400')}>Included Entertainment &amp; Services</p>
                             <div className="flex flex-wrap items-center gap-2.5">
                                 {plan.services.slice(0, expandedServices ? undefined : INITIAL_SERVICES).map((service) => (
                                     <ServiceLogo key={`${service.id}-${service.slug}`} name={service.custom_label ?? service.name} logo={service.logo} className="h-10 w-10" />
@@ -192,8 +192,8 @@ export default function PlanCard({ plan, currencySymbol, isSelectedForCompare = 
                         <span className="relative z-10">{ctaText}</span>
                         <span className={cn('absolute inset-0 -translate-x-[100%] transition-transform duration-500 group-hover/btn:translate-x-[100%]', featured ? 'bg-[var(--isp-primary)]/10' : 'bg-white/15')} />
                     </a>
-                    <Link href={`/plans/${plan.slug}`} className={cn('mt-3 block text-center text-xs font-medium transition-colors', featured ? 'text-white/70 hover:text-white' : 'text-gray-400 hover:text-[var(--isp-primary)]')}>
-                        View plan details →
+                    <Link href={`/plans/${plan.slug}`} className={cn('mt-3 block py-2 text-center text-sm font-bold transition-colors', featured ? 'text-white/90 hover:text-white' : 'text-gray-500 hover:text-[var(--isp-primary)]')}>
+                        View Plan Details →
                     </Link>
                 </div>
             </div>

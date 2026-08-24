@@ -19,6 +19,7 @@ class ServiceService
 
     public function __construct(
         private ServiceRepositoryInterface $serviceRepository,
+        private PlanService $planService,
     ) {}
 
     public function getAllServices(): Collection
@@ -46,6 +47,7 @@ class ServiceService
             return $this->serviceRepository->create($data);
         } finally {
             Cache::forget(self::CACHE_KEY);
+            $this->planService->flushCache();
         }
     }
 
@@ -57,6 +59,7 @@ class ServiceService
             return $this->serviceRepository->update($id, $data);
         } finally {
             Cache::forget(self::CACHE_KEY);
+            $this->planService->flushCache();
         }
     }
 
@@ -72,6 +75,7 @@ class ServiceService
             return $this->serviceRepository->delete($id);
         } finally {
             Cache::forget(self::CACHE_KEY);
+            $this->planService->flushCache();
         }
     }
 
@@ -108,6 +112,7 @@ class ServiceService
 
         Storage::disk('public')->delete(str_replace('/storage/', '', $logoUrl));
     }
+
 
     private function resolveUniqueSlug(?string $slug, string $name, ?int $ignoreId = null): string
     {

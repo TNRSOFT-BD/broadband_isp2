@@ -1,7 +1,6 @@
 import PlanCard from '@/components/plans/plan-card';
 import PlanCategoryFilter from '@/components/plans/plan-category-filter';
 import PlanComparison from '@/components/plans/plan-comparison';
-import PlansCTA from '@/components/plans/plans-cta';
 import PlansHero from '@/components/plans/plans-hero';
 import PublicLayout from '@/layouts/public-layout';
 import { type Plan, type PlanCategory, type PlansPageSettings } from '@/types/plans';
@@ -115,8 +114,6 @@ export default function PlansIndex() {
                 )}
             </section>
 
-            {/* CTA */}
-            <PlansCTA settings={pageSettings} />
 
             {/* Floating comparison bar + dialog */}
             {comparedPlans.length >= 1 && (

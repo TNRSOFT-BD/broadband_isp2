@@ -2,46 +2,47 @@ import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
+import { type NavGroup, type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, Globe, LayoutGrid, Layers, Link2, Settings, Sparkles } from 'lucide-react';
+import { BookOpen, Folder, Globe, LayoutGrid, Layers, Link2, Settings, Sparkles, MessageSquare, Headphones, MapPin, HelpCircle } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
+const navGroups: NavGroup[] = [
     {
-        title: 'Dashboard',
-        url: '/admin/dashboard',
-        icon: LayoutGrid,
+        title: 'Overview',
+        items: [
+            { title: 'Dashboard', url: '/admin/dashboard', icon: LayoutGrid },
+        ],
     },
     {
-        title: 'Plans',
-        url: '/admin/plans',
-        icon: Layers,
+        title: 'Plans & Services',
+        items: [
+            { title: 'Plans', url: '/admin/plans', icon: Layers },
+            { title: 'Plan Categories', url: '/admin/plan-categories', icon: Link2 },
+            { title: 'Services', url: '/admin/services', icon: Sparkles },
+        ],
     },
     {
-        title: 'Services',
-        url: '/admin/services',
-        icon: Sparkles,
+        title: 'Content Pages',
+        items: [
+            { title: 'Plans Page', url: '/admin/pages/plans', icon: Globe },
+            { title: 'Contact Page', url: '/admin/pages/contact', icon: Headphones },
+        ],
     },
     {
-        title: 'Plan Categories',
-        url: '/admin/plan-categories',
-        icon: Link2,
+        title: 'Contact Management',
+        items: [
+            { title: 'Messages', url: '/admin/contact-messages', icon: MessageSquare },
+            { title: 'Inquiry Types', url: '/admin/contact/inquiry-types', icon: HelpCircle },
+            { title: 'Office Locations', url: '/admin/contact/locations', icon: MapPin },
+        ],
     },
     {
-        title: 'Plans Page',
-        url: '/admin/pages/plans',
-        icon: Globe,
-    },
-    {
-        title: 'Hero Config',
-        url: '/admin/hero-config',
-        icon: Globe,
-    },
-    {
-        title: 'Website Config',
-        url: '/admin/website-config',
-        icon: Settings,
+        title: 'Configuration',
+        items: [
+            { title: 'Hero Config', url: '/admin/hero-config', icon: Globe },
+            { title: 'Website Config', url: '/admin/website-config', icon: Settings },
+        ],
     },
 ];
 
@@ -74,7 +75,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain groups={navGroups} />
             </SidebarContent>
 
             <SidebarFooter>
