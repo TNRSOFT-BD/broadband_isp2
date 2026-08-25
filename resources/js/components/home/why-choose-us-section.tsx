@@ -18,7 +18,7 @@ export default function WhyChooseUsSection({ items }: { items: FeatureItem[] }) 
     if (items.length === 0) return null;
 
     return (
-        <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
+        <section className="relative overflow-hidden bg-white pt-6 sm:pt-8 lg:pt-10 pb-10 sm:pb-14 lg:pb-16">
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="why-fade mb-12 text-center sm:mb-16">
