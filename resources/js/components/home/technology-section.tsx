@@ -32,7 +32,7 @@ export default function TechnologySection({ data }: { data: TechnologyData }) {
     };
 
     return (
-        <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24" style={{ background: '#0a0e1a' }}>
+        <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16" style={{ background: '#0a0e1a' }}>
             <div className="tech-grid absolute inset-0 opacity-[0.03]" aria-hidden="true" />
 
             <div className="tech-orb absolute -right-24 top-1/4 h-80 w-80 rounded-full blur-[140px]"

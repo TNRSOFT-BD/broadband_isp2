@@ -48,6 +48,11 @@ interface HomepageRepositoryInterface
     public function getFeaturedPlans(): Collection;
 
     /**
+     * Get latest active plans as fallback when no featured plans exist.
+     */
+    public function getLatestPlans(): Collection;
+
+    /**
      * Get featured services (active + featured).
      */
     public function getFeaturedServices(): Collection;

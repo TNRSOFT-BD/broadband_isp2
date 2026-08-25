@@ -16,7 +16,7 @@ export default function CtaSection({ data }: { data: CtaData }) {
     const accentAlt = 'var(--isp-accent)';
 
     return (
-        <section className="relative overflow-hidden py-16 sm:py-20 lg:py-24" style={{ background: '#0a0e1a' }}>
+        <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16" style={{ background: '#0a0e1a' }}>
             {/* Grid background */}
             <div className="cta-grid absolute inset-0 opacity-[0.04]" aria-hidden="true" />
 

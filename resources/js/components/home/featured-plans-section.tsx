@@ -31,7 +31,7 @@ export default function FeaturedPlansSection({ plans }: { plans: FeaturedPlan[] 
     if (plans.length === 0) return null;
 
     return (
-        <section className="relative overflow-hidden bg-gradient-to-b from-gray-50 to-white py-16 sm:py-20 lg:py-24">
+        <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
             {/* Subtle grid */}
             <div className="plans-grid absolute inset-0 opacity-[0.02]" aria-hidden="true" />
 
@@ -54,7 +54,7 @@ export default function FeaturedPlansSection({ plans }: { plans: FeaturedPlan[] 
                 </div>
 
                 {/* Plans Grid */}
-                <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
                     {plans.map((plan, i) => {
                         const featured = plan.is_featured || plan.is_recommended;
                         const badgeText = plan.badge_text ?? (featured ? 'Most Popular' : null);
@@ -62,7 +62,7 @@ export default function FeaturedPlansSection({ plans }: { plans: FeaturedPlan[] 
                         return (
                             <div
                                 key={plan.id}
-                                className={`plans-card group relative flex flex-col rounded-2xl transition-all duration-300 ${
+                                className={`plans-card group relative flex w-full max-w-sm flex-col rounded-2xl transition-all duration-300 ${
                                     featured
                                         ? 'bg-[var(--isp-primary)] text-white shadow-xl shadow-[var(--isp-primary)]/20'
                                         : 'bg-white'

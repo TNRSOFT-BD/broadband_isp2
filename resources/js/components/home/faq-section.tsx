@@ -19,7 +19,7 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
     };
 
     return (
-        <section className="relative overflow-hidden bg-gradient-to-b from-white to-gray-50 py-16 sm:py-20 lg:py-24">
+        <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
             <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="faq-fade mb-12 text-center sm:mb-16">

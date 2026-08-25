@@ -65,6 +65,16 @@ class EloquentHomepageRepository implements HomepageRepositoryInterface
             ->get();
     }
 
+    public function getLatestPlans(): Collection
+    {
+        return Plan::where('is_active', true)
+            ->with(['category:id,name', 'features:id,plan_id,title,icon,description,sort_order'])
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->limit(3)
+            ->get();
+    }
+
     public function getFeaturedServices(): Collection
     {
         return Service::where('is_active', true)

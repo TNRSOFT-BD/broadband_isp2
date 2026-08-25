@@ -59,7 +59,7 @@ export default function PartnersSection({ partners }: { partners: Partner[] }) {
     const row2Final = row2.length > 0 ? row2 : row1;
 
     return (
-        <section className="relative overflow-hidden bg-white py-12 sm:py-16 lg:py-20">
+        <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
             {/* Grid */}
             <div className="pm-grid absolute inset-0 opacity-[0.025]" aria-hidden="true" />
 

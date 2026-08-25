@@ -64,7 +64,7 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
     };
 
     return (
-        <section className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+        <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
             {/* Subtle grid background */}
             <div className="intro-grid absolute inset-0 opacity-[0.025]" aria-hidden="true" />
 

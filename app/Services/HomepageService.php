@@ -87,28 +87,7 @@ class HomepageService
                     ],
                 ],
             ]),
-            'featuredPlans' => $this->homepageRepository->getFeaturedPlans()->map(function ($plan) {
-                return [
-                    'id' => $plan->id,
-                    'name' => $plan->name,
-                    'tagline' => $plan->tagline,
-                    'speed' => $plan->speed,
-                    'speed_unit' => $plan->speed_unit,
-                    'monthly_price' => $plan->monthly_price,
-                    'setup_fee' => $plan->setup_fee,
-                    'badge_text' => $plan->badge_text,
-                    'is_featured' => $plan->is_featured,
-                    'is_recommended' => $plan->is_recommended,
-                    'cta_text' => $plan->cta_text,
-                    'cta_url' => $plan->cta_url,
-                    'slug' => $plan->slug,
-                    'features' => $plan->features->map(fn ($f) => [
-                        'title' => $f->title,
-                        'description' => $f->description,
-                    ])->toArray(),
-                    'category' => $plan->category?->name,
-                ];
-            })->toArray(),
+            'featuredPlans' => $this->getPlansWithFallback(),
             'introFeatures' => $this->homepageRepository->getActiveIntroFeatures()->map(fn ($f) => [
                 'id' => $f->id,
                 'label' => $f->label,
@@ -249,5 +228,37 @@ class HomepageService
         $visibility['faqs'] = true;
 
         return $visibility;
+    }
+
+    private function getPlansWithFallback(): array
+    {
+        $featured = $this->homepageRepository->getFeaturedPlans();
+
+        $plans = $featured->isEmpty()
+            ? $this->homepageRepository->getLatestPlans()
+            : $featured;
+
+        return $plans->map(function ($plan) {
+            return [
+                'id' => $plan->id,
+                'name' => $plan->name,
+                'tagline' => $plan->tagline,
+                'speed' => $plan->speed,
+                'speed_unit' => $plan->speed_unit,
+                'monthly_price' => $plan->monthly_price,
+                'setup_fee' => $plan->setup_fee,
+                'badge_text' => $plan->badge_text,
+                'is_featured' => $plan->is_featured,
+                'is_recommended' => $plan->is_recommended,
+                'cta_text' => $plan->cta_text,
+                'cta_url' => $plan->cta_url,
+                'slug' => $plan->slug,
+                'features' => $plan->features->map(fn ($f) => [
+                    'title' => $f->title,
+                    'description' => $f->description,
+                ])->toArray(),
+                'category' => $plan->category?->name,
+            ];
+        })->toArray();
     }
 }

@@ -25,7 +25,7 @@ export default function CoverageSection({ data, areas }: { data: CoverageData; a
     };
 
     return (
-        <section className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+        <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
             {/* Subtle grid */}
             <div className="cov-grid absolute inset-0 opacity-[0.02]" aria-hidden="true" />
 
