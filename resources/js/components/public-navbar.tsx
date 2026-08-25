@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import SiteFooter from '@/components/site-footer';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu, Phone, Mail, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
-import { type ReactNode } from 'react';
+import { type ReactNode, useState, useEffect, useCallback } from 'react';
 
 interface NavLink {
     title: string;
@@ -43,6 +43,41 @@ interface PublicNavbarProps {
 export function PublicNavbar({ children }: PublicNavbarProps) {
     const page = usePage();
     const currentUrl = page.url;
+
+    // Smart navbar: hide on scroll down, show on scroll up
+    const [isHidden, setIsHidden] = useState(false);
+    const [lastScrollY, setLastScrollY] = useState(0);
+    const [isAtTop, setIsAtTop] = useState(true);
+
+    const handleScroll = useCallback(() => {
+        const currentScrollY = window.scrollY;
+
+        // Always show at top
+        if (currentScrollY <= 10) {
+            setIsAtTop(true);
+            setIsHidden(false);
+            setLastScrollY(currentScrollY);
+            return;
+        }
+
+        setIsAtTop(false);
+
+        // Show navbar when scrolling UP by more than 10px
+        if (currentScrollY < lastScrollY - 10) {
+            setIsHidden(false);
+        }
+        // Hide navbar when scrolling DOWN by more than 10px
+        else if (currentScrollY > lastScrollY + 10) {
+            setIsHidden(true);
+        }
+
+        setLastScrollY(currentScrollY);
+    }, [lastScrollY]);
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
     const quickContactMethods = (page.props.footerContactMethods as QuickContactMethod[] | undefined) ?? [];
 
     // Only show contact methods that have both label and value
@@ -54,6 +89,9 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
 
     return (
         <div className="flex min-h-screen flex-col overflow-x-hidden">
+            {/* Spacer to prevent content jump when header becomes fixed */}
+            <div className="h-[calc(2rem+4rem)]" aria-hidden="true" />
+
             {/* Top Info Bar */}
             <div className="border-b border-white/10 bg-[#0f172a] text-sm text-slate-400">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-6 lg:px-8">
@@ -89,7 +127,9 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
             </div>
 
             {/* Main Navigation */}
-            <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+            <header className={`fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 transition-transform duration-300 ease-in-out ${
+                isHidden ? '-translate-y-full' : 'translate-y-0'
+            } ${isAtTop ? 'shadow-none' : 'shadow-sm'}`}>
                 <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                     {/* Logo */}
                     <Link href="/" className="flex items-center">
