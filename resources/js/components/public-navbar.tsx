@@ -21,9 +21,7 @@ interface NavLink {
 const navLinks: NavLink[] = [
     { title: 'Home', href: '/' },
     { title: 'About', href: '/about' },
-    { title: 'Services', href: '/services' },
     { title: 'Plans', href: '/plans' },
-    { title: 'Blog', href: '/blog' },
     { title: 'Contact', href: '/contact' },
 ];
 
@@ -168,6 +166,9 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
                             }
                         `}</style>
                         <Link href="#" className="futuristic-btn">
+                            <span className="relative z-10">PayBill</span>
+                        </Link>
+                        <Link href="#" className="futuristic-btn">
                             <span className="relative z-10">Selfcare</span>
                         </Link>
                     </div>
@@ -221,6 +222,11 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
                                     {/* Mobile CTA */}
                                     <div className="border-t border-gray-200 bg-white p-6">
                                         <div className="flex flex-col gap-3">
+                                            <SheetClose asChild>
+                                                <Link href="#" className="futuristic-btn futuristic-btn-mobile w-full justify-center">
+                                                    PayBill
+                                                </Link>
+                                            </SheetClose>
                                             <SheetClose asChild>
                                                 <Link href="#" className="futuristic-btn futuristic-btn-mobile w-full justify-center">
                                                     Selfcare
