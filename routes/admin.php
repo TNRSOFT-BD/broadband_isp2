@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\PlanCategoryController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PlansPageController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\HomepageController;
 use App\Http\Controllers\Admin\WebsiteConfigController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +21,39 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->middleware(AdminMiddleware::class)->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Homepage management
+        Route::post('/homepage/partner-upload', [HomepageController::class, 'uploadPartnerImage'])->name('homepage.partner-upload');
+        Route::get('/homepage/partners', [HomepageController::class, 'partners'])->name('homepage.partners');
+        Route::post('/homepage/partners', [HomepageController::class, 'storePartner'])->name('homepage.partners.store');
+        Route::put('/homepage/partners/{id}', [HomepageController::class, 'updatePartner'])->name('homepage.partners.update');
+        Route::delete('/homepage/partners/{id}', [HomepageController::class, 'destroyPartner'])->name('homepage.partners.destroy');
+        Route::patch('/homepage/partners/{id}/toggle-status', [HomepageController::class, 'togglePartnerStatus'])->name('homepage.partners.toggle-status');
+        Route::get('/homepage', [HomepageController::class, 'index'])->name('homepage.index');
+        Route::get('/homepage/{section}/edit', [HomepageController::class, 'edit'])->name('homepage.edit');
+        Route::put('/homepage/{section}', [HomepageController::class, 'update'])->name('homepage.update');
+        // Intro features
+        Route::get('/homepage/intro-features', [HomepageController::class, 'introFeatures'])->name('homepage.intro-features');
+        Route::post('/homepage/intro-features', [HomepageController::class, 'storeIntroFeature'])->name('homepage.intro-features.store');
+        Route::put('/homepage/intro-features/{id}', [HomepageController::class, 'updateIntroFeature'])->name('homepage.intro-features.update');
+        Route::delete('/homepage/intro-features/{id}', [HomepageController::class, 'destroyIntroFeature'])->name('homepage.intro-features.destroy');
+        Route::get('/homepage/testimonials', [HomepageController::class, 'testimonials'])->name('homepage.testimonials');
+        Route::post('/homepage/testimonials', [HomepageController::class, 'storeTestimonial'])->name('homepage.testimonials.store');
+        Route::put('/homepage/testimonials/{id}', [HomepageController::class, 'updateTestimonial'])->name('homepage.testimonials.update');
+        Route::delete('/homepage/testimonials/{id}', [HomepageController::class, 'destroyTestimonial'])->name('homepage.testimonials.destroy');
+        Route::get('/homepage/faqs', [HomepageController::class, 'faqs'])->name('homepage.faqs');
+        Route::post('/homepage/faqs', [HomepageController::class, 'storeFaq'])->name('homepage.faqs.store');
+        Route::put('/homepage/faqs/{id}', [HomepageController::class, 'updateFaq'])->name('homepage.faqs.update');
+        Route::delete('/homepage/faqs/{id}', [HomepageController::class, 'destroyFaq'])->name('homepage.faqs.destroy');
+        Route::get('/homepage/coverage', [HomepageController::class, 'coverage'])->name('homepage.coverage');
+        Route::post('/homepage/coverage', [HomepageController::class, 'storeCoverage'])->name('homepage.coverage.store');
+        Route::put('/homepage/coverage/{id}', [HomepageController::class, 'updateCoverage'])->name('homepage.coverage.update');
+        Route::delete('/homepage/coverage/{id}', [HomepageController::class, 'destroyCoverage'])->name('homepage.coverage.destroy');
+
+        // Admin profile
+        Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [AdminProfileController::class, 'updateProfile'])->name('profile.update');
+        Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.password.update');
 
         // Plans management
         Route::get('/plans', [AdminPlanController::class, 'index'])->name('plans.index');

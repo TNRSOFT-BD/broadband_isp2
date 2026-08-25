@@ -1,8 +1,6 @@
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
-import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavGroup, type NavItem } from '@/types';
+import { type NavGroup } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
     LayoutDashboard,
@@ -10,7 +8,6 @@ import {
     Tag,
     Tv,
     Home,
-    Image,
     Users,
     PhoneCall,
     MessageSquare,
@@ -18,11 +15,10 @@ import {
     HelpCircle,
     MapPin,
     Palette,
-    Settings,
-    BookOpen,
-    Folder,
     Globe,
-    ArrowUpRight,
+    UserCog,
+    LayoutGrid,
+    Handshake,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -41,15 +37,7 @@ const navGroups: NavGroup[] = [
             { title: 'OTT / Services', url: '/admin/services', icon: Tv },
         ],
     },
-    {
-        title: 'Pages',
-        items: [
-            { title: 'Hero Section', url: '/admin/hero-config', icon: Home },
-            { title: 'Plans Page', url: '/admin/pages/plans', icon: Globe },
-            { title: 'About Page', url: '/admin/pages/about', icon: Users },
-            { title: 'Contact Page', url: '/admin/pages/contact', icon: PhoneCall },
-        ],
-    },
+
     {
         title: 'Contact',
         items: [
@@ -60,23 +48,27 @@ const navGroups: NavGroup[] = [
         ],
     },
     {
+        title: 'Pages',
+        items: [
+            { title: 'Homepage', url: '/admin/homepage', icon: LayoutGrid },
+            { title: 'Partners', url: '/admin/homepage/partners', icon: Handshake },
+            { title: 'Hero Section', url: '/admin/hero-config', icon: Home },
+            { title: 'Plans Page', url: '/admin/pages/plans', icon: Globe },
+            { title: 'About Page', url: '/admin/pages/about', icon: Users },
+            { title: 'Contact Page', url: '/admin/pages/contact', icon: PhoneCall },
+        ],
+    },
+    {
         title: 'Configuration',
         items: [
             { title: 'Website Config', url: '/admin/website-config', icon: Palette },
         ],
     },
-];
-
-const footerNavItems: NavItem[] = [
     {
-        title: 'View Site',
-        url: '/',
-        icon: ArrowUpRight,
-    },
-    {
-        title: 'Documentation',
-        url: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
+        title: 'Account',
+        items: [
+            { title: 'Profile', url: '/admin/profile', icon: UserCog },
+        ],
     },
 ];
 
@@ -99,10 +91,6 @@ export function AppSidebar() {
                 <NavMain groups={navGroups} />
             </SidebarContent>
 
-            <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
-                <NavUser />
-            </SidebarFooter>
         </Sidebar>
     );
 }

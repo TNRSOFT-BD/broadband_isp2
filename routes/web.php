@@ -18,5 +18,4 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact.index
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 require __DIR__.'/admin.php';
-require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
