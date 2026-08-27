@@ -6,13 +6,10 @@ import {
     Tv,
     MessageSquare,
     MapPin,
-    TrendingUp,
-    Users,
     ArrowRight,
     LayoutDashboard,
     Zap,
     Eye,
-    Clock,
     CheckCircle2,
     AlertCircle,
     Star,
@@ -20,7 +17,6 @@ import {
     Settings,
     FileText,
     PhoneCall,
-    Globe,
 } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -76,6 +72,18 @@ export default function Dashboard() {
     const { stats, recentMessages, recentPlans } = usePage().props as unknown as PageProps;
     const accent = 'var(--isp-primary)';
     const accentAlt = 'var(--isp-accent)';
+    const userPermissions = (usePage().props as any).auth?.user?.permissions ?? [];
+    const adminPrefix = (usePage().props as any).admin_prefix ?? 'admin';
+
+    function hasPerm(perm: string): boolean {
+        return userPermissions.includes(perm);
+    }
+
+    function url(path: string): string {
+        if (adminPrefix === 'admin') return path;
+        if (path.startsWith('/admin/')) return '/' + adminPrefix + path.slice(6);
+        return path;
+    }
 
     const statCards = [
         {
@@ -84,7 +92,8 @@ export default function Dashboard() {
             sub: `${stats.plans.active} active · ${stats.plans.featured} featured`,
             icon: CreditCard,
             color: accent,
-            href: '/admin/plans',
+            href: url('/admin/plans'),
+            permission: 'view-plans',
         },
         {
             label: 'Services',
@@ -92,7 +101,8 @@ export default function Dashboard() {
             sub: `${stats.services.active} active OTT / digital services`,
             icon: Tv,
             color: accentAlt,
-            href: '/admin/services',
+            href: url('/admin/services'),
+            permission: 'view-services',
         },
         {
             label: 'Messages',
@@ -100,7 +110,8 @@ export default function Dashboard() {
             sub: `${stats.messages.new} new · ${stats.messages.in_progress} in progress`,
             icon: MessageSquare,
             color: 'var(--isp-warning, #F59E0B)',
-            href: '/admin/contact-messages',
+            href: url('/admin/contact-messages'),
+            permission: 'view-contact-messages',
         },
         {
             label: 'Locations',
@@ -108,20 +119,21 @@ export default function Dashboard() {
             sub: `${stats.locations.active} active offices`,
             icon: MapPin,
             color: 'var(--isp-success, #10B981)',
-            href: '/admin/contact/locations',
+            href: url('/admin/contact/locations'),
+            permission: 'manage-office-locations',
         },
-    ];
+    ].filter((card) => hasPerm(card.permission));
 
     const quickActions = [
-        { label: 'Plans', desc: 'Manage internet plans', icon: CreditCard, href: '/admin/plans', color: accent },
-        { label: 'Services', desc: 'OTT & digital services', icon: Tv, href: '/admin/services', color: accentAlt },
-        { label: 'Hero Section', desc: 'Homepage hero config', icon: Home, href: '/admin/hero-config', color: '#8B5CF6' },
-        { label: 'Contact Page', desc: 'Contact page settings', icon: PhoneCall, href: '/admin/contact-page', color: '#EC4899' },
-        { label: 'Messages', desc: 'View contact messages', icon: MessageSquare, href: '/admin/contact-messages', color: '#F59E0B' },
-        { label: 'About Page', desc: 'About us content', icon: FileText, href: '/admin/pages/about', color: '#10B981' },
-        { label: 'Locations', desc: 'Office locations', icon: MapPin, href: '/admin/contact/locations', color: '#06B6D4' },
-        { label: 'Website Config', desc: 'Theme & branding', icon: Settings, href: '/admin/website-config', color: '#6366F1' },
-    ];
+        { label: 'Plans', desc: 'Manage internet plans', icon: CreditCard, href: url('/admin/plans'), color: accent, permission: 'view-plans' },
+        { label: 'Services', desc: 'OTT & digital services', icon: Tv, href: url('/admin/services'), color: accentAlt, permission: 'view-services' },
+        { label: 'Hero Section', desc: 'Homepage hero config', icon: Home, href: url('/admin/hero-config'), color: '#8B5CF6', permission: 'view-hero-config' },
+        { label: 'Contact Page', desc: 'Contact page settings', icon: PhoneCall, href: url('/admin/pages/contact'), color: '#EC4899', permission: 'manage-contact-page' },
+        { label: 'Messages', desc: 'View contact messages', icon: MessageSquare, href: url('/admin/contact-messages'), color: '#F59E0B', permission: 'view-contact-messages' },
+        { label: 'About Page', desc: 'About us content', icon: FileText, href: url('/admin/pages/about'), color: '#10B981', permission: 'manage-about-page' },
+        { label: 'Locations', desc: 'Office locations', icon: MapPin, href: url('/admin/contact/locations'), color: '#06B6D4', permission: 'manage-office-locations' },
+        { label: 'Website Config', desc: 'Theme & branding', icon: Settings, href: url('/admin/website-config'), color: '#6366F1', permission: 'view-website-config' },
+    ].filter((action) => hasPerm(action.permission));
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -181,55 +193,169 @@ export default function Dashboard() {
                 </div>
 
                 {/* Stat Cards */}
-                <div className="relative z-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    {statCards.map((card, i) => (
-                        <Link
-                            key={card.label}
-                            href={card.href}
-                            className="dash-card group relative overflow-hidden rounded-xl border p-5 transition-all duration-300 hover:shadow-lg"
-                            style={{
-                                borderColor: 'color-mix(in srgb, var(--border) 100%, transparent)',
-                                background: 'color-mix(in srgb, var(--card) 100%, transparent)',
-                                animationDelay: `${i * 0.08}s`,
-                            }}
-                        >
-                            {/* Top edge glow */}
-                            <div
-                                className="absolute inset-x-0 top-0 h-px"
-                                style={{ background: `linear-gradient(90deg, transparent, ${card.color}, transparent)` }}
-                                aria-hidden="true"
-                            />
-
-                            <div className="flex items-start justify-between">
-                                <div>
-                                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                        {card.label}
-                                    </p>
-                                    <p className="mt-2 text-3xl font-bold text-foreground">{card.value}</p>
-                                    <p className="mt-1 text-xs text-muted-foreground">{card.sub}</p>
-                                </div>
+                {statCards.length > 0 && (
+                    <div className="relative z-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        {statCards.map((card, i) => (
+                            <Link
+                                key={card.label}
+                                href={card.href}
+                                className="dash-card group relative overflow-hidden rounded-xl border p-5 transition-all duration-300 hover:shadow-lg"
+                                style={{
+                                    borderColor: 'color-mix(in srgb, var(--border) 100%, transparent)',
+                                    background: 'color-mix(in srgb, var(--card) 100%, transparent)',
+                                    animationDelay: `${i * 0.08}s`,
+                                }}
+                            >
                                 <div
-                                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110"
-                                    style={{
-                                        background: `color-mix(in srgb, ${card.color} 10%, transparent)`,
-                                    }}
-                                >
-                                    <card.icon className="h-5 w-5" style={{ color: card.color }} />
+                                    className="absolute inset-x-0 top-0 h-px"
+                                    style={{ background: `linear-gradient(90deg, transparent, ${card.color}, transparent)` }}
+                                    aria-hidden="true"
+                                />
+                                <div className="flex items-start justify-between">
+                                    <div>
+                                        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                                            {card.label}
+                                        </p>
+                                        <p className="mt-2 text-3xl font-bold text-foreground">{card.value}</p>
+                                        <p className="mt-1 text-xs text-muted-foreground">{card.sub}</p>
+                                    </div>
+                                    <div
+                                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110"
+                                        style={{ background: `color-mix(in srgb, ${card.color} 10%, transparent)` }}
+                                    >
+                                        <card.icon className="h-5 w-5" style={{ color: card.color }} />
+                                    </div>
                                 </div>
-                            </div>
-
-                            {/* Scanline */}
-                            <div className="dash-scan pointer-events-none absolute inset-x-0 h-[1px]"
-                                style={{ background: `linear-gradient(90deg, transparent, ${card.color}, transparent)`, animationDelay: `${i * 1.5}s` }}
-                                aria-hidden="true"
-                            />
-                        </Link>
-                    ))}
-                </div>
+                                <div className="dash-scan pointer-events-none absolute inset-x-0 h-[1px]"
+                                    style={{ background: `linear-gradient(90deg, transparent, ${card.color}, transparent)`, animationDelay: `${i * 1.5}s` }}
+                                    aria-hidden="true"
+                                />
+                            </Link>
+                        ))}
+                    </div>
+                )}
 
                 <div className="relative z-10 grid gap-6 lg:grid-cols-3">
                     {/* Recent Messages */}
-                    <div className="dash-card group relative overflow-hidden rounded-xl border lg:col-span-2"
+                    {hasPerm('view-contact-messages') && (
+                        <div className="dash-card group relative overflow-hidden rounded-xl border lg:col-span-2"
+                            style={{
+                                borderColor: 'color-mix(in srgb, var(--border) 100%, transparent)',
+                                background: 'color-mix(in srgb, var(--card) 100%, transparent)',
+                            }}
+                        >
+                            <div
+                                className="absolute inset-x-0 top-0 h-px"
+                                style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }}
+                                aria-hidden="true"
+                            />
+                            <div className="relative p-5">
+                                <div className="mb-4 flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <MessageSquare className="h-4 w-4" style={{ color: accent }} />
+                                        <h2 className="text-sm font-bold text-foreground">Recent Messages</h2>
+                                        {stats.messages.new > 0 && (
+                                            <span
+                                                className="flex h-5 items-center rounded-full px-2 text-[10px] font-bold text-white"
+                                                style={{ background: accent }}
+                                            >
+                                                {stats.messages.new} new
+                                            </span>
+                                        )}
+                                    </div>
+                                    <Link
+                                        href={url('/admin/contact-messages')}
+                                        className="flex items-center gap-1 text-xs font-medium transition-colors hover:underline"
+                                        style={{ color: accent }}
+                                    >
+                                        View all <ArrowRight className="h-3 w-3" />
+                                    </Link>
+                                </div>
+                                {recentMessages.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
+                                        <MessageSquare className="mb-2 h-8 w-8 opacity-30" />
+                                        <p className="text-sm">No messages yet</p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-2">
+                                        {recentMessages.map((msg) => {
+                                            const st = statusColors[msg.status] ?? statusColors.new;
+                                            return (
+                                                <Link
+                                                    key={msg.id}
+                                                    href={url(`/admin/contact-messages/${msg.id}`)}
+                                                    className="flex items-center justify-between rounded-lg border border-transparent p-3 transition-all duration-200 hover:border-[var(--isp-primary)]/20 hover:bg-[var(--isp-primary)]/[0.03]"
+                                                >
+                                                    <div className="min-w-0 flex-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <p className="truncate text-sm font-medium text-foreground">{msg.name}</p>
+                                                            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${st.bg} ${st.text}`}>
+                                                                <span className={`h-1.5 w-1.5 rounded-full ${st.dot}`} />
+                                                                {msg.status.replace('_', ' ')}
+                                                            </span>
+                                                        </div>
+                                                        <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                                                            {msg.subject}
+                                                            {msg.inquiry_type && <span className="ml-1 opacity-60">· {msg.inquiry_type}</span>}
+                                                        </p>
+                                                    </div>
+                                                    <span className="ml-3 shrink-0 text-[10px] text-muted-foreground">{msg.created_at}</span>
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Quick Actions */}
+                    {quickActions.length > 0 && (
+                        <div className="dash-card relative overflow-hidden rounded-xl border"
+                            style={{
+                                borderColor: 'color-mix(in srgb, var(--border) 100%, transparent)',
+                                background: 'color-mix(in srgb, var(--card) 100%, transparent)',
+                            }}
+                        >
+                            <div
+                                className="absolute inset-x-0 top-0 h-px"
+                                style={{ background: `linear-gradient(90deg, transparent, ${accentAlt}, transparent)` }}
+                                aria-hidden="true"
+                            />
+                            <div className="relative p-5">
+                                <div className="mb-4 flex items-center gap-2">
+                                    <Zap className="h-4 w-4" style={{ color: accentAlt }} />
+                                    <h2 className="text-sm font-bold text-foreground">Quick Actions</h2>
+                                </div>
+                                <div className="space-y-2">
+                                    {quickActions.map((action) => (
+                                        <Link
+                                            key={action.label}
+                                            href={action.href}
+                                            className="group/action flex items-center gap-3 rounded-lg border border-transparent p-2.5 transition-all duration-200 hover:border-[var(--isp-primary)]/20 hover:bg-[var(--isp-primary)]/[0.03]"
+                                        >
+                                            <div
+                                                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-transform duration-200 group-hover/action:scale-110"
+                                                style={{ background: `color-mix(in srgb, ${action.color} 10%, transparent)` }}
+                                            >
+                                                <action.icon className="h-4 w-4" style={{ color: action.color }} />
+                                            </div>
+                                            <div className="min-w-0 flex-1">
+                                                <p className="text-sm font-medium text-foreground">{action.label}</p>
+                                                <p className="text-[11px] text-muted-foreground">{action.desc}</p>
+                                            </div>
+                                            <ArrowRight className="h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 group-hover/action:translate-x-0.5" />
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Recent Plans */}
+                {hasPerm('view-plans') && (
+                    <div className="dash-card group relative overflow-hidden rounded-xl border"
                         style={{
                             borderColor: 'color-mix(in srgb, var(--border) 100%, transparent)',
                             background: 'color-mix(in srgb, var(--card) 100%, transparent)',
@@ -237,196 +363,78 @@ export default function Dashboard() {
                     >
                         <div
                             className="absolute inset-x-0 top-0 h-px"
-                            style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }}
+                            style={{ background: `linear-gradient(90deg, transparent, ${accent}, ${accentAlt}, transparent)` }}
                             aria-hidden="true"
                         />
-
                         <div className="relative p-5">
                             <div className="mb-4 flex items-center justify-between">
                                 <div className="flex items-center gap-2">
-                                    <MessageSquare className="h-4 w-4" style={{ color: accent }} />
-                                    <h2 className="text-sm font-bold text-foreground">Recent Messages</h2>
-                                    {stats.messages.new > 0 && (
-                                        <span
-                                            className="flex h-5 items-center rounded-full px-2 text-[10px] font-bold text-white"
-                                            style={{ background: accent }}
-                                        >
-                                            {stats.messages.new} new
-                                        </span>
-                                    )}
+                                    <CreditCard className="h-4 w-4" style={{ color: accent }} />
+                                    <h2 className="text-sm font-bold text-foreground">Recent Plans</h2>
                                 </div>
                                 <Link
-                                    href="/admin/contact-messages"
+                                    href={url('/admin/plans')}
                                     className="flex items-center gap-1 text-xs font-medium transition-colors hover:underline"
                                     style={{ color: accent }}
                                 >
                                     View all <ArrowRight className="h-3 w-3" />
                                 </Link>
                             </div>
-
-                            {recentMessages.length === 0 ? (
+                            {recentPlans.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-                                    <MessageSquare className="mb-2 h-8 w-8 opacity-30" />
-                                    <p className="text-sm">No messages yet</p>
+                                    <CreditCard className="mb-2 h-8 w-8 opacity-30" />
+                                    <p className="text-sm">No plans created yet</p>
+                                    <Link
+                                        href={url('/admin/plans/create')}
+                                        className="mt-2 text-xs font-medium transition-colors hover:underline"
+                                        style={{ color: accent }}
+                                    >
+                                        Create your first plan
+                                    </Link>
                                 </div>
                             ) : (
-                                <div className="space-y-2">
-                                    {recentMessages.map((msg) => {
-                                        const st = statusColors[msg.status] ?? statusColors.new;
-                                        return (
-                                            <Link
-                                                key={msg.id}
-                                                href={`/admin/contact-messages/${msg.id}`}
-                                                className="flex items-center justify-between rounded-lg border border-transparent p-3 transition-all duration-200 hover:border-[var(--isp-primary)]/20 hover:bg-[var(--isp-primary)]/[0.03]"
-                                            >
-                                                <div className="min-w-0 flex-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <p className="truncate text-sm font-medium text-foreground">{msg.name}</p>
-                                                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${st.bg} ${st.text}`}>
-                                                            <span className={`h-1.5 w-1.5 rounded-full ${st.dot}`} />
-                                                            {msg.status.replace('_', ' ')}
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left text-sm">
+                                        <thead>
+                                            <tr className="border-b text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                                                <th className="pb-2 pr-4">Plan</th>
+                                                <th className="pb-2 pr-4">Category</th>
+                                                <th className="pb-2 pr-4">Speed</th>
+                                                <th className="pb-2 pr-4">Price/mo</th>
+                                                <th className="pb-2 pr-4">Status</th>
+                                                <th className="pb-2">Added</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-border/50">
+                                            {recentPlans.map((plan) => (
+                                                <tr key={plan.id} className="transition-colors hover:bg-[var(--isp-primary)]/[0.02]">
+                                                    <td className="py-2.5 pr-4">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-medium text-foreground">{plan.name}</span>
+                                                            {plan.is_featured && (
+                                                                <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-2.5 pr-4 text-muted-foreground">{plan.category ?? '—'}</td>
+                                                    <td className="py-2.5 pr-4 font-mono text-xs text-foreground">{plan.speed}</td>
+                                                    <td className="py-2.5 pr-4 font-semibold text-foreground">${plan.monthly_price}</td>
+                                                    <td className="py-2.5 pr-4">
+                                                        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${plan.is_active ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
+                                                            <span className={`h-1.5 w-1.5 rounded-full ${plan.is_active ? 'bg-green-500' : 'bg-gray-400'}`} />
+                                                            {plan.is_active ? 'Active' : 'Inactive'}
                                                         </span>
-                                                    </div>
-                                                    <p className="mt-0.5 truncate text-xs text-muted-foreground">
-                                                        {msg.subject}
-                                                        {msg.inquiry_type && <span className="ml-1 opacity-60">· {msg.inquiry_type}</span>}
-                                                    </p>
-                                                </div>
-                                                <span className="ml-3 shrink-0 text-[10px] text-muted-foreground">{msg.created_at}</span>
-                                            </Link>
-                                        );
-                                    })}
+                                                    </td>
+                                                    <td className="py-2.5 text-xs text-muted-foreground">{plan.created_at}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
                                 </div>
                             )}
                         </div>
                     </div>
-
-                    {/* Quick Actions */}
-                    <div className="dash-card relative overflow-hidden rounded-xl border"
-                        style={{
-                            borderColor: 'color-mix(in srgb, var(--border) 100%, transparent)',
-                            background: 'color-mix(in srgb, var(--card) 100%, transparent)',
-                        }}
-                    >
-                        <div
-                            className="absolute inset-x-0 top-0 h-px"
-                            style={{ background: `linear-gradient(90deg, transparent, ${accentAlt}, transparent)` }}
-                            aria-hidden="true"
-                        />
-
-                        <div className="relative p-5">
-                            <div className="mb-4 flex items-center gap-2">
-                                <Zap className="h-4 w-4" style={{ color: accentAlt }} />
-                                <h2 className="text-sm font-bold text-foreground">Quick Actions</h2>
-                            </div>
-
-                            <div className="space-y-2">
-                                {quickActions.map((action) => (
-                                    <Link
-                                        key={action.label}
-                                        href={action.href}
-                                        className="group/action flex items-center gap-3 rounded-lg border border-transparent p-2.5 transition-all duration-200 hover:border-[var(--isp-primary)]/20 hover:bg-[var(--isp-primary)]/[0.03]"
-                                    >
-                                        <div
-                                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-transform duration-200 group-hover/action:scale-110"
-                                            style={{ background: `color-mix(in srgb, ${action.color} 10%, transparent)` }}
-                                        >
-                                            <action.icon className="h-4 w-4" style={{ color: action.color }} />
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <p className="text-sm font-medium text-foreground">{action.label}</p>
-                                            <p className="text-[11px] text-muted-foreground">{action.desc}</p>
-                                        </div>
-                                        <ArrowRight className="h-3.5 w-3.5 text-muted-foreground transition-transform duration-200 group-hover/action:translate-x-0.5" />
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Recent Plans */}
-                <div className="dash-card group relative overflow-hidden rounded-xl border"
-                    style={{
-                        borderColor: 'color-mix(in srgb, var(--border) 100%, transparent)',
-                        background: 'color-mix(in srgb, var(--card) 100%, transparent)',
-                    }}
-                >
-                    <div
-                        className="absolute inset-x-0 top-0 h-px"
-                        style={{ background: `linear-gradient(90deg, transparent, ${accent}, ${accentAlt}, transparent)` }}
-                        aria-hidden="true"
-                    />
-
-                    <div className="relative p-5">
-                        <div className="mb-4 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <CreditCard className="h-4 w-4" style={{ color: accent }} />
-                                <h2 className="text-sm font-bold text-foreground">Recent Plans</h2>
-                            </div>
-                            <Link
-                                href="/admin/plans"
-                                className="flex items-center gap-1 text-xs font-medium transition-colors hover:underline"
-                                style={{ color: accent }}
-                            >
-                                View all <ArrowRight className="h-3 w-3" />
-                            </Link>
-                        </div>
-
-                        {recentPlans.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-                                <CreditCard className="mb-2 h-8 w-8 opacity-30" />
-                                <p className="text-sm">No plans created yet</p>
-                                <Link
-                                    href="/admin/plans/create"
-                                    className="mt-2 text-xs font-medium transition-colors hover:underline"
-                                    style={{ color: accent }}
-                                >
-                                    Create your first plan
-                                </Link>
-                            </div>
-                        ) : (
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left text-sm">
-                                    <thead>
-                                        <tr className="border-b text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                            <th className="pb-2 pr-4">Plan</th>
-                                            <th className="pb-2 pr-4">Category</th>
-                                            <th className="pb-2 pr-4">Speed</th>
-                                            <th className="pb-2 pr-4">Price/mo</th>
-                                            <th className="pb-2 pr-4">Status</th>
-                                            <th className="pb-2">Added</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-border/50">
-                                        {recentPlans.map((plan) => (
-                                            <tr key={plan.id} className="transition-colors hover:bg-[var(--isp-primary)]/[0.02]">
-                                                <td className="py-2.5 pr-4">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="font-medium text-foreground">{plan.name}</span>
-                                                        {plan.is_featured && (
-                                                            <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
-                                                        )}
-                                                    </div>
-                                                </td>
-                                                <td className="py-2.5 pr-4 text-muted-foreground">{plan.category ?? '—'}</td>
-                                                <td className="py-2.5 pr-4 font-mono text-xs text-foreground">{plan.speed}</td>
-                                                <td className="py-2.5 pr-4 font-semibold text-foreground">${plan.monthly_price}</td>
-                                                <td className="py-2.5 pr-4">
-                                                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${plan.is_active ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}>
-                                                        <span className={`h-1.5 w-1.5 rounded-full ${plan.is_active ? 'bg-green-500' : 'bg-gray-400'}`} />
-                                                        {plan.is_active ? 'Active' : 'Inactive'}
-                                                    </span>
-                                                </td>
-                                                <td className="py-2.5 text-xs text-muted-foreground">{plan.created_at}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
-                    </div>
-                </div>
+                )}
 
                 {/* Bottom Status Bar */}
                 <div className="dash-fade-late relative z-10 flex flex-wrap items-center justify-between gap-3 rounded-lg border px-5 py-3"
