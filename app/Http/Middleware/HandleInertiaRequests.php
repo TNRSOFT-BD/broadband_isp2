@@ -52,12 +52,39 @@ class HandleInertiaRequests extends Middleware
         $activeFont = $fontService->getActiveFontDetails();
         $themeColors = $themeService->getActiveThemeColors();
 
+        // Share user permissions and roles for frontend authorization
+        $user = $request->user();
+        $userPermissions = [];
+        $userRoles = [];
+        $isSuperAdmin = false;
+        $adminPrefix = 'admin';
+
+        if ($user) {
+            $userRoles = $user->getRoleNames()->toArray();
+            $userPermissions = $user->getAllPermissions()->pluck('name')->toArray();
+            $isSuperAdmin = $user->hasRole('super_admin');
+
+            // Get the role prefix for dynamic routing
+            $primaryRole = $user->roles->first();
+            $adminPrefix = $primaryRole?->prefix ?? 'admin';
+        }
+
         return array_merge(parent::share($request), [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
+            'admin_prefix' => $adminPrefix,
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                    'roles' => $userRoles,
+                    'permissions' => $userPermissions,
+                    'is_super_admin' => $isSuperAdmin,
+                    'admin_prefix' => $adminPrefix,
+                ] : null,
             ],
             'font' => $activeFont ? [
                 'name' => $activeFont['name'],

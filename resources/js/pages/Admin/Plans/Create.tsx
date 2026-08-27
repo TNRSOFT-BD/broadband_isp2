@@ -3,6 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import type { PlanCategory } from '@/types/plans';
 import { Head, usePage } from '@inertiajs/react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
 interface PageProps {
     [key: string]: unknown;
@@ -10,11 +11,6 @@ interface PageProps {
     services: { id: number; name: string; slug: string; logo?: string | null }[];
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Plans', href: '/admin/plans' },
-    { title: 'Create', href: '/admin/plans/create' },
-];
 
 const initialData: PlanFormData = {
     name: '',
@@ -46,6 +42,13 @@ const initialData: PlanFormData = {
 };
 
 export default function CreatePlan() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Plans', href: adminUrl('/plans') },
+        { title: 'Create', href: adminUrl('/plans/create') },
+    ];
+
     const { categories, services } = usePage<PageProps>().props;
 
     return (

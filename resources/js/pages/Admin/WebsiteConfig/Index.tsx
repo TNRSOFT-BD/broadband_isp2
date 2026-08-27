@@ -8,11 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Website Config', href: '/admin/website-config' },
-];
 
 interface ThemeColors {
     primary: string;
@@ -85,6 +82,12 @@ const fontStyleMap: Record<string, string> = {
 };
 
 export default function WebsiteConfig() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Website Config', href: adminUrl('/website-config') },
+    ];
+
     const { activeTheme, activeFont, siteSettings } = usePage().props as unknown as PageProps;
 
     const [previewColors, setPreviewColors] = useState<ThemeColors>(

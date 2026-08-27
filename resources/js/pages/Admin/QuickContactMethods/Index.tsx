@@ -7,11 +7,8 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Plus, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Quick Contact Methods', href: '/admin/contact/quick-methods' },
-];
 
 interface QuickContactMethod {
     id: number;
@@ -54,6 +51,12 @@ const PRESETS = [
 ];
 
 export default function QuickContactMethodsIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Quick Contact Methods', href: adminUrl('/contact/quick-methods') },
+    ];
+
     const { methods, icons } = usePage<PageProps>().props;
     const { flash } = usePage<SharedData>().props as SharedData & { flash?: { success?: string } };
 

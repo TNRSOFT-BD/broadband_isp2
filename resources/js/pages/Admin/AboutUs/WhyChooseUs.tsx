@@ -7,13 +7,8 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Plus, Pencil, Trash2, Target } from 'lucide-react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Pages', href: '#' },
-    { title: 'About Us', href: '/admin/pages/about' },
-    { title: 'Why Choose Us', href: '/admin/pages/about/why-choose-us' },
-];
 
 const ICON_OPTIONS = [
     'Shield', 'Headphones', 'Server', 'Users', 'Home', 'TrendingUp', 'Wifi', 'Clock',
@@ -24,6 +19,14 @@ interface WhyChooseUsItem { id: number; icon: string; title: string; description
 interface PageProps extends Record<string, unknown> { whyChooseUs: WhyChooseUsItem[]; }
 
 export default function WhyChooseUsIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Pages', href: '#' },
+        { title: 'About Us', href: adminUrl('/pages/about') },
+        { title: 'Why Choose Us', href: adminUrl('/pages/about/why-choose-us') },
+    ];
+
     const { whyChooseUs } = usePage<PageProps>().props;
     const { flash } = usePage<SharedData>().props as SharedData & { flash?: { success?: string } };
     const [showForm, setShowForm] = useState(false);

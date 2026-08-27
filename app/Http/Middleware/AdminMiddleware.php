@@ -10,10 +10,15 @@ class AdminMiddleware
 {
     /**
      * Handle an incoming request.
+     *
+     * Checks that the authenticated user has an admin-level role
+     * (super_admin, admin, editor, or viewer).
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! auth()->check() || ! auth()->user()->isAdmin()) {
+        $user = auth()->user();
+
+        if (! auth()->check() || $user->getRoleNames()->isEmpty()) {
             abort(403, 'Unauthorized. Admin access required.');
         }
 

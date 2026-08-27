@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 import {
     Dialog,
     DialogContent,
@@ -29,12 +30,14 @@ interface PageProps {
     stats: { total: number; active: number; featured: number };
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Plans', href: '/admin/plans' },
-];
 
 export default function PlansIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Plans', href: adminUrl('/plans') },
+    ];
+
     const { plans, filters, categories, stats } = usePage<PageProps & { [key: string]: unknown }>().props;
 
     const [search, setSearch] = useState(filters.search ?? '');

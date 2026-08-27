@@ -9,11 +9,8 @@ import type { ContactMessage } from '@/types/contact';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Eye, Trash2, Mail, MessageSquare } from 'lucide-react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Contact Messages', href: '/admin/contact-messages' },
-];
 
 interface PageProps extends Record<string, unknown> {
     messages: {
@@ -30,6 +27,12 @@ interface PageProps extends Record<string, unknown> {
 }
 
 export default function ContactMessagesIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Contact Messages', href: adminUrl('/contact-messages') },
+    ];
+
     const { messages, inquiryTypes, filters, counts, statuses } = usePage<PageProps>().props;
     const { flash } = usePage<SharedData>().props as SharedData & { flash?: { success?: string } };
 

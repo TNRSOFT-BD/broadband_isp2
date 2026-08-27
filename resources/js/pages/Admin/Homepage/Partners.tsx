@@ -7,12 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, Pencil, Users, Image as ImageIcon, CheckCircle2, ExternalLink } from 'lucide-react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Homepage', href: '/admin/homepage' },
-    { title: 'Partners', href: '/admin/homepage/partners' },
-];
 
 interface PartnerItem {
     id: number;
@@ -28,6 +24,13 @@ interface PageProps extends Record<string, unknown> {
 }
 
 export default function PartnersPage() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Homepage', href: adminUrl('/homepage') },
+        { title: 'Partners', href: adminUrl('/homepage/partners') },
+    ];
+
     const { partners } = usePage<PageProps>().props;
     const { flash } = usePage().props as { flash?: { success?: string } };
     const accent = 'var(--isp-primary)';

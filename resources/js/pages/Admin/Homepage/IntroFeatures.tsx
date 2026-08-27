@@ -6,12 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { Plus, Trash2, Edit3, Zap, Globe, Shield, Headphones, Clock, Wifi, Server, Activity, Cpu, Signal, Lock, Star } from 'lucide-react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Homepage', href: '/admin/homepage' },
-    { title: 'Intro Features', href: '/admin/homepage/intro-features' },
-];
 
 const availableIcons = [
     { name: 'Zap', label: 'Zap' },
@@ -43,6 +39,13 @@ interface PageProps {
 }
 
 export default function IntroFeaturesAdmin() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Homepage', href: adminUrl('/homepage') },
+        { title: 'Intro Features', href: adminUrl('/homepage/intro-features') },
+    ];
+
     const { features } = usePage().props as unknown as PageProps;
     const accent = 'var(--isp-primary)';
     const [editing, setEditing] = useState<number | null>(null);

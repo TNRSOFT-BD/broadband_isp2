@@ -7,13 +7,8 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Plus, Pencil, Trash2, Zap } from 'lucide-react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Pages', href: '#' },
-    { title: 'About Us', href: '/admin/pages/about' },
-    { title: 'Capabilities', href: '/admin/pages/about/capabilities' },
-];
 
 const ICON_OPTIONS = [
     'Wifi', 'Server', 'Building2', 'Clock', 'Headphones', 'TrendingUp',
@@ -24,6 +19,14 @@ interface CapabilityItem { id: number; icon: string; title: string; description:
 interface PageProps extends Record<string, unknown> { capabilities: CapabilityItem[]; }
 
 export default function CapabilitiesIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Pages', href: '#' },
+        { title: 'About Us', href: adminUrl('/pages/about') },
+        { title: 'Capabilities', href: adminUrl('/pages/about/capabilities') },
+    ];
+
     const { capabilities } = usePage<PageProps>().props;
     const { flash } = usePage<SharedData>().props as SharedData & { flash?: { success?: string } };
     const [showForm, setShowForm] = useState(false);

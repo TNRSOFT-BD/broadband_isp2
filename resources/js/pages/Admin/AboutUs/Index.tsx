@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, useForm, usePage, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 import {
     CheckCircle2,
     Globe,
@@ -24,11 +25,6 @@ import {
     BarChart3,
 } from 'lucide-react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Pages', href: '#' },
-    { title: 'About Page', href: '/admin/pages/about' },
-];
 
 const ICON_OPTIONS = [
     'Phone', 'Mail', 'MessageCircle', 'Headphones', 'MapPin', 'Globe',
@@ -271,6 +267,13 @@ function ImageUploadField({ label, value, onChange, altValue, onAltChange, place
 }
 
 export default function AboutUsIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Pages', href: '#' },
+        { title: 'About Page', href: adminUrl('/pages/about') },
+    ];
+
     const { settings, statisticsCount, coreValuesCount, milestonesCount, capabilitiesCount, clientsCount, certificationsCount, whyChooseUsCount } = usePage<PageProps>().props;
     const { flash } = usePage<SharedData>().props as SharedData & { flash?: { success?: string } };
     const [activeTab, setActiveTab] = useState<(typeof TABS)[number]>('Hero');
@@ -333,14 +336,14 @@ export default function AboutUsIndex() {
     const sections = [
         { title: 'Hero Section', description: 'Dark futuristic banner at the top', icon: <Sparkles className="h-4 w-4" />, enabled: form.data.hero_enabled, count: null, editUrl: null },
         { title: 'Company Introduction', description: 'Manage company story and introduction', icon: <Users className="h-4 w-4" />, enabled: form.data.company_enabled, count: null, editUrl: null },
-        { title: 'Statistics', description: 'Manage company achievements and statistics', icon: <BarChart3 className="h-4 w-4" />, enabled: form.data.statistics_enabled, count: statisticsCount, editUrl: '/admin/pages/about/statistics' },
+        { title: 'Statistics', description: 'Manage company achievements and statistics', icon: <BarChart3 className="h-4 w-4" />, enabled: form.data.statistics_enabled, count: statisticsCount, editUrl: adminUrl('/pages/about/statistics') },
         { title: 'Vision & Mission', description: 'Manage company vision and mission', icon: <Eye className="h-4 w-4" />, enabled: form.data.vision_mission_enabled, count: null, editUrl: null },
-        { title: 'Core Values', description: 'Manage company principles and values', icon: <Shield className="h-4 w-4" />, enabled: form.data.core_values_enabled, count: coreValuesCount, editUrl: '/admin/pages/about/core-values' },
-        { title: 'Company Journey', description: 'Manage timeline milestones', icon: <Clock className="h-4 w-4" />, enabled: form.data.timeline_enabled, count: milestonesCount, editUrl: '/admin/pages/about/milestones' },
-        { title: 'Network Capabilities', description: 'Manage network and service capabilities', icon: <Zap className="h-4 w-4" />, enabled: form.data.capabilities_enabled, count: capabilitiesCount, editUrl: '/admin/pages/about/capabilities' },
-        { title: 'Clients', description: 'Manage client organizations and partners', icon: <Users className="h-4 w-4" />, enabled: form.data.clients_enabled, count: clientsCount, editUrl: '/admin/pages/about/clients' },
-        { title: 'Certifications', description: 'Manage certifications and compliance', icon: <Award className="h-4 w-4" />, enabled: form.data.certifications_enabled, count: certificationsCount, editUrl: '/admin/pages/about/certifications' },
-        { title: 'Why Choose Us', description: 'Manage reasons to choose your company', icon: <Target className="h-4 w-4" />, enabled: form.data.why_choose_us_enabled, count: whyChooseUsCount, editUrl: '/admin/pages/about/why-choose-us' },
+        { title: 'Core Values', description: 'Manage company principles and values', icon: <Shield className="h-4 w-4" />, enabled: form.data.core_values_enabled, count: coreValuesCount, editUrl: adminUrl('/pages/about/core-values') },
+        { title: 'Company Journey', description: 'Manage timeline milestones', icon: <Clock className="h-4 w-4" />, enabled: form.data.timeline_enabled, count: milestonesCount, editUrl: adminUrl('/pages/about/milestones') },
+        { title: 'Network Capabilities', description: 'Manage network and service capabilities', icon: <Zap className="h-4 w-4" />, enabled: form.data.capabilities_enabled, count: capabilitiesCount, editUrl: adminUrl('/pages/about/capabilities') },
+        { title: 'Clients', description: 'Manage client organizations and partners', icon: <Users className="h-4 w-4" />, enabled: form.data.clients_enabled, count: clientsCount, editUrl: adminUrl('/pages/about/clients') },
+        { title: 'Certifications', description: 'Manage certifications and compliance', icon: <Award className="h-4 w-4" />, enabled: form.data.certifications_enabled, count: certificationsCount, editUrl: adminUrl('/pages/about/certifications') },
+        { title: 'Why Choose Us', description: 'Manage reasons to choose your company', icon: <Target className="h-4 w-4" />, enabled: form.data.why_choose_us_enabled, count: whyChooseUsCount, editUrl: adminUrl('/pages/about/why-choose-us') },
         { title: 'Call to Action', description: 'Final CTA section at the bottom', icon: <Zap className="h-4 w-4" />, enabled: form.data.cta_enabled, count: null, editUrl: null },
     ];
 

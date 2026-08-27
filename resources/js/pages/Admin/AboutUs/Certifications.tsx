@@ -7,13 +7,8 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Plus, Pencil, Trash2, Award } from 'lucide-react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Pages', href: '#' },
-    { title: 'About Us', href: '/admin/pages/about' },
-    { title: 'Certifications', href: '/admin/pages/about/certifications' },
-];
 
 const ICON_OPTIONS = [
     'Shield', 'Lock', 'CheckCircle2', 'Award', 'Globe', 'Star', 'Heart', 'Zap', 'Eye', 'Target',
@@ -23,6 +18,14 @@ interface CertItem { id: number; icon: string; title: string; description: strin
 interface PageProps extends Record<string, unknown> { certifications: CertItem[]; }
 
 export default function CertificationsIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Pages', href: '#' },
+        { title: 'About Us', href: adminUrl('/pages/about') },
+        { title: 'Certifications', href: adminUrl('/pages/about/certifications') },
+    ];
+
     const { certifications } = usePage<PageProps>().props;
     const { flash } = usePage<SharedData>().props as SharedData & { flash?: { success?: string } };
     const [showForm, setShowForm] = useState(false);

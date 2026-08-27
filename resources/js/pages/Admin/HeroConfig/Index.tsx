@@ -10,11 +10,8 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { CheckCircle2, Type, Palette } from 'lucide-react';
 import PageImageField from '@/components/admin/page-image-field';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Hero Config', href: '/admin/hero-config' },
-];
 
 interface HeroData {
     background_image: string | null;
@@ -61,6 +58,12 @@ const colorFields: { key: keyof HeroData; label: string; description: string; se
 const TABS = ['Content', 'Colors'] as const;
 
 export default function HeroConfig() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Hero Config', href: adminUrl('/hero-config') },
+    ];
+
     const { hero, theme } = usePage().props as unknown as { hero: HeroData; theme?: { colors: { primary: string } } };
     const primaryColor = theme?.colors?.primary ?? '#2563EB';
 

@@ -8,11 +8,8 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Plus, Pencil, Trash2, MapPin } from 'lucide-react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Office Locations', href: '/admin/contact/locations' },
-];
 
 interface OfficeLocationItem {
     id: number;
@@ -32,6 +29,12 @@ interface PageProps extends Record<string, unknown> {
 }
 
 export default function OfficeLocationsIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Office Locations', href: adminUrl('/contact/locations') },
+    ];
+
     const { locations, locationTypes } = usePage<PageProps>().props;
     const { flash } = usePage<SharedData>().props as SharedData & { flash?: { success?: string } };
 
