@@ -48,8 +48,7 @@ export default function PartnersPage() {
 
     const MAX_IMAGE_BYTES = 10 * 1024; // 10 KB
 
-    const resetForm = () => {
-        setShowForm(false);
+    const resetFields = () => {
         setEditingId(null);
         setName('');
         setLogo('');
@@ -57,6 +56,11 @@ export default function PartnersPage() {
         setSortOrder(0);
         setIsActive(true);
         setUploadError(null);
+    };
+
+    const resetForm = () => {
+        resetFields();
+        setShowForm(false);
     };
 
     const handleEdit = (item: PartnerItem) => {
@@ -176,7 +180,7 @@ export default function PartnersPage() {
                         </p>
                     </div>
                     <Button
-                        onClick={() => { setShowForm(!showForm); setEditingId(null); resetForm(); }}
+                        onClick={() => { setShowForm(!showForm); resetFields(); }}
                         style={{ background: accent }}
                     >
                         <Plus className="mr-1 h-4 w-4" /> Add Partner

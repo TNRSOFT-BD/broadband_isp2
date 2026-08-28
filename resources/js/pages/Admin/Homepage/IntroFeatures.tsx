@@ -36,6 +36,7 @@ interface IntroFeature {
 
 interface PageProps {
     features: IntroFeature[];
+    enabled: boolean;
 }
 
 export default function IntroFeaturesAdmin() {
@@ -46,7 +47,7 @@ export default function IntroFeaturesAdmin() {
         { title: 'Intro Features', href: adminUrl('/homepage/intro-features') },
     ];
 
-    const { features } = usePage().props as unknown as PageProps;
+    const { features, enabled } = usePage().props as unknown as PageProps;
     const accent = 'var(--isp-primary)';
     const [editing, setEditing] = useState<number | null>(null);
     const [showForm, setShowForm] = useState(false);
@@ -113,6 +114,33 @@ export default function IntroFeaturesAdmin() {
                     >
                         <Plus className="mr-1 h-4 w-4" /> Add Feature
                     </Button>
+                </div>
+
+                {/* Show on homepage toggle */}
+                <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4">
+                    <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--isp-accent) 10%, transparent)' }}>
+                            <Zap className="h-5 w-5" style={{ color: 'var(--isp-accent)' }} />
+                        </div>
+                        <div>
+                            <p className="text-sm font-bold text-gray-900">Show Intro Network Features on homepage</p>
+                            <p className="text-xs text-muted-foreground">
+                                {enabled ? 'Satellite nodes are visible in the Company Introduction section.' : 'Satellite nodes are hidden from the homepage.'}
+                            </p>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        role="switch"
+                        aria-checked={enabled}
+                        aria-label="Toggle Intro Network Features on homepage"
+                        onClick={() =>
+                            router.patch(route('admin.homepage.intro-features.toggle'), { is_active: !enabled })
+                        }
+                        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${enabled ? 'bg-[var(--isp-primary)]' : 'bg-gray-200'}`}
+                    >
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${enabled ? 'translate-x-6' : 'translate-x-1'}`} />
+                    </button>
                 </div>
 
                 {features.length >= 6 && !editing && (

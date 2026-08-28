@@ -111,6 +111,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/homepage/intro-features', [HomepageController::class, 'storeIntroFeature'])->name('homepage.intro-features.store');
             Route::put('/homepage/intro-features/{id}', [HomepageController::class, 'updateIntroFeature'])->name('homepage.intro-features.update');
             Route::delete('/homepage/intro-features/{id}', [HomepageController::class, 'destroyIntroFeature'])->name('homepage.intro-features.destroy');
+            Route::patch('/homepage/intro-features/toggle', [HomepageController::class, 'toggleIntroFeatures'])->name('homepage.intro-features.toggle');
         });
 
         // ── Homepage Testimonials ───────────────────────────────────

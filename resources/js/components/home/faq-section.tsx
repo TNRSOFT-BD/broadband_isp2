@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ArrowRight } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 interface FaqItem {
     id: number;
@@ -67,17 +67,6 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
                     })}
                 </div>
 
-                {/* View All */}
-                <div className="faq-fade mt-8 text-center">
-                    <a
-                        href="/faq"
-                        className="group inline-flex items-center gap-2 text-sm font-semibold transition-colors"
-                        style={{ color: accent }}
-                    >
-                        View All FAQs
-                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </a>
-                </div>
             </div>
 
             <style>{`
