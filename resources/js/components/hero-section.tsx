@@ -48,10 +48,10 @@ export default function HeroSection() {
         heading_highlight: h?.heading_highlight ?? 'Connectivity',
         heading_line2: h?.heading_line2 ?? 'Starts Here',
         subtitle: h?.subtitle ?? 'Experience blazing-fast internet with zero buffering. Powered by cutting-edge fiber technology designed for the modern world.',
-        cta_primary_text: h?.cta_primary_text ?? 'Get Connected',
-        cta_primary_url: h?.cta_primary_url ?? '#',
-        cta_secondary_text: h?.cta_secondary_text ?? 'Check Availability',
-        cta_secondary_url: h?.cta_secondary_url ?? '#',
+        cta_primary_text: h?.cta_primary_text ?? '',
+        cta_primary_url: h?.cta_primary_url ?? '',
+        cta_secondary_text: h?.cta_secondary_text ?? '',
+        cta_secondary_url: h?.cta_secondary_url ?? '',
         badge_color: h?.badge_color ?? '#2563EB',
         heading_color: h?.heading_color ?? '#ffffff',
         highlight_color: h?.highlight_color ?? '#2563EB',
@@ -155,33 +155,39 @@ export default function HeroSection() {
                 </p>
 
                 {/* CTA Buttons */}
-                <div className="hero-cta mb-16 flex flex-col items-center gap-4 sm:flex-row">
-                    <Link
-                        href={hero.cta_primary_url}
-                        className="hero-btn-primary group relative inline-flex items-center gap-2 overflow-hidden px-8 py-3.5 text-base font-semibold transition-all duration-300"
-                        style={{
-                            background: hero.cta_primary_bg,
-                            color: hero.cta_primary_text_color,
-                            clipPath: 'polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%)',
-                        }}
-                    >
-                        <span className="relative z-10">{hero.cta_primary_text}</span>
-                        <span className="absolute inset-0 bg-white/10 translate-x-[-100%] transition-transform duration-500 group-hover:translate-x-[100%]" />
-                    </Link>
-                    <Link
-                        href={hero.cta_secondary_url}
-                        className="hero-btn-secondary group inline-flex items-center gap-2 rounded-full bg-white/10 px-8 py-3.5 text-base font-semibold backdrop-blur-md transition-all duration-300 hover:bg-white/15"
-                        style={{
-                            border: `1px solid ${hero.cta_secondary_border}33`,
-                            color: hero.cta_secondary_text_color,
-                        }}
-                    >
-                        <span>{hero.cta_secondary_text}</span>
-                        <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </Link>
-                </div>
+                {(hero.cta_primary_text || hero.cta_secondary_text) && (
+                    <div className="hero-cta mb-16 flex flex-col items-center gap-4 sm:flex-row">
+                        {hero.cta_primary_text && (
+                            <Link
+                                href={hero.cta_primary_url}
+                                className="hero-btn-primary group relative inline-flex items-center gap-2 overflow-hidden px-8 py-3.5 text-base font-semibold transition-all duration-300"
+                                style={{
+                                    background: hero.cta_primary_bg,
+                                    color: hero.cta_primary_text_color,
+                                    clipPath: 'polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%)',
+                                }}
+                            >
+                                <span className="relative z-10">{hero.cta_primary_text}</span>
+                                <span className="absolute inset-0 bg-white/10 translate-x-[-100%] transition-transform duration-500 group-hover:translate-x-[100%]" />
+                            </Link>
+                        )}
+                        {hero.cta_secondary_text && hero.cta_secondary_url && (
+                            <Link
+                                href={hero.cta_secondary_url}
+                                className="hero-btn-secondary group inline-flex items-center gap-2 rounded-full bg-white/10 px-8 py-3.5 text-base font-semibold backdrop-blur-md transition-all duration-300 hover:bg-white/15"
+                                style={{
+                                    border: `1px solid ${hero.cta_secondary_border}33`,
+                                    color: hero.cta_secondary_text_color,
+                                }}
+                            >
+                                <span>{hero.cta_secondary_text}</span>
+                                <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                            </Link>
+                        )}
+                    </div>
+                )}
 
                 {/* Feature Cards */}
                 <div className="hero-features mx-auto grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4">

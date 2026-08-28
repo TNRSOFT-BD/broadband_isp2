@@ -57,12 +57,16 @@ class EloquentHomepageRepository implements HomepageRepositoryInterface
 
     public function getFeaturedPlans(): Collection
     {
-        return Plan::where('is_active', true)
-            ->where('is_featured', true)
+        $plans = Plan::where('is_active', true)
             ->with(['category:id,name', 'features:id,plan_id,title,icon,description,sort_order'])
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get();
+
+        $featured = $plans->filter(fn ($plan) => $plan->is_featured);
+        $others = $plans->filter(fn ($plan) => ! $plan->is_featured);
+
+        return $featured->concat($others)->take(3)->values();
     }
 
     public function getLatestPlans(): Collection

@@ -167,18 +167,22 @@ export default function HeroConfig() {
                                 </p>
 
                                 <div className="flex flex-wrap gap-3">
-                                    <span
-                                        className="inline-flex items-center rounded-full px-6 py-2 text-sm font-semibold"
-                                        style={{ background: form.data.cta_primary_bg, color: form.data.cta_primary_text_color }}
-                                    >
-                                        {form.data.cta_primary_text}
-                                    </span>
-                                    <span
-                                        className="inline-flex items-center rounded-full border px-6 py-2 text-sm font-semibold"
-                                        style={{ borderColor: form.data.cta_secondary_border, color: form.data.cta_secondary_text_color }}
-                                    >
-                                        {form.data.cta_secondary_text}
-                                    </span>
+                                    {form.data.cta_primary_text && (
+                                        <span
+                                            className="inline-flex items-center rounded-full px-6 py-2 text-sm font-semibold"
+                                            style={{ background: form.data.cta_primary_bg, color: form.data.cta_primary_text_color }}
+                                        >
+                                            {form.data.cta_primary_text}
+                                        </span>
+                                    )}
+                                    {form.data.cta_secondary_text && (
+                                        <span
+                                            className="inline-flex items-center rounded-full border px-6 py-2 text-sm font-semibold"
+                                            style={{ borderColor: form.data.cta_secondary_border, color: form.data.cta_secondary_text_color }}
+                                        >
+                                            {form.data.cta_secondary_text}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>

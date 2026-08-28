@@ -298,10 +298,10 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
                                 <div key={pi} className={`pointer-events-none absolute z-20 rounded-lg border p-2.5 ${pos.animClass} ${pos.cls}`} style={{ borderColor: `color-mix(in srgb, ${pos.color} 15%, transparent)`, background: 'color-mix(in srgb, white 85%, transparent)', backdropFilter: 'blur(8px)' }}>
                                     <div className="mb-1 flex items-center gap-1.5">
                                         <span className="intro-hud-dot h-1.5 w-1.5 rounded-full" style={{ background: pos.dotColor }} />
-                                        <span className="text-[9px] font-bold uppercase tracking-widest text-gray-500">{panel.label}</span>
+                                        <span className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{panel.label}</span>
                                     </div>
                                     {panel.stats?.map((stat, si) => (
-                                        <p key={si} className="font-mono text-[11px]" style={{ color: si === 0 ? pos.color : 'rgb(156,163,175)' }}>
+                                        <p key={si} className="font-mono text-[13px]" style={{ color: si === 0 ? pos.color : 'rgb(156,163,175)' }}>
                                             <span className={si === 0 ? 'font-bold' : ''}>{stat.value}</span>{' '}
                                             <span className={si === 0 ? 'font-normal text-gray-400' : 'text-gray-300'}>{stat.label}</span>
                                         </p>

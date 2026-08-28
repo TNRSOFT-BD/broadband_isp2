@@ -42,6 +42,12 @@ class HeroService
             $data['is_active'] = true;
         }
 
+        foreach (['cta_primary_text', 'cta_primary_url', 'cta_secondary_text', 'cta_secondary_url'] as $field) {
+            if (isset($data[$field]) && trim((string) $data[$field]) === '') {
+                $data[$field] = null;
+            }
+        }
+
         $saved = $existing
             ? $this->heroRepository->update($existing->id, $data)
             : $this->heroRepository->create($data);
