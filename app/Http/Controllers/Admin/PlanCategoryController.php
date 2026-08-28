@@ -24,7 +24,7 @@ class PlanCategoryController extends Controller
         return Inertia::render('Admin/PlanCategories/Index', [
             'categories' => $this->categoryService->getAllCategories()
                 ->map(fn ($category) => [
-                    ...$category->only(['id', 'name', 'slug', 'description', 'icon', 'sort_order', 'is_active']),
+                    ...$category->only(['id', 'name', 'slug', 'description', 'icon', 'sort_order']),
                     'plans_count' => $category->plans_count,
                 ]),
         ]);

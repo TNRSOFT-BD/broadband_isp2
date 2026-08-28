@@ -189,7 +189,7 @@ function ImageUploadField({ label, value, onChange, altValue, onAltChange, place
             const formData = new FormData();
             formData.append('image', file);
 
-            const response = await fetch(route('admin.about-us.upload'), {
+            const response = await fetch('/admin/pages/about/upload', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',

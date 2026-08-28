@@ -21,7 +21,7 @@ export default function WhyChooseUs({ items }: { items: WhyChooseUsItem[] }) {
                         Why Us
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">Why Choose Us</h3>
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">Why Choose Us</h3>
                 </div>
 
                 <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">

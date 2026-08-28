@@ -23,7 +23,7 @@ class PlanCategorySeeder extends Seeder
         foreach ($categories as $category) {
             PlanCategory::updateOrCreate(
                 ['slug' => \Illuminate\Support\Str::slug($category['name'])],
-                [...$category, 'is_active' => true],
+                $category,
             );
         }
     }

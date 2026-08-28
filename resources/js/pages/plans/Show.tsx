@@ -48,7 +48,7 @@ export default function PlanShow() {
                                     {plan.category.name}
                                 </span>
                             )}
-                            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">{plan.name}</h1>
+                            <h1 className="text-xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl">{plan.name}</h1>
                             {plan.tagline && <p className="mt-2 text-lg text-slate-400">{plan.tagline}</p>}
                         </div>
 
@@ -112,7 +112,7 @@ export default function PlanShow() {
                                 <h2 id="overview-heading" className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
                                     <FileText className="h-5 w-5" style={{ color: accent }} /> Plan Overview
                                 </h2>
-                                <p className="leading-relaxed text-gray-600 whitespace-pre-line">{plan.description}</p>
+                                <p className="leading-relaxed text-gray-500 whitespace-pre-line">{plan.description}</p>
                             </section>
                         )}
 
@@ -165,7 +165,7 @@ export default function PlanShow() {
                     <aside className="space-y-8">
                         {/* Pricing */}
                         <section aria-labelledby="pricing-heading" className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                            <h2 id="pricing-heading" className="mb-4 text-lg font-bold text-gray-900">Pricing Options</h2>
+                            <h2 id="pricing-heading" className="mb-4 text-xl font-bold text-gray-900">Pricing Options</h2>
                             <div className="space-y-3">
                                 {pricingTiers.map((tier, index) => {
                                     const monthlyEquivalent = tier.label === 'Quarterly'
@@ -189,12 +189,12 @@ export default function PlanShow() {
                                     );
                                 })}
                             </div>
-                            {plan.vat_information && <p className="mt-4 text-xs text-gray-400">{plan.vat_information}</p>}
+                            {plan.vat_information && <p className="mt-4 text-xs text-gray-500">{plan.vat_information}</p>}
                         </section>
 
                         {/* Contract & FUP */}
                         <section aria-labelledby="terms-heading" className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                            <h2 id="terms-heading" className="mb-4 text-lg font-bold text-gray-900">Good to Know</h2>
+                            <h2 id="terms-heading" className="mb-4 text-xl font-bold text-gray-900">Good to Know</h2>
                             <dl className="space-y-4 text-sm">
                                 {plan.contract_duration && (
                                     <div>

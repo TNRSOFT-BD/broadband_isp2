@@ -16,11 +16,6 @@ class PlanCategory extends Model
         'description',
         'icon',
         'sort_order',
-        'is_active',
-    ];
-
-    protected $casts = [
-        'is_active' => 'boolean',
     ];
 
     public function plans(): HasMany

@@ -28,6 +28,16 @@ interface PageProps extends Record<string, unknown> {
     locationTypes: Record<string, string>;
 }
 
+function extractEmbedSrc(value: string): string | null {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+
+    const match = trimmed.match(/src\s*=\s*["'](https?:\/\/[^"']+)["']/i);
+    if (match) return match[1];
+
+    return /^https?:\/\//i.test(trimmed) ? trimmed : null;
+}
+
 export default function OfficeLocationsIndex() {
     const { adminUrl } = useAdminUrl();
     const breadcrumbs: BreadcrumbItem[] = [
@@ -178,8 +188,31 @@ export default function OfficeLocationsIndex() {
                                     <Input id="email" type="email" value={form.data.email} onChange={(e) => form.setData('email', e.target.value)} className="mt-1" />
                                 </div>
                                 <div className="sm:col-span-2">
-                                    <Label htmlFor="map_embed_url">Google Maps Embed URL</Label>
-                                    <Input id="map_embed_url" value={form.data.map_embed_url} onChange={(e) => form.setData('map_embed_url', e.target.value)} placeholder="https://www.google.com/maps/embed?..." className="mt-1" />
+                                    <Label htmlFor="map_embed_url">Google Maps Embed</Label>
+                                    <Input
+                                        id="map_embed_url"
+                                        value={form.data.map_embed_url}
+                                        onChange={(e) => form.setData('map_embed_url', e.target.value)}
+                                        placeholder="Paste the Google Maps embed URL or iframe code here"
+                                        className="mt-1"
+                                    />
+                                    <p className="mt-1 text-xs text-muted-foreground">
+                                        Paste the full embed from Google Maps (Share &rarr; Embed a map) or just the URL. We'll handle it.
+                                    </p>
+                                    {extractEmbedSrc(form.data.map_embed_url) && (
+                                        <div className="mt-3 overflow-hidden rounded-xl border border-gray-200">
+                                            <iframe
+                                                src={extractEmbedSrc(form.data.map_embed_url) as string}
+                                                width="100%"
+                                                height="220"
+                                                style={{ border: 0 }}
+                                                allowFullScreen
+                                                loading="lazy"
+                                                referrerPolicy="no-referrer-when-downgrade"
+                                                title="Map preview"
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="sm:col-span-2">
                                     <Label htmlFor="office_hours">Office Hours</Label>

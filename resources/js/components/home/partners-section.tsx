@@ -85,7 +85,7 @@ export default function PartnersSection({ partners }: { partners: Partner[] }) {
                 <div className="pm-fade mb-12 text-center sm:mb-16">
                     <h2 className="mb-3 text-sm font-bold uppercase tracking-wider" style={{ color: accent }}>Partners</h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">Trusted by Organizations That Move Forward</h3>
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">Trusted by Organizations That Move Forward</h3>
                     <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500">Powering connectivity for industry leaders across the nation.</p>
                 </div>
 

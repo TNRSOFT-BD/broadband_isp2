@@ -68,7 +68,7 @@ export default function HeroSection() {
     };
 
     return (
-        <section className="relative min-h-screen overflow-hidden" style={{ background: hero.overlay_color }}>
+        <section className="relative min-h-0 lg:min-h-screen overflow-hidden" style={{ background: hero.overlay_color }}>
             {/* Background Image */}
             {hero.background_image && (
                 <div
@@ -108,7 +108,7 @@ export default function HeroSection() {
             <div className="glow-orb absolute -right-32 top-1/2 h-64 w-64 rounded-full blur-[100px]" style={{ background: `${hero.highlight_color}1a` }} />
 
             {/* Content */}
-            <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-20 text-center">
+            <div className="relative z-10 flex min-h-0 lg:min-h-screen flex-col items-center justify-center px-4 py-20 text-center">
                 {/* Badge */}
                 <div
                     className="hero-badge mb-8 inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium backdrop-blur-md"
@@ -124,7 +124,7 @@ export default function HeroSection() {
 
                 {/* Main Heading */}
                 <h1
-                    className="hero-title mb-6 max-w-4xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+                    className="hero-title mb-6 max-w-4xl text-2xl font-bold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl"
                     style={{ color: hero.heading_color }}
                 >
                     {hero.heading_line1}{' '}

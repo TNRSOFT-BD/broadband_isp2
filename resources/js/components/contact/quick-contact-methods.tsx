@@ -31,11 +31,11 @@ export default function QuickContactMethods({ settings, methods }: QuickContactM
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Section header */}
                 <div className="mb-8 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         {settings.quick_contact_title}
                     </h2>
                     {settings.quick_contact_description && (
-                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500 text-justify">
                             {settings.quick_contact_description}
                         </p>
                     )}
@@ -60,7 +60,7 @@ export default function QuickContactMethods({ settings, methods }: QuickContactM
                             </div>
 
                             {/* Content */}
-                            <h3 className="text-lg font-bold text-gray-900">{method.label}</h3>
+                            <h3 className="text-xl font-bold text-gray-900">{method.label}</h3>
                             <p className="mt-1 text-sm font-semibold" style={{ color: accent }}>
                                 {method.value}
                             </p>

@@ -25,7 +25,7 @@ export default function TestimonialsSection({ items }: { items: Testimonial[] })
                         Testimonials
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         Trusted Connections. Real Experiences.
                     </h3>
                 </div>
@@ -54,7 +54,7 @@ export default function TestimonialsSection({ items }: { items: Testimonial[] })
                             )}
 
                             {/* Content */}
-                            <p className="mb-6 text-sm leading-relaxed text-gray-600">
+                            <p className="mb-6 text-sm leading-relaxed text-gray-600 text-justify">
                                 &ldquo;{t.content}&rdquo;
                             </p>
 

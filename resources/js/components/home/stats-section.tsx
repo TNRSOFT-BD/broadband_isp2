@@ -63,7 +63,7 @@ export default function StatsSection({ items }: { items: StatItem[] }) {
                         Network Strength
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accentAlt }} />
-                    <h3 className="text-3xl font-bold text-white sm:text-4xl">
+                    <h3 className="text-xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
                         Built on a Stronger Network
                     </h3>
                     <p className="mx-auto mt-4 max-w-2xl text-base text-slate-400">
@@ -90,7 +90,7 @@ export default function StatsSection({ items }: { items: StatItem[] }) {
                                 >
                                     <Icon className="h-6 w-6" />
                                 </div>
-                                <p className="text-2xl font-bold text-white sm:text-3xl">
+                                <p className="text-xl font-bold text-white sm:text-3xl">
                                     {stat.prefix}{stat.value}{stat.suffix}
                                 </p>
                                 <p className="mt-1 text-xs font-medium text-slate-400">{stat.label}</p>

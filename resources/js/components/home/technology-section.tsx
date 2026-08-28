@@ -41,9 +41,17 @@ export default function TechnologySection({ data }: { data: TechnologyData }) {
                 style={{ background: `color-mix(in srgb, ${accentAlt} 8%, transparent)` }} aria-hidden="true" />
 
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                {/* ── Eyebrow (always on top) ── */}
+                <div className="mb-10 text-center lg:text-left">
+                    <h2 className="mb-3 text-sm font-bold uppercase tracking-wider" style={{ color: accent }}>
+                        {data.eyebrow || 'Our Technology'}
+                    </h2>
+                    <div className="mx-auto mb-6 h-1 w-12 rounded-full sm:mx-auto lg:mx-0" style={{ background: accent }} />
+                </div>
+
                 <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
 
-                    {/* ── Hero Number + Mini Stats ── */}
+                    {/* ── Hero Number + Mini Stats (animation) ── */}
                     <div className="tech-fade relative order-2 lg:order-1">
                         <div className="flex flex-col items-center gap-10">
 
@@ -82,20 +90,16 @@ export default function TechnologySection({ data }: { data: TechnologyData }) {
                     </div>
 
                     {/* ── Content ── */}
-                    <div className="tech-fade-delayed order-1 lg:order-2">
-                        <h2 className="mb-3 text-sm font-bold uppercase tracking-wider" style={{ color: accent }}>
-                            {data.eyebrow || 'Our Technology'}
-                        </h2>
-                        <div className="mb-6 h-1 w-12 rounded-full" style={{ background: accent }} />
-                        <h3 className="mb-6 text-3xl font-bold text-white sm:text-4xl">{data.title}</h3>
-                        <p className="mb-8 text-base leading-relaxed text-slate-400">{data.description}</p>
-                        <div className="space-y-4">
+                    <div className="tech-fade-delayed order-1 lg:order-2 text-center sm:text-center lg:text-left">
+                        <h3 className="mb-6 text-center text-xl font-bold text-white sm:text-center sm:text-3xl md:text-4xl lg:text-left lg:text-5xl">{data.title}</h3>
+                        <p className="mx-auto mb-8 max-w-lg text-center text-base leading-relaxed text-slate-400 text-justify sm:text-center lg:mx-0 lg:text-left">{data.description}</p>
+                        <div className="mx-auto max-w-lg space-y-4 text-left sm:mx-auto lg:mx-0">
                             {data.capabilities.map((cap, i) => (
                                 <div key={i} className="flex items-start gap-3">
                                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" style={{ color: accent }} />
                                     <div>
                                         <h4 className="text-sm font-bold text-white">{cap.title}</h4>
-                                        {cap.description && <p className="mt-0.5 text-xs text-slate-500">{cap.description}</p>}
+                                        {cap.description && <p className="mt-0.5 text-xs text-slate-500 text-justify">{cap.description}</p>}
                                     </div>
                                 </div>
                             ))}

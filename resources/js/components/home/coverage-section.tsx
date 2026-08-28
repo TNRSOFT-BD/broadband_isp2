@@ -36,10 +36,10 @@ export default function CoverageSection({ data, areas }: { data: CoverageData; a
                         Coverage
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         {data.title}
                     </h3>
-                    <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500">
+                    <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500 text-justify">
                         {data.description}
                     </p>
                 </div>

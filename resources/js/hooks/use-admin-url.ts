@@ -23,13 +23,12 @@ export function useAdminUrl() {
         // Remove leading slash if present
         const cleanPath = path.startsWith('/') ? path.slice(1) : path;
 
-        // If prefix is 'admin', just use the standard path
-        if (prefix === 'admin') {
+        // If path already starts with the current prefix, return as-is
+        if (cleanPath.startsWith(prefix + '/') || cleanPath === prefix) {
             return '/' + cleanPath;
         }
 
-        // For non-admin prefixes, rewrite the URL
-        // If path starts with 'admin/', replace it
+        // If path starts with 'admin/', replace it with the actual prefix
         if (cleanPath.startsWith('admin/')) {
             return '/' + prefix + '/' + cleanPath.slice(6); // 6 = 'admin/'.length
         }

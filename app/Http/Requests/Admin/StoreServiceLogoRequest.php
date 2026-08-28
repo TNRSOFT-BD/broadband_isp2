@@ -18,7 +18,7 @@ class StoreServiceLogoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'logo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1024'],
+            'logo' => ['required', 'image', 'mimes:jpg,jpeg,png,gif,bmp,tiff,ico,webp,svg', 'max:10'],
         ];
     }
 
@@ -28,8 +28,8 @@ class StoreServiceLogoRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'logo.max' => 'The logo must not be larger than 1 MB.',
-            'logo.image' => 'The file must be an image (JPG, PNG, WebP, SVG).',
+            'logo.max' => 'The logo must not be larger than 10 KB.',
+            'logo.image' => 'The file must be an image (JPG, JPEG, PNG, GIF, BMP, TIFF, WebP, SVG, ICO).',
         ];
     }
 }

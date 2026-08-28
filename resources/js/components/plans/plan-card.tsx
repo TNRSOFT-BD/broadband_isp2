@@ -106,7 +106,7 @@ export default function PlanCard({ plan, currencySymbol, isSelectedForCompare = 
 
                     {/* Price */}
                     <div className="mt-5 flex items-baseline justify-center gap-1">
-                        <span className={cn('text-2xl font-bold', featured ? 'text-white' : 'text-gray-900')}>
+                        <span className={cn('text-xl font-bold', featured ? 'text-white' : 'text-gray-900')}>
                             {currencySymbol}
                             {Number(plan.monthly_price).toLocaleString(undefined, { minimumFractionDigits: 0 })}
                         </span>

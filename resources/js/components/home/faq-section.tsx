@@ -27,7 +27,7 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
                         FAQ
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         Questions? We Have You Connected.
                     </h3>
                 </div>
@@ -59,7 +59,7 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
                                     role="region"
                                 >
                                     <div className="border-t border-gray-100 px-5 pb-5 pt-4">
-                                        <p className="text-sm leading-relaxed text-gray-600">{faq.answer}</p>
+                                        <p className="text-sm leading-relaxed text-gray-600 text-justify">{faq.answer}</p>
                                     </div>
                                 </div>
                             </div>

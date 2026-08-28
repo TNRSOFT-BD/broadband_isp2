@@ -369,7 +369,7 @@ export default function ContactPageIndex() {
                                 label="Background Image"
                                 value={form.data.hero_background_image}
                                 onChange={(v) => form.setData('hero_background_image', v)}
-                                uploadUrl={route('admin.contact-page.upload')}
+                                uploadUrl={'/admin/pages/contact/upload'}
                             />
                             <Separator className="my-1" />
                             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Call-to-Action Buttons</p>

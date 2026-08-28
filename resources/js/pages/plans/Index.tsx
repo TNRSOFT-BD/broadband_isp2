@@ -59,8 +59,8 @@ export default function PlansIndex() {
 
             {/* Category navigation */}
             {categories.length > 0 && (
-                <section className="relative z-20 mx-auto -mt-10 max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Plan categories">
-                    <div className="rounded-2xl border border-gray-200 bg-white/90 p-4 shadow-xl shadow-gray-200/50 backdrop-blur">
+                <section className="relative z-20 mx-auto -mt-10 w-fit max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Plan categories">
+                    <div className="rounded-full border border-gray-200 bg-white/90 p-4 shadow-xl shadow-gray-200/50 backdrop-blur">
                         <PlanCategoryFilter categories={categories} activeCategory={activeCategory} onSelect={setActiveCategory} />
                     </div>
                 </section>

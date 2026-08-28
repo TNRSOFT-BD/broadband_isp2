@@ -88,7 +88,7 @@ export default function PartnersPage() {
             const fd = new FormData();
             fd.append('image', file);
 
-            const response = await fetch(route('admin.homepage.partner-upload'), {
+            const response = await fetch('/admin/homepage/partner-upload', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',

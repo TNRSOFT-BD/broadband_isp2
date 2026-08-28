@@ -77,7 +77,7 @@ export default function AboutHero({ data }: { data: HeroData }) {
                 </div>
 
                 {/* Heading */}
-                <h1 className="about-hero-fade-delayed mb-4 max-w-4xl text-[1.65rem] font-bold leading-tight tracking-tight text-white sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
+                <h1 className="about-hero-fade-delayed mb-4 max-w-4xl text-xl font-bold leading-tight tracking-tight text-white sm:mb-6 sm:text-3xl md:text-4xl lg:text-5xl">
                     {data.title.split('&').map((part, i, arr) =>
                         i < arr.length - 1 ? (
                             <span key={i}>
@@ -96,7 +96,7 @@ export default function AboutHero({ data }: { data: HeroData }) {
                 </h1>
 
                 {/* Description */}
-                <p className="about-hero-fade-late mb-6 max-w-2xl text-sm text-slate-400 sm:mb-10 sm:text-lg md:text-xl">
+                <p className="about-hero-fade-late mb-6 max-w-2xl text-sm text-slate-300 sm:mb-10 sm:text-lg md:text-xl">
                     {data.description}
                 </p>
 

@@ -19,11 +19,11 @@ export default function ContactFAQ({ settings }: ContactFAQProps) {
             <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                 {/* Section header */}
                 <div className="mb-8 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         {settings.faq_title}
                     </h2>
                     {settings.faq_description && (
-                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500 text-justify">
                             {settings.faq_description}
                         </p>
                     )}
@@ -44,7 +44,7 @@ export default function ContactFAQ({ settings }: ContactFAQProps) {
                             >
                                 <span className="pr-4 text-base font-semibold text-gray-900">{faq.question}</span>
                                 <ChevronDown
-                                    className={`h-5 w-5 shrink-0 text-gray-400 transition-transform duration-300 ${
+                                    className={`h-5 w-5 shrink-0 text-gray-500 transition-transform duration-300 ${
                                         openIndex === index ? 'rotate-180' : ''
                                     }`}
                                 />
@@ -55,7 +55,7 @@ export default function ContactFAQ({ settings }: ContactFAQProps) {
                                 }`}
                             >
                                 <div className="border-t border-gray-100 px-6 pb-5 pt-4">
-                                    <p className="text-sm leading-relaxed text-gray-600">{faq.answer}</p>
+                                    <p className="text-sm leading-relaxed text-gray-500 text-justify">{faq.answer}</p>
                                 </div>
                             </div>
                         </div>

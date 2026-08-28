@@ -139,7 +139,7 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Admin Dashboard" />
 
-            <div className="relative flex h-full flex-1 flex-col gap-6 overflow-hidden p-6">
+            <div className="relative flex flex-1 flex-col gap-6 p-6">
                 {/* Background grid */}
                 <div className="dash-grid absolute inset-0 opacity-[0.03]" aria-hidden="true" />
 
@@ -182,7 +182,7 @@ export default function Dashboard() {
                             <LayoutDashboard className="h-5 w-5" style={{ color: accent }} />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                            <h1 className="text-xl font-bold tracking-tight text-foreground">
                                 Admin Dashboard
                             </h1>
                             <p className="text-sm text-muted-foreground">

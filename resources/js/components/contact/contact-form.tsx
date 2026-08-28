@@ -40,7 +40,7 @@ export default function ContactForm({ settings, inquiryTypes, successMessage }: 
                 <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
                     <div className="rounded-2xl border border-green-200 bg-white p-12 text-center shadow-sm">
                         <CheckCircle2 className="mx-auto h-16 w-16 text-green-500" />
-                        <h3 className="mt-6 text-2xl font-bold text-gray-900">Message Sent!</h3>
+                        <h3 className="mt-6 text-xl font-bold text-gray-900">Message Sent!</h3>
                         <p className="mt-3 text-gray-500">
                             {successMessage || settings.contact_form_success_message}
                         </p>
@@ -62,11 +62,11 @@ export default function ContactForm({ settings, inquiryTypes, successMessage }: 
             <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
                 {/* Section header */}
                 <div className="mb-8 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         {settings.contact_form_title}
                     </h2>
                     {settings.contact_form_description && (
-                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500 text-justify">
                             {settings.contact_form_description}
                         </p>
                     )}
@@ -86,7 +86,7 @@ export default function ContactForm({ settings, inquiryTypes, successMessage }: 
                                 required
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
+                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-500 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
                                 placeholder="Your full name"
                             />
                             {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
@@ -102,7 +102,7 @@ export default function ContactForm({ settings, inquiryTypes, successMessage }: 
                                 id="phone"
                                 value={data.phone}
                                 onChange={(e) => setData('phone', e.target.value)}
-                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
+                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-500 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
                                 placeholder="+1 (555) 000-0000"
                             />
                             {errors.phone && <p className="mt-1 text-xs text-red-500">{errors.phone}</p>}
@@ -118,7 +118,7 @@ export default function ContactForm({ settings, inquiryTypes, successMessage }: 
                                 id="email"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
-                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
+                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-500 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
                                 placeholder="you@example.com"
                             />
                             {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
@@ -156,7 +156,7 @@ export default function ContactForm({ settings, inquiryTypes, successMessage }: 
                                 required
                                 value={data.subject}
                                 onChange={(e) => setData('subject', e.target.value)}
-                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
+                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-500 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
                                 placeholder="How can we help you?"
                             />
                             {errors.subject && <p className="mt-1 text-xs text-red-500">{errors.subject}</p>}
@@ -173,7 +173,7 @@ export default function ContactForm({ settings, inquiryTypes, successMessage }: 
                                 rows={5}
                                 value={data.message}
                                 onChange={(e) => setData('message', e.target.value)}
-                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
+                                className="mt-2 block w-full rounded-lg border border-gray-300 px-4 py-3 text-sm shadow-sm transition-colors placeholder:text-gray-500 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
                                 placeholder="Tell us more about your inquiry..."
                             />
                             {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}

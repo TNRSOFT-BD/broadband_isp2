@@ -39,7 +39,7 @@ export default function VisionMission({ vision, mission }: { vision: VisionMissi
                                     <Icon className="h-7 w-7" />
                                 </div>
                                 <h3 className="mb-4 text-xl font-bold text-gray-900">{item.title}</h3>
-                                <p className="leading-relaxed text-gray-600 text-justify">{item.description}</p>
+                                <p className="leading-relaxed text-gray-500 text-justify">{item.description}</p>
                             </div>
                         );
                     })}
