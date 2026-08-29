@@ -18,10 +18,12 @@ export default function AboutHero({ data }: { data: HeroData }) {
     return (
         <section className="relative overflow-hidden" style={{ background: overlay }}>
             {/* Background image */}
-            <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${data.image})` }}
-            />
+            {data.image && (
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${data.image})` }}
+                />
+            )}
 
             {/* Overlay */}
             <div

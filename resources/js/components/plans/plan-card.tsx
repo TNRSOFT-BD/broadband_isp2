@@ -174,26 +174,38 @@ export default function PlanCard({ plan, currencySymbol, isSelectedForCompare = 
 
                 {/* CTA */}
                 <div className="mt-auto p-6 pt-2">
-                    <a
-                        href={ctaUrl}
+                    {(plan.cta_text || plan.cta_url) && (
+                        <a
+                            href={ctaUrl}
+                            className={cn(
+                                'group/btn relative inline-flex w-full items-center justify-center gap-2 overflow-hidden py-3 text-sm font-semibold transition-colors',
+                                featured ? 'bg-white text-[var(--isp-primary)] hover:bg-white/95' : 'text-white',
+                            )}
+                            style={
+                                featured
+                                    ? { clipPath: 'polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)' }
+                                    : {
+                                          background: 'var(--isp-primary)',
+                                          clipPath: 'polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)',
+                                      }
+                            }
+                        >
+                            <span className="relative z-10">{ctaText}</span>
+                            <span className={cn('absolute inset-0 -translate-x-[100%] transition-transform duration-500 group-hover/btn:translate-x-[100%]', featured ? 'bg-[var(--isp-primary)]/10' : 'bg-white/15')} />
+                        </a>
+                    )}
+                    <Link
+                        href={`/plans/${plan.slug}`}
                         className={cn(
-                            'group/btn relative inline-flex w-full items-center justify-center gap-2 overflow-hidden py-3 text-sm font-semibold transition-colors',
-                            featured ? 'bg-white text-[var(--isp-primary)] hover:bg-white/95' : 'text-white',
+                            'group/view mt-3 relative inline-flex w-full items-center justify-center gap-2 overflow-hidden py-3 text-sm font-semibold transition-colors',
+                            featured ? 'bg-white/15 text-white hover:bg-white/25' : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
                         )}
-                        style={
-                            featured
-                                ? { clipPath: 'polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)' }
-                                : {
-                                      background: 'var(--isp-primary)',
-                                      clipPath: 'polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)',
-                                  }
-                        }
+                        style={{
+                            clipPath: 'polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)',
+                        }}
                     >
-                        <span className="relative z-10">{ctaText}</span>
-                        <span className={cn('absolute inset-0 -translate-x-[100%] transition-transform duration-500 group-hover/btn:translate-x-[100%]', featured ? 'bg-[var(--isp-primary)]/10' : 'bg-white/15')} />
-                    </a>
-                    <Link href={`/plans/${plan.slug}`} className={cn('mt-3 block py-2 text-center text-sm font-bold transition-colors', featured ? 'text-white/90 hover:text-white' : 'text-gray-500 hover:text-[var(--isp-primary)]')}>
-                        View Plan Details →
+                        <span className="relative z-10">View Plan Details</span>
+                        <span className={cn('absolute inset-0 -translate-x-[100%] transition-transform duration-500 group-hover/view:translate-x-[100%]', featured ? 'bg-white/10' : 'bg-gray-300/50')} />
                     </Link>
                 </div>
             </div>
