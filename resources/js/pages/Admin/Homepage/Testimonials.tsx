@@ -6,12 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { Plus, Trash2, Edit3, Star } from 'lucide-react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Homepage', href: '/admin/homepage' },
-    { title: 'Testimonials', href: '/admin/homepage/testimonials' },
-];
 
 interface Testimonial {
     id: number;
@@ -31,6 +27,13 @@ interface PageProps {
 }
 
 export default function TestimonialsAdmin() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Homepage', href: adminUrl('/homepage') },
+        { title: 'Testimonials', href: adminUrl('/homepage/testimonials') },
+    ];
+
     const { testimonials } = usePage().props as unknown as PageProps;
     const accent = 'var(--isp-primary)';
     const [editing, setEditing] = useState<number | null>(null);

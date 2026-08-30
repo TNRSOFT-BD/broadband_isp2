@@ -10,11 +10,8 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { CheckCircle2, Type, Palette } from 'lucide-react';
 import PageImageField from '@/components/admin/page-image-field';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Hero Config', href: '/admin/hero-config' },
-];
 
 interface HeroData {
     background_image: string | null;
@@ -61,6 +58,12 @@ const colorFields: { key: keyof HeroData; label: string; description: string; se
 const TABS = ['Content', 'Colors'] as const;
 
 export default function HeroConfig() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Hero Config', href: adminUrl('/hero-config') },
+    ];
+
     const { hero, theme } = usePage().props as unknown as { hero: HeroData; theme?: { colors: { primary: string } } };
     const primaryColor = theme?.colors?.primary ?? '#2563EB';
 
@@ -164,18 +167,22 @@ export default function HeroConfig() {
                                 </p>
 
                                 <div className="flex flex-wrap gap-3">
-                                    <span
-                                        className="inline-flex items-center rounded-full px-6 py-2 text-sm font-semibold"
-                                        style={{ background: form.data.cta_primary_bg, color: form.data.cta_primary_text_color }}
-                                    >
-                                        {form.data.cta_primary_text}
-                                    </span>
-                                    <span
-                                        className="inline-flex items-center rounded-full border px-6 py-2 text-sm font-semibold"
-                                        style={{ borderColor: form.data.cta_secondary_border, color: form.data.cta_secondary_text_color }}
-                                    >
-                                        {form.data.cta_secondary_text}
-                                    </span>
+                                    {form.data.cta_primary_text && (
+                                        <span
+                                            className="inline-flex items-center rounded-full px-6 py-2 text-sm font-semibold"
+                                            style={{ background: form.data.cta_primary_bg, color: form.data.cta_primary_text_color }}
+                                        >
+                                            {form.data.cta_primary_text}
+                                        </span>
+                                    )}
+                                    {form.data.cta_secondary_text && (
+                                        <span
+                                            className="inline-flex items-center rounded-full border px-6 py-2 text-sm font-semibold"
+                                            style={{ borderColor: form.data.cta_secondary_border, color: form.data.cta_secondary_text_color }}
+                                        >
+                                            {form.data.cta_secondary_text}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -226,7 +233,7 @@ export default function HeroConfig() {
                                             form.setData('background_image', v);
                                             setPreviewBg(v);
                                         }}
-                                        uploadUrl={route('admin.hero-config.upload')}
+                                        uploadUrl={'/admin/hero-config/upload'}
                                     />
 
                                     <Separator className="my-1" />

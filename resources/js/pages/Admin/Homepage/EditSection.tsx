@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2 } from 'lucide-react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
 const sectionLabels: Record<string, string> = {
     intro: 'Company Introduction',
@@ -23,6 +24,7 @@ interface PageProps {
 
 export default function EditSection() {
     const { section, data: sectionData, is_active: serverIsActive } = usePage().props as unknown as PageProps;
+    const { adminUrl } = useAdminUrl();
     const accent = 'var(--isp-primary)';
     const d = sectionData ?? {};
 
@@ -65,9 +67,9 @@ export default function EditSection() {
         setFormData((prev) => ({ ...prev, [key]: value }));
 
     const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'Dashboard', href: '/admin/dashboard' },
-        { title: 'Homepage', href: '/admin/homepage' },
-        { title: sectionLabels[section] ?? section, href: `/admin/homepage/${section}/edit` },
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Homepage', href: adminUrl('/homepage') },
+        { title: sectionLabels[section] ?? section, href: adminUrl(`/homepage/${section}/edit`) },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {

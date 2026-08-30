@@ -11,17 +11,12 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        url: '/admin/dashboard',
-        icon: LayoutGrid,
-    },
-];
+
 
 const rightNavItems: NavItem[] = [
     {
@@ -46,6 +41,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+    const { adminUrl } = useAdminUrl();
+    const mainNavItems: NavItem[] = [
+        { title: 'Dashboard', url: adminUrl('/dashboard'), icon: LayoutGrid },
+    ];
     return (
         <>
             <div className="border-sidebar-border/80 border-b">
@@ -94,7 +93,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         </Sheet>
                     </div>
 
-                    <Link href="/admin/dashboard" prefetch className="flex items-center space-x-2">
+                    <Link href={adminUrl('/dashboard')} prefetch className="flex items-center space-x-2">
                         <AppLogo />
                     </Link>
 

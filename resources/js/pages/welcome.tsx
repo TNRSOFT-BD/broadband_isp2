@@ -126,7 +126,7 @@ export default function Welcome() {
 
             {/* Homepage sections below */}
             {vis.intro !== false && props.intro && (
-                <IntroSection data={props.intro} features={props.introFeatures ?? []} />
+                <IntroSection data={props.intro} features={vis.introFeatures === false ? [] : (props.introFeatures ?? [])} />
             )}
 
             {props.featuredPlans && props.featuredPlans.length > 0 && (

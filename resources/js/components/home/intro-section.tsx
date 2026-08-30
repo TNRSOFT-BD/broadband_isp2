@@ -78,31 +78,31 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid items-center gap-12 lg:grid-cols-2">
                     {/* Content */}
-                    <div className="intro-fade">
+                    <div className="intro-fade text-center sm:text-center lg:text-left">
                         <h2
-                            className="mb-3 text-sm font-bold uppercase tracking-wider"
+                            className="mb-3 text-center font-bold uppercase tracking-wider sm:text-center lg:text-left" style={{ fontSize: '12.25px', color: accent }}
                             style={{ color: accent }}
                         >
                             {data.eyebrow}
                         </h2>
-                        <div className="mb-6 h-1 w-12 rounded-full" style={{ background: accent }} />
+                        <div className="mx-auto mb-6 h-1 w-12 rounded-full sm:mx-auto lg:mx-0" style={{ background: accent }} />
 
-                        <h3 className="mb-3 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl lg:text-5xl">
+                        <h3 className="mb-3 text-center text-xl font-bold leading-tight text-gray-900 sm:text-center sm:text-3xl lg:text-left lg:text-5xl">
                             {data.title}
                         </h3>
 
                         {data.subtitle && (
-                            <p className="mb-4 text-base font-semibold" style={{ color: accent }}>{data.subtitle}</p>
+                            <p className="mb-4 text-center text-base font-semibold sm:text-center lg:text-left" style={{ color: accent }}>{data.subtitle}</p>
                         )}
 
-                        <p className="mb-6 max-w-lg text-base leading-relaxed text-gray-600">
+                        <p className="mx-auto mb-6 max-w-lg text-center text-base leading-relaxed text-gray-600 text-justify sm:text-center lg:mx-0 lg:text-left">
                             {data.description}
                         </p>
 
                         {data.highlights && data.highlights.length > 0 && (
-                            <ul className="mb-6 space-y-2">
+                            <ul className="mx-auto mb-6 max-w-md space-y-2 sm:mx-auto lg:mx-0">
                                 {data.highlights.map((item, i) => (
-                                    <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
+                                    <li key={i} className="flex items-center justify-center gap-2 text-sm text-gray-700 sm:justify-center lg:justify-start">
                                         <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white" style={{ background: accent }}>✓</span>
                                         {item}
                                     </li>
@@ -110,21 +110,23 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
                             </ul>
                         )}
 
-                        <Link
-                            href={data.cta_url}
-                            className="intro-btn group relative inline-flex items-center gap-2 overflow-hidden px-7 py-3 text-sm font-semibold text-white transition-all duration-300"
-                            style={{
-                                background: accent,
-                                clipPath: 'polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%)',
-                            }}
-                        >
-                            <span className="relative z-10">{data.cta_text}</span>
-                            <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                            <span className="absolute inset-0 -translate-x-[100%] bg-white/15 transition-transform duration-500 group-hover:translate-x-[100%]" />
-                        </Link>
+                        <div className="flex justify-center lg:justify-start">
+                            <Link
+                                href={data.cta_url}
+                                className="intro-btn group relative inline-flex items-center gap-2 overflow-hidden px-7 py-3 text-sm font-semibold text-white transition-all duration-300"
+                                style={{
+                                    background: accent,
+                                    clipPath: 'polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%)',
+                                }}
+                            >
+                                <span className="relative z-10">{data.cta_text}</span>
+                                <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                                <span className="absolute inset-0 -translate-x-[100%] bg-white/15 transition-transform duration-500 group-hover:translate-x-[100%]" />
+                            </Link>
+                        </div>
 
                         {data.trust_badge && (
-                            <p className="mt-4 flex items-center gap-1.5 text-xs text-gray-400">
+                            <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-gray-400 sm:justify-center lg:justify-start">
                                 <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                                 {data.trust_badge}
                             </p>
@@ -133,7 +135,67 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
 
                     {/* Right side — Animated Network Visual */}
                     <div className="intro-fade-delayed relative flex items-center justify-center">
-                        <div className="relative h-[24rem] w-full sm:h-[30rem] lg:h-[34rem]">
+                        {/* ── MOBILE: Simplified visual ── */}
+                        <div className="md:hidden relative flex h-64 w-full items-center justify-center">
+                            {/* Background glow disc */}
+                            <div
+                                className="absolute left-1/2 top-1/2 h-52 w-52 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                                style={{
+                                    background: `radial-gradient(circle, color-mix(in srgb, ${accent} 10%, transparent) 0%, color-mix(in srgb, ${accentAlt} 4%, transparent) 40%, transparent 70%)`,
+                                }}
+                                aria-hidden="true"
+                            />
+
+                            {/* Simple orbital ring */}
+                            <div className="intro-orbit absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border" style={{ borderColor: `color-mix(in srgb, ${accent} 15%, transparent)` }} aria-hidden="true" />
+                            <div className="intro-orbit-reverse absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed" style={{ borderColor: `color-mix(in srgb, ${accentAlt} 10%, transparent)` }} aria-hidden="true" />
+
+                            {/* Pulsing ring dots */}
+                            {[0, 90, 180, 270].map((deg, i) => (
+                                <div
+                                    key={`mob-dot-${i}`}
+                                    className="intro-ring-dot absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                                    style={{
+                                        background: i % 2 === 0 ? accent : accentAlt,
+                                        transform: `rotate(${deg}deg) translateX(88px) rotate(-${deg}deg)`,
+                                        transformOrigin: '0 0',
+                                        boxShadow: `0 0 6px ${i % 2 === 0 ? accent : accentAlt}`,
+                                        animationDelay: `${i * 0.6}s`,
+                                    }}
+                                    aria-hidden="true"
+                                />
+                            ))}
+
+                            {/* Central hub */}
+                            <div
+                                className="intro-pulse relative z-10 flex h-16 w-16 items-center justify-center"
+                                style={{
+                                    background: `linear-gradient(135deg, ${accent}, ${accentAlt})`,
+                                    clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                                    boxShadow: `0 0 60px color-mix(in srgb, ${accent} 30%, transparent)`,
+                                }}
+                            >
+                                <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 011.06 0z" />
+                                </svg>
+                            </div>
+
+                            {/* Animated data particles (simplified) */}
+                            <svg className="absolute inset-0 h-full w-full" aria-hidden="true">
+                                <circle r="2" fill={accent} opacity="0.4" className="intro-trail">
+                                    <animateMotion dur="4s" repeatCount="indefinite" path="M200,200 L100,50" />
+                                </circle>
+                                <circle r="2" fill={accentAlt} opacity="0.35" className="intro-trail">
+                                    <animateMotion dur="5s" repeatCount="indefinite" path="M200,200 L320,320" />
+                                </circle>
+                                <circle r="1.5" fill={accent} opacity="0.3" className="intro-trail">
+                                    <animateMotion dur="4.5s" repeatCount="indefinite" path="M200,200 L60,200" />
+                                </circle>
+                            </svg>
+                        </div>
+
+                        {/* ── DESKTOP+: Full animation ── */}
+                        <div className="hidden md:block relative h-[24rem] w-full sm:h-[30rem] lg:h-[34rem]">
 
                             {/* Background glow disc */}
                             <div
@@ -236,10 +298,10 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
                                 <div key={pi} className={`pointer-events-none absolute z-20 rounded-lg border p-2.5 ${pos.animClass} ${pos.cls}`} style={{ borderColor: `color-mix(in srgb, ${pos.color} 15%, transparent)`, background: 'color-mix(in srgb, white 85%, transparent)', backdropFilter: 'blur(8px)' }}>
                                     <div className="mb-1 flex items-center gap-1.5">
                                         <span className="intro-hud-dot h-1.5 w-1.5 rounded-full" style={{ background: pos.dotColor }} />
-                                        <span className="text-[9px] font-bold uppercase tracking-widest text-gray-500">{panel.label}</span>
+                                        <span className="text-[11px] font-bold uppercase tracking-widest text-gray-500">{panel.label}</span>
                                     </div>
                                     {panel.stats?.map((stat, si) => (
-                                        <p key={si} className="font-mono text-[11px]" style={{ color: si === 0 ? pos.color : 'rgb(156,163,175)' }}>
+                                        <p key={si} className="font-mono text-[13px]" style={{ color: si === 0 ? pos.color : 'rgb(156,163,175)' }}>
                                             <span className={si === 0 ? 'font-bold' : ''}>{stat.value}</span>{' '}
                                             <span className={si === 0 ? 'font-normal text-gray-400' : 'text-gray-300'}>{stat.label}</span>
                                         </p>

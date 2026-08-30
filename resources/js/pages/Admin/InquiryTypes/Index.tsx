@@ -7,11 +7,8 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Inquiry Types', href: '/admin/contact/inquiry-types' },
-];
 
 interface InquiryType {
     id: number;
@@ -29,6 +26,12 @@ interface PageProps extends Record<string, unknown> {
 }
 
 export default function InquiryTypesIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Inquiry Types', href: adminUrl('/contact/inquiry-types') },
+    ];
+
     const { inquiryTypes } = usePage<PageProps>().props;
     const { flash } = usePage<SharedData>().props as SharedData & { flash?: { success?: string } };
 

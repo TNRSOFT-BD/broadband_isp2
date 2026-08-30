@@ -36,7 +36,7 @@ export default function CTASection() {
             <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-white to-transparent dark:from-[#09090b]" aria-hidden="true" />
 
             <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-28">
-                <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+                <h2 className="mb-4 text-xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
                     {ctaData.title}
                 </h2>
                 <p className="mx-auto mb-10 max-w-2xl text-lg text-slate-400">

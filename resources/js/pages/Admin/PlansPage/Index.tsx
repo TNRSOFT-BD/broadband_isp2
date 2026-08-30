@@ -11,12 +11,8 @@ import { Head, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, Globe, Sparkles, LayoutGrid, Megaphone, Search } from 'lucide-react';
 import { useState } from 'react';
 import PageImageField from '@/components/admin/page-image-field';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Pages', href: '#' },
-    { title: 'Plans Page', href: '/admin/pages/plans' },
-];
 
 interface PageProps {
     [key: string]: unknown;
@@ -65,6 +61,12 @@ function SectionCard({
 }
 
 export default function PlansPageSettingsIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Plans Page', href: adminUrl('/pages/plans') },
+    ];
+
     const { settings } = usePage<PageProps>().props;
     const { errors, flash } = usePage<SharedData>().props as SharedData & {
         errors: Record<string, string>;
@@ -210,7 +212,7 @@ export default function PlansPageSettingsIndex() {
                                 label="Background Image"
                                 value={form.data.background_image}
                                 onChange={(v) => form.setData('background_image', v)}
-                                uploadUrl={route('admin.pages.plans.upload')}
+                                uploadUrl={'/admin/pages/plans/upload'}
                             />
                             <Separator className="my-1" />
                             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Call-to-Action Buttons</p>
@@ -349,7 +351,7 @@ export default function PlansPageSettingsIndex() {
                                 label="CTA Background Image"
                                 value={form.data.cta_section_background_image}
                                 onChange={(v) => form.setData('cta_section_background_image', v)}
-                                uploadUrl={route('admin.pages.plans.upload')}
+                                uploadUrl={'/admin/pages/plans/upload'}
                             />
                         </SectionCard>
                     )}

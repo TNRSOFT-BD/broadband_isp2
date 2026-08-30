@@ -23,9 +23,9 @@ export default function ClientsSection({ data }: { data: ClientsData }) {
                         Our Clients
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">{data.title}</h3>
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">{data.title}</h3>
                     {data.description && (
-                        <p className="mx-auto mt-4 max-w-2xl text-gray-600 text-justify">{data.description}</p>
+                        <p className="mx-auto mt-4 max-w-2xl text-gray-500 text-justify">{data.description}</p>
                     )}
                 </div>
 
@@ -50,7 +50,7 @@ export default function ClientsSection({ data }: { data: ClientsData }) {
                                         <CategoryIcon className="h-7 w-7" />
                                     </div>
                                 )}
-                                <h4 className="mb-2 text-lg font-bold text-gray-900">{client.name}</h4>
+                                <h4 className="mb-2 text-xl font-bold text-gray-900">{client.name}</h4>
                                 {client.category && <p className="text-sm text-gray-500">{client.category}</p>}
                                 {client.website_url && (
                                     <a href={client.website_url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-[var(--isp-primary)] hover:underline">Visit Website</a>

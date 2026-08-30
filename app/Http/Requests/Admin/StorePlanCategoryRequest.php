@@ -23,14 +23,6 @@ class StorePlanCategoryRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:500'],
             'icon' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
-            'is_active' => ['boolean'],
         ];
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'is_active' => $this->boolean('is_active'),
-        ]);
     }
 }

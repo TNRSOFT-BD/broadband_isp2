@@ -18,7 +18,7 @@ export default function Timeline({ items }: { items: MilestoneItem[] }) {
                         Our Journey
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">Building the Future, Step by Step</h3>
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">Building the Future, Step by Step</h3>
                 </div>
 
                 {/* ═══ MOBILE TIMELINE ═══ */}
@@ -32,8 +32,8 @@ export default function Timeline({ items }: { items: MilestoneItem[] }) {
                                 </div>
                                 <div className="flex-1 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-md">
                                     <span className="mb-2 inline-block rounded-full px-3 py-1 text-xs font-bold" style={{ background: dotBg, color: accent }}>{milestone.year}</span>
-                                    <h4 className="mb-1 text-lg font-bold text-gray-900">{milestone.title}</h4>
-                                    <p className="text-sm leading-relaxed text-gray-600">{milestone.description}</p>
+                                    <h4 className="mb-1 text-xl font-bold text-gray-900">{milestone.title}</h4>
+                                    <p className="text-sm leading-relaxed text-gray-500 text-justify">{milestone.description}</p>
                                 </div>
                             </div>
                         ))}
@@ -59,7 +59,7 @@ export default function Timeline({ items }: { items: MilestoneItem[] }) {
                         {items.map((milestone) => (
                             <div key={milestone.id} className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-gray-200/50">
                                 <h4 className="mb-1 text-base font-bold text-gray-900">{milestone.title}</h4>
-                                <p className="text-sm leading-relaxed text-gray-600">{milestone.description}</p>
+                                <p className="text-sm leading-relaxed text-gray-500 text-justify">{milestone.description}</p>
                             </div>
                         ))}
                     </div>

@@ -41,11 +41,11 @@ export default function OfficeHours({ settings }: OfficeHoursProps) {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Section header */}
                 <div className="mb-8 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         {settings.hours_title}
                     </h2>
                     {settings.hours_description && (
-                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500 text-justify">
                             {settings.hours_description}
                         </p>
                     )}
@@ -67,7 +67,7 @@ export default function OfficeHours({ settings }: OfficeHoursProps) {
                             >
                                 {iconMap[entry.icon] ?? <Clock className="h-5 w-5" />}
                             </div>
-                            <h3 className="text-lg font-bold text-gray-900">{entry.title}</h3>
+                            <h3 className="text-xl font-bold text-gray-900">{entry.title}</h3>
                             <p className="mt-2 text-base font-semibold" style={{ color: accent }}>
                                 {entry.schedule}
                             </p>

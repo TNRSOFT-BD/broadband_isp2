@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 import {
     Dialog,
     DialogContent,
@@ -23,10 +24,6 @@ interface PageProps {
     categories: (PlanCategoryType & { plans_count?: number })[];
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Plan Categories', href: '/admin/plan-categories' },
-];
 
 const emptyForm = {
     name: '',
@@ -36,6 +33,12 @@ const emptyForm = {
 };
 
 export default function PlanCategoriesIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Plan Categories', href: adminUrl('/plan-categories') },
+    ];
+
     const { categories } = usePage<PageProps>().props;
     const { errors, flash } = usePage<SharedData>().props as SharedData & {
         errors: Record<string, string>;

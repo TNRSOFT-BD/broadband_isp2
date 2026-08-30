@@ -17,11 +17,11 @@ export default function OfficeLocations({ settings, locations }: OfficeLocations
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Section header */}
                 <div className="mb-8 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    <h2 className="text-xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         {settings.locations_title}
                     </h2>
                     {settings.locations_description && (
-                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500">
+                        <p className="mx-auto mt-4 max-w-2xl text-lg text-gray-500 text-justify">
                             {settings.locations_description}
                         </p>
                     )}
@@ -29,19 +29,19 @@ export default function OfficeLocations({ settings, locations }: OfficeLocations
 
                 <div className="grid gap-8 lg:grid-cols-2">
                     {/* Location cards */}
-                    <div className="space-y-4">
+                    <div className="flex flex-col gap-4">
                         {locations.map((location) => (
                             <button
                                 key={location.id}
                                 type="button"
                                 onClick={() => setSelectedLocation(location)}
-                                className={`w-full rounded-2xl border p-6 text-left transition-all duration-300 ${
+                                className={`flex w-full flex-1 flex-col justify-center rounded-2xl border p-6 text-left transition-all duration-300 ${
                                     selectedLocation?.id === location.id
                                         ? 'border-[var(--isp-primary)] bg-[var(--isp-primary)]/5 shadow-lg shadow-gray-200/50'
                                         : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
                                 }`}
                             >
-                                <div className="flex items-start gap-4">
+                                <div className="flex items-center gap-4">
                                     <div
                                         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
                                             selectedLocation?.id === location.id
@@ -52,9 +52,9 @@ export default function OfficeLocations({ settings, locations }: OfficeLocations
                                         <MapPin className="h-5 w-5" />
                                     </div>
                                     <div className="flex-1">
-                                        <h3 className="text-lg font-bold text-gray-900">{location.name}</h3>
+                                        <h3 className="text-xl font-bold text-gray-900">{location.name}</h3>
                                         {location.type && (
-                                            <span className="mt-0.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+                                            <span className="mt-0.5 inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
                                                 {location.type.replace(/_/g, ' ')}
                                             </span>
                                         )}
@@ -86,13 +86,13 @@ export default function OfficeLocations({ settings, locations }: OfficeLocations
                     </div>
 
                     {/* Map */}
-                    <div className="flex min-h-[400px] items-center justify-center overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
+                    <div className="flex h-full min-h-[300px] items-center justify-center overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
                         {selectedLocation?.map_embed_url ? (
                             <iframe
                                 src={selectedLocation.map_embed_url}
                                 width="100%"
                                 height="100%"
-                                style={{ border: 0, minHeight: '400px' }}
+                                style={{ border: 0, minHeight: '300px' }}
                                 allowFullScreen
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
@@ -111,8 +111,8 @@ export default function OfficeLocations({ settings, locations }: OfficeLocations
                             </a>
                         ) : (
                             <div className="text-center">
-                                <MapPin className="mx-auto h-12 w-12 text-gray-300" />
-                                <p className="mt-3 text-sm text-gray-400">No map available for this location</p>
+                                <MapPin className="mx-auto h-12 w-12 text-gray-500" />
+                                <p className="mt-3 text-sm text-gray-500">No map available for this location</p>
                             </div>
                         )}
                     </div>

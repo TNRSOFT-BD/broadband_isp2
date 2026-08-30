@@ -57,7 +57,7 @@ export default function CtaSection({ data }: { data: CtaData }) {
                     </h2>
                     <div className="mx-auto mb-6 h-1 w-12 rounded-full" style={{ background: accentAlt }} />
 
-                    <h3 className="mb-6 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+                    <h3 className="mb-6 text-xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
                         {data.title}
                     </h3>
 

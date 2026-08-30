@@ -261,6 +261,7 @@ class HomepageController extends Controller
     {
         return Inertia::render('Admin/Homepage/IntroFeatures', [
             'features' => IntroFeature::ordered()->get(),
+            'enabled' => (HomepageSetting::findByKey('intro_features')?->is_active) ?? true,
         ]);
     }
 
@@ -309,6 +310,28 @@ class HomepageController extends Controller
 
         return redirect()->route('admin.homepage.intro-features')
             ->with('success', 'Intro feature deleted successfully.');
+    }
+
+    public function toggleIntroFeatures(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'is_active' => 'required|boolean',
+        ]);
+
+        HomepageSetting::updateOrCreate(
+            ['section_key' => 'intro_features'],
+            [
+                'data' => [],
+                'is_active' => $validated['is_active'],
+            ]
+        );
+
+        $this->homepageService->flushCache();
+
+        return redirect()->route('admin.homepage.intro-features')
+            ->with('success', $validated['is_active']
+                ? 'Intro Network Features shown on the homepage.'
+                : 'Intro Network Features hidden from the homepage.');
     }
 
     // ─── Partners CRUD ─────────────────────────────────────────────

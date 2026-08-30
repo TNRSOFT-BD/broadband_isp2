@@ -24,7 +24,7 @@ export default function StatsGrid({ items }: { items: StatItem[] }) {
                         Our Impact
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">At a Glance</h3>
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">At a Glance</h3>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-6">

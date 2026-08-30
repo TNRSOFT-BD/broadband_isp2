@@ -1,13 +1,10 @@
+import { useAdminUrl } from '@/hooks/use-admin-url';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { CheckCircle2 } from 'lucide-react';
-import { LayoutGrid, Edit3, Star, HelpCircle, MapPin, ArrowRight, Settings, Zap } from 'lucide-react';
+import { LayoutGrid, Edit3, Star, HelpCircle, MapPin, ArrowRight, Settings, Zap, Home } from 'lucide-react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Homepage', href: '/admin/homepage' },
-];
 
 interface SectionSetting {
     id: number;
@@ -28,6 +25,12 @@ const sectionConfig: Record<string, { label: string; description: string; icon: 
 };
 
 export default function HomepageIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Homepage', href: adminUrl('/homepage') },
+    ];
+
     const { settings, flash } = usePage().props as unknown as PageProps & { flash?: { success?: string } };
     const accent = 'var(--isp-primary)';
 
@@ -54,6 +57,21 @@ export default function HomepageIndex() {
 
                 {/* Section Cards */}
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {/* Hero Section */}
+                    <Link
+                        href={adminUrl("/hero-config")}
+                        className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[var(--isp-primary)]/30 hover:shadow-md"
+                    >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--isp-primary) 10%, transparent)' }}>
+                            <Home className="h-5 w-5" style={{ color: 'var(--isp-primary)' }} />
+                        </div>
+                        <h3 className="mt-3 text-sm font-bold text-gray-900">Hero Section</h3>
+                        <p className="mt-1 text-xs text-gray-500">Main hero banner with heading, CTA buttons, and background</p>
+                        <div className="mt-3 flex items-center gap-1 text-xs font-medium" style={{ color: accent }}>
+                            Edit Section <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                        </div>
+                    </Link>
+
                     {Object.entries(sectionConfig).map(([key, config]) => {
                         const setting = settingsMap.get(key);
                         return (
@@ -143,10 +161,10 @@ export default function HomepageIndex() {
                 {/* Info */}
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-700">
                     <strong>Note:</strong> Featured Plans, Why Choose Us, Statistics, Services, and Partners are managed through their own admin sections.
-                    Plans use the <Link href="/admin/plans" className="font-semibold underline">Plans Manager</Link>,
-                    Services use the <Link href="/admin/services" className="font-semibold underline">Services Manager</Link>,
-                    Statistics and Why Choose Us are managed in <Link href="/admin/pages/about" className="font-semibold underline">About Page</Link>,
-                    and Partners/Clients are also in <Link href="/admin/pages/about" className="font-semibold underline">About Page</Link>.
+                    Plans use the <Link href={adminUrl("/plans")} className="font-semibold underline">Plans Manager</Link>,
+                    Services use the <Link href={adminUrl("/services")} className="font-semibold underline">Services Manager</Link>,
+                    Statistics and Why Choose Us are managed in <Link href={adminUrl("/pages/about")} className="font-semibold underline">About Page</Link>,
+                    and Partners/Clients are also in <Link href={adminUrl("/pages/about")} className="font-semibold underline">About Page</Link>.
                 </div>
             </div>
         </AppLayout>

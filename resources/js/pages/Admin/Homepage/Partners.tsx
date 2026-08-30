@@ -7,12 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, Pencil, Users, Image as ImageIcon, CheckCircle2, ExternalLink } from 'lucide-react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Homepage', href: '/admin/homepage' },
-    { title: 'Partners', href: '/admin/homepage/partners' },
-];
 
 interface PartnerItem {
     id: number;
@@ -28,6 +24,13 @@ interface PageProps extends Record<string, unknown> {
 }
 
 export default function PartnersPage() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Homepage', href: adminUrl('/homepage') },
+        { title: 'Partners', href: adminUrl('/homepage/partners') },
+    ];
+
     const { partners } = usePage<PageProps>().props;
     const { flash } = usePage().props as { flash?: { success?: string } };
     const accent = 'var(--isp-primary)';
@@ -45,8 +48,7 @@ export default function PartnersPage() {
 
     const MAX_IMAGE_BYTES = 10 * 1024; // 10 KB
 
-    const resetForm = () => {
-        setShowForm(false);
+    const resetFields = () => {
         setEditingId(null);
         setName('');
         setLogo('');
@@ -54,6 +56,11 @@ export default function PartnersPage() {
         setSortOrder(0);
         setIsActive(true);
         setUploadError(null);
+    };
+
+    const resetForm = () => {
+        resetFields();
+        setShowForm(false);
     };
 
     const handleEdit = (item: PartnerItem) => {
@@ -85,7 +92,7 @@ export default function PartnersPage() {
             const fd = new FormData();
             fd.append('image', file);
 
-            const response = await fetch(route('admin.homepage.partner-upload'), {
+            const response = await fetch('/admin/homepage/partner-upload', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
@@ -173,7 +180,7 @@ export default function PartnersPage() {
                         </p>
                     </div>
                     <Button
-                        onClick={() => { setShowForm(!showForm); setEditingId(null); resetForm(); }}
+                        onClick={() => { setShowForm(!showForm); resetFields(); }}
                         style={{ background: accent }}
                     >
                         <Plus className="mr-1 h-4 w-4" /> Add Partner

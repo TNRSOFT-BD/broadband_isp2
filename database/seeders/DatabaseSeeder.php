@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
+        // Seed roles and permissions
+        $this->call(RolePermissionSeeder::class);
+
         // Seed default theme
         Theme::create([
             'name' => 'Default Theme',

@@ -37,10 +37,10 @@ export default function ServicesSection({ services }: { services: ServiceItem[] 
                         Services & Solutions
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         Connectivity for Every Need
                     </h3>
-                    <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500">
+                    <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500 text-justify">
                         From streaming entertainment to enterprise security, we offer digital services that complete your connected experience.
                     </p>
                 </div>
@@ -88,7 +88,7 @@ export default function ServicesSection({ services }: { services: ServiceItem[] 
                                 </div>
 
                                 {svc.description && (
-                                    <p className="mb-4 text-sm leading-relaxed text-gray-500 line-clamp-2">{svc.description}</p>
+                                    <p className="mb-4 text-sm leading-relaxed text-gray-500 text-justify line-clamp-2">{svc.description}</p>
                                 )}
 
                                 {svc.website_url && (

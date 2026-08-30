@@ -68,7 +68,7 @@ export default function PlansHero({ settings }: PlansHeroProps) {
                 </div>
 
                 {/* Heading */}
-                <h1 className="plans-fade-delayed mb-6 max-w-4xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+                <h1 className="plans-fade-delayed mb-6 max-w-4xl text-xl font-bold leading-tight tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl">
                     {settings.hero_title}{' '}
                     <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(to right, ${accent}, ${accentAlt})` }}>
                         {settings.hero_highlight}
@@ -77,7 +77,7 @@ export default function PlansHero({ settings }: PlansHeroProps) {
 
                 {/* Description */}
                 {settings.hero_description && (
-                    <p className="plans-fade-late mb-10 max-w-2xl text-lg text-slate-400 sm:text-xl">
+                    <p className="plans-fade-late mb-10 max-w-2xl text-lg text-slate-300 sm:text-xl">
                         {settings.hero_description}
                     </p>
                 )}

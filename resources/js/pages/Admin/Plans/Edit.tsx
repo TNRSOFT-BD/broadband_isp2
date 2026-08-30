@@ -3,6 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import type { AdminPlan, PlanCategory } from '@/types/plans';
 import { Head, usePage } from '@inertiajs/react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
 interface PageProps {
     [key: string]: unknown;
@@ -11,12 +12,14 @@ interface PageProps {
     services: { id: number; name: string; slug: string; logo?: string | null }[];
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Plans', href: '/admin/plans' },
-];
 
 export default function EditPlan() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Plans', href: adminUrl('/plans') },
+    ];
+
     const { plan, categories, services } = usePage<PageProps>().props;
 
     const initialData: PlanFormData = {
@@ -60,7 +63,7 @@ export default function EditPlan() {
     };
 
     return (
-        <AppLayout breadcrumbs={[...breadcrumbs, { title: plan.name, href: `/admin/plans/${plan.id}/edit` }]}>
+        <AppLayout breadcrumbs={[...breadcrumbs, { title: plan.name, href: adminUrl(`/plans/${plan.id}/edit`) }]}>
             <Head title={`Edit ${plan.name}`} />
 
             <div className="flex flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">

@@ -31,6 +31,7 @@ class OfficeLocationService
     public function createLocation(array $data): OfficeLocation
     {
         $data['slug'] = $this->resolveUniqueSlug($data['slug'] ?? null, $data['name']);
+        $data['map_embed_url'] = $this->normalizeMapEmbed($data['map_embed_url'] ?? null);
 
         return $this->locationRepository->create($data);
     }
@@ -39,6 +40,9 @@ class OfficeLocationService
     {
         if (isset($data['name']) && ! isset($data['slug'])) {
             $data['slug'] = $this->resolveUniqueSlug(null, $data['name'], $id);
+        }
+        if (array_key_exists('map_embed_url', $data)) {
+            $data['map_embed_url'] = $this->normalizeMapEmbed($data['map_embed_url']);
         }
 
         return $this->locationRepository->update($id, $data);
@@ -69,5 +73,28 @@ class OfficeLocationService
         }
 
         return $candidate;
+    }
+
+    /**
+     * Accept a raw Google Maps embed URL or a full iframe snippet, and
+     * normalize it to just the underlying src URL for safe iframe rendering.
+     */
+    private function normalizeMapEmbed(?string $value): ?string
+    {
+        $value = trim((string) $value);
+
+        if ($value === '') {
+            return null;
+        }
+
+        if (preg_match('/src\s*=\s*["\'](https?:\/\/[^"\']+)["\']/i', $value, $matches)) {
+            return $matches[1];
+        }
+
+        if (filter_var($value, FILTER_VALIDATE_URL) !== false) {
+            return $value;
+        }
+
+        return $value;
     }
 }

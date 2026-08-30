@@ -23,9 +23,9 @@ export default function CertificationsSection({ data }: { data: CertificationsDa
                         Trust & Compliance
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">{data.title}</h3>
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">{data.title}</h3>
                     {data.description && (
-                        <p className="mx-auto mt-4 max-w-2xl text-gray-600 text-justify">{data.description}</p>
+                        <p className="mx-auto mt-4 max-w-2xl text-gray-500 text-justify">{data.description}</p>
                     )}
                 </div>
 
@@ -46,10 +46,10 @@ export default function CertificationsSection({ data }: { data: CertificationsDa
                                 >
                                     <Icon className="h-6 w-6" />
                                 </div>
-                                <h4 className="mb-2 text-lg font-bold text-gray-900">{cert.title}</h4>
-                                {cert.description && <p className="text-sm leading-relaxed text-gray-600 text-justify">{cert.description}</p>}
+                                <h4 className="mb-2 text-xl font-bold text-gray-900">{cert.title}</h4>
+                                {cert.description && <p className="text-sm leading-relaxed text-gray-500 text-justify">{cert.description}</p>}
                                 {cert.issuing_organization && (
-                                    <p className="mt-2 text-xs text-gray-400">Issued by: {cert.issuing_organization}</p>
+                                    <p className="mt-2 text-xs text-gray-500">Issued by: {cert.issuing_organization}</p>
                                 )}
                                 {cert.verification_url && (
                                     <a href={cert.verification_url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-[var(--isp-primary)] hover:underline">Verify →</a>

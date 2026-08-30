@@ -26,7 +26,7 @@ export default function PlansCTA({ settings }: PlansCTAProps) {
             <div className="plans-grid absolute inset-0 opacity-[0.03]" aria-hidden="true" />
 
             <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-24">
-                <h2 id="plans-cta-heading" className="mx-auto max-w-3xl text-3xl font-bold text-white sm:text-4xl">
+                <h2 id="plans-cta-heading" className="mx-auto max-w-3xl text-xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
                     {settings.cta_section_title}
                 </h2>
                 {settings.cta_section_description && (

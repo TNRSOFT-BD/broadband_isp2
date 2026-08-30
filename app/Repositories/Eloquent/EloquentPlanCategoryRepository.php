@@ -20,7 +20,7 @@ class EloquentPlanCategoryRepository implements PlanCategoryRepositoryInterface
     public function getActiveOrdered(): Collection
     {
         return PlanCategory::query()
-            ->where('is_active', true)
+            ->whereHas('activePlans')
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get();

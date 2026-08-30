@@ -218,6 +218,10 @@ class HomepageService
             $visibility[$key] = isset($settings[$key]) ? $settings[$key]->is_active : true;
         }
 
+        // Intro network features visibility (toggleable from admin)
+        $introFeaturesSetting = \App\Models\HomepageSetting::findByKey('intro_features');
+        $visibility['introFeatures'] = $introFeaturesSetting ? $introFeaturesSetting->is_active : true;
+
         // These sections are always visible if they have data
         $visibility['featuredPlans'] = true;
         $visibility['whyChooseUs'] = true;

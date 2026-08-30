@@ -94,8 +94,7 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
                                 ? currentUrl === '/'
                                 : currentUrl.startsWith(link.href);
 
-                            return (
-                                <Link
+                            return (                                    <Link
                                     key={link.href}
                                     href={link.href}
                                     className={cn(

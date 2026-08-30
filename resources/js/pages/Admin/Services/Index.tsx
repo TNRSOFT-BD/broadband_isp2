@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 import {
     Dialog,
     DialogContent,
@@ -37,10 +38,6 @@ interface PageProps {
     categories: { value: string; label: string }[];
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Services', href: '/admin/services' },
-];
 
 const emptyForm = {
     name: '',
@@ -56,6 +53,12 @@ const emptyForm = {
 type ServiceFormState = typeof emptyForm;
 
 export default function ServicesIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Services', href: adminUrl('/services') },
+    ];
+
     const { services, categories } = usePage<PageProps>().props;
     const { errors, flash } = usePage<SharedData>().props as SharedData & {
         errors: Record<string, string>;
@@ -101,9 +104,9 @@ export default function ServicesIndex() {
         setUploading(true);
         setLogoError('');
 
-        const MAX_SIZE_BYTES = 1024 * 1024; // 1 MB
+        const MAX_SIZE_BYTES = 10 * 1024; // 10 KB
         if (file.size > MAX_SIZE_BYTES) {
-            setLogoError('Logo must not be larger than 1 MB.');
+            setLogoError('Logo must not be larger than 10 KB.');
             setUploading(false);
             return;
         }
@@ -112,7 +115,7 @@ export default function ServicesIndex() {
             const formData = new FormData();
             formData.append('logo', file);
 
-            const response = await fetch(route('admin.services.upload'), {
+            const response = await fetch('/admin/services/upload', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
@@ -283,14 +286,14 @@ export default function ServicesIndex() {
                                 <div className="min-w-0 flex-1 space-y-1">
                                     <input
                                         type="file"
-                                        accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml"
+                                        accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.ico,.webp,.svg,image/jpeg,image/png,image/gif,image/bmp,image/tiff,image/x-icon,image/webp,image/svg+xml"
                                         onChange={handleLogoUpload}
                                         disabled={uploading}
                                         className="block w-full min-w-0 text-sm text-muted-foreground file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary-foreground hover:file:bg-primary/90 disabled:opacity-50"
                                         aria-label="Upload service logo"
                                     />
                                     <p className="text-xs text-muted-foreground">
-                                        {uploading ? 'Uploading...' : 'JPG, PNG, WebP or SVG (max 1 MB)'}
+                                        {uploading ? 'Uploading...' : 'JPG, JPEG, PNG, GIF, BMP, TIFF, WebP, SVG or ICO (max 10 KB)'}
                                     </p>
                                 </div>
                             </div>

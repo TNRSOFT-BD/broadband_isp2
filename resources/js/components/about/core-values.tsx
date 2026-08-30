@@ -21,7 +21,7 @@ export default function CoreValues({ items }: { items: CoreValueItem[] }) {
                         Our Values
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">What Drives Us</h3>
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">What Drives Us</h3>
                 </div>
 
                 <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -41,8 +41,8 @@ export default function CoreValues({ items }: { items: CoreValueItem[] }) {
                                 >
                                     <Icon className="h-6 w-6" />
                                 </div>
-                                <h4 className="mb-2 text-lg font-bold text-gray-900">{value.title}</h4>
-                                <p className="text-sm leading-relaxed text-gray-600 text-justify">{value.description}</p>
+                                <h4 className="mb-2 text-xl font-bold text-gray-900">{value.title}</h4>
+                                <p className="text-sm leading-relaxed text-gray-500 text-justify">{value.description}</p>
                             </div>
                         );
                     })}

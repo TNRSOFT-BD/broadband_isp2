@@ -1,15 +1,12 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { User, Lock, Save, Shield, Mail, CheckCircle2 } from 'lucide-react';
+import { User, Lock, Save, Shield, Mail, LogOut, CheckCircle2 } from 'lucide-react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Profile', href: '/admin/profile' },
-];
 
 interface UserData {
     id: number;
@@ -24,6 +21,12 @@ interface PageProps {
 }
 
 export default function AdminProfile() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Profile', href: adminUrl('/profile') },
+    ];
+
     const { user, flash } = usePage().props as unknown as PageProps;
     const accent = 'var(--isp-primary)';
     const accentAlt = 'var(--isp-accent)';
@@ -121,7 +124,7 @@ export default function AdminProfile() {
                     </p>
                 </div>
 
-                <div className="relative z-10 grid gap-6 xl:grid-cols-2">
+                <div className="relative z-10 grid gap-6 xl:grid-cols-3">
                     {/* Profile Information Card */}
                     <div className="profile-card group relative overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg"
                         style={{
@@ -388,6 +391,54 @@ export default function AdminProfile() {
                         <span className="profile-bracket pointer-events-none absolute -right-1.5 -top-1.5 h-5 w-5 border-r-2 border-t-2" style={{ borderColor: `color-mix(in srgb, ${accent} 40%, transparent)`, animationDelay: '0.75s' }} aria-hidden="true" />
                         <span className="profile-bracket pointer-events-none absolute -bottom-1.5 -right-1.5 h-5 w-5 border-b-2 border-r-2" style={{ borderColor: `color-mix(in srgb, ${accent} 40%, transparent)`, animationDelay: '1.5s' }} aria-hidden="true" />
                         <span className="profile-bracket pointer-events-none absolute -bottom-1.5 -left-1.5 h-5 w-5 border-b-2 border-l-2" style={{ borderColor: `color-mix(in srgb, ${accent} 40%, transparent)`, animationDelay: '2.25s' }} aria-hidden="true" />
+                    </div>
+                    {/* Logout Card */}
+                    <div className="profile-card group relative overflow-hidden rounded-xl border transition-all duration-300 hover:shadow-lg"
+                        style={{
+                            borderColor: 'color-mix(in srgb, var(--border) 100%, transparent)',
+                            background: 'color-mix(in srgb, var(--card) 100%, transparent)',
+                        }}
+                    >
+                        {/* Top edge glow */}
+                        <div
+                            className="absolute inset-x-0 top-0 h-px"
+                            style={{ background: `linear-gradient(90deg, transparent, #EF4444, transparent)` }}
+                            aria-hidden="true"
+                        />
+
+                        {/* Scanline */}
+                        <div className="profile-scan pointer-events-none absolute inset-x-0 h-[1px]"
+                            style={{ background: `linear-gradient(90deg, transparent, #EF4444, transparent)`, animationDelay: '3s' }}
+                            aria-hidden="true"
+                        />
+
+                        <div className="relative flex h-full flex-col items-center justify-center p-6 text-center">
+                            <div
+                                className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl border"
+                                style={{
+                                    borderColor: 'color-mix(in srgb, #EF4444 25%, transparent)',
+                                    background: 'color-mix(in srgb, #EF4444 8%, transparent)',
+                                }}
+                            >
+                                <LogOut className="h-6 w-6 text-red-500" />
+                            </div>
+                            <h2 className="text-lg font-bold text-foreground">Sign Out</h2>
+                            <p className="mt-1 text-xs text-muted-foreground">End your current session and log out of the admin panel</p>
+                            <button
+                                type="button"
+                                onClick={() => router.post(route('logout'))}
+                                className="group relative mt-5 inline-flex items-center gap-2 overflow-hidden rounded-lg border border-red-200 bg-red-50 px-6 py-2.5 text-sm font-semibold text-red-600 transition-all duration-200 hover:border-red-300 hover:bg-red-100"
+                            >
+                                <LogOut className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+                                Log Out
+                            </button>
+                        </div>
+
+                        {/* HUD corner brackets */}
+                        <span className="profile-bracket pointer-events-none absolute -left-1.5 -top-1.5 h-5 w-5 border-l-2 border-t-2" style={{ borderColor: 'color-mix(in srgb, #EF4444 40%, transparent)' }} aria-hidden="true" />
+                        <span className="profile-bracket pointer-events-none absolute -right-1.5 -top-1.5 h-5 w-5 border-r-2 border-t-2" style={{ borderColor: 'color-mix(in srgb, #EF4444 40%, transparent)', animationDelay: '0.75s' }} aria-hidden="true" />
+                        <span className="profile-bracket pointer-events-none absolute -bottom-1.5 -right-1.5 h-5 w-5 border-b-2 border-r-2" style={{ borderColor: 'color-mix(in srgb, #EF4444 40%, transparent)', animationDelay: '1.5s' }} aria-hidden="true" />
+                        <span className="profile-bracket pointer-events-none absolute -bottom-1.5 -left-1.5 h-5 w-5 border-b-2 border-l-2" style={{ borderColor: 'color-mix(in srgb, #EF4444 40%, transparent)', animationDelay: '2.25s' }} aria-hidden="true" />
                     </div>
                 </div>
 

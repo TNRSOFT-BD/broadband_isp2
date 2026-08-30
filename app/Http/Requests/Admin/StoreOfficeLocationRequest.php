@@ -21,7 +21,7 @@ class StoreOfficeLocationRequest extends FormRequest
             'phone' => ['nullable', 'string', 'max:50'],
             'email' => ['nullable', 'email', 'max:255'],
             'map_url' => ['nullable', 'url', 'max:1024'],
-            'map_embed_url' => ['nullable', 'url'],
+            'map_embed_url' => ['nullable', 'string', 'max:4000'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'office_hours' => ['nullable', 'string', 'max:1000'],

@@ -9,6 +9,7 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import type { ContactPageSettings, OfficeHoursEntry, HelpfulResource, FAQItem } from '@/types/contact';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { useAdminUrl } from '@/hooks/use-admin-url';
 import {
     CheckCircle2,
     Globe,
@@ -25,11 +26,6 @@ import {
 } from 'lucide-react';
 import PageImageField from '@/components/admin/page-image-field';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/admin/dashboard' },
-    { title: 'Pages', href: '#' },
-    { title: 'Contact Page', href: '/admin/pages/contact' },
-];
 
 interface PageProps extends Record<string, unknown> {
     settings: ContactPageSettings;
@@ -176,6 +172,13 @@ function EntryCard({
 /* ─── Main Component ─── */
 
 export default function ContactPageIndex() {
+    const { adminUrl } = useAdminUrl();
+    const breadcrumbs: BreadcrumbItem[] = [
+        { title: 'Dashboard', href: adminUrl('/dashboard') },
+        { title: 'Pages', href: '#' },
+        { title: 'Contact Page', href: adminUrl('/pages/contact') },
+    ];
+
     const { settings } = usePage<PageProps>().props;
     const { errors, flash } = usePage<SharedData>().props as SharedData & {
         errors: Record<string, string>;
@@ -366,7 +369,7 @@ export default function ContactPageIndex() {
                                 label="Background Image"
                                 value={form.data.hero_background_image}
                                 onChange={(v) => form.setData('hero_background_image', v)}
-                                uploadUrl={route('admin.contact-page.upload')}
+                                uploadUrl={'/admin/pages/contact/upload'}
                             />
                             <Separator className="my-1" />
                             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Call-to-Action Buttons</p>

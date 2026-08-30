@@ -45,10 +45,10 @@ export default function FeaturedPlansSection({ plans }: { plans: FeaturedPlan[] 
                         Internet Plans
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
-                    <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                    <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
                         Find the Connection Built for You
                     </h3>
-                    <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500">
+                    <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500 text-justify">
                         Choose from our range of high-speed internet plans designed for every need — from home browsing to enterprise-grade connectivity.
                     </p>
                 </div>
@@ -141,7 +141,7 @@ export default function FeaturedPlansSection({ plans }: { plans: FeaturedPlan[] 
 
                                     {/* Price */}
                                     <div className="mt-5 flex items-baseline justify-center gap-1">
-                                        <span className={`text-2xl font-bold ${featured ? 'text-white' : 'text-gray-900'}`}>
+                                        <span className={`text-xl font-bold ${featured ? 'text-white' : 'text-gray-900'}`}>
                                             ৳{Number(plan.monthly_price).toLocaleString()}
                                         </span>
                                         <span className={`text-sm ${featured ? 'text-white/80' : 'text-gray-500'}`}>

@@ -76,7 +76,7 @@ export default function ContactHero({ settings }: ContactHeroProps) {
                 </div>
 
                 {/* Heading */}
-                <h1 className="contact-hero-fade-delayed mb-6 max-w-4xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+                <h1 className="contact-hero-fade-delayed mb-6 max-w-4xl text-xl font-bold leading-tight tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl">
                     {settings.hero_title}
                     {settings.hero_highlight && (
                         <>
@@ -93,7 +93,7 @@ export default function ContactHero({ settings }: ContactHeroProps) {
 
                 {/* Description */}
                 {settings.hero_description && (
-                    <p className="contact-hero-fade-late mb-10 max-w-2xl text-lg text-slate-400 sm:text-xl">
+                    <p className="contact-hero-fade-late mb-10 max-w-2xl text-lg text-slate-300 sm:text-xl">
                         {settings.hero_description}
                     </p>
                 )}
