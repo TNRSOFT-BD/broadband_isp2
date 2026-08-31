@@ -66,5 +66,8 @@ class DatabaseSeeder extends Seeder
             PlanSeeder::class,
             AboutUsSeeder::class,
         ]);
+
+        // Seed default legal pages
+        $this->call(LegalPageSeeder::class);
     }
 }

@@ -14,6 +14,7 @@ const sectionLabels: Record<string, string> = {
     technology: 'Technology & Infrastructure',
     coverage: 'Coverage Section',
     cta: 'Final CTA',
+    why_choose_us: 'Why Choose Us',
 };
 
 interface PageProps {
@@ -607,6 +608,29 @@ export default function EditSection() {
                                 <div className="space-y-2"><Label>Primary Button URL</Label><Input value={formData.primary_button_url} onChange={(e) => setData('primary_button_url', e.target.value)} placeholder="/plans" /></div>
                                 <div className="space-y-2"><Label>Secondary Button Text</Label><Input value={formData.secondary_button_text} onChange={(e) => setData('secondary_button_text', e.target.value)} placeholder="Contact Us" /></div>
                                 <div className="space-y-2"><Label>Secondary Button URL</Label><Input value={formData.secondary_button_url} onChange={(e) => setData('secondary_button_url', e.target.value)} placeholder="/contact" /></div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Why Choose Us Section */}
+                    {section === 'why_choose_us' && (
+                        <div className="space-y-4">
+                            <div className="grid gap-4 lg:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label>Eyebrow Text</Label>
+                                    <Input value={formData.eyebrow} onChange={(e) => setData('eyebrow', e.target.value)} placeholder="Why Us" />
+                                    <p className="text-[11px] text-muted-foreground">Small label shown above the heading (e.g. "Why Us").</p>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Title</Label>
+                                    <Input value={formData.title} onChange={(e) => setData('title', e.target.value)} placeholder="More Than Just Internet" />
+                                    <p className="text-[11px] text-muted-foreground">Main heading displayed on the section.</p>
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Description</Label>
+                                <textarea className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" value={formData.description} onChange={(e) => setData('description', e.target.value)} placeholder="We deliver more than bandwidth — we deliver peace of mind with cutting-edge technology and dedicated support." />
+                                <p className="text-[11px] text-muted-foreground">Subtext below the heading.</p>
                             </div>
                         </div>
                     )}

@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AdminHomepageServiceController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminLegalPageController;
 use App\Http\Controllers\Admin\WebsiteConfigController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\RolePrefixMiddleware;
@@ -293,6 +294,25 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/third-party-links', [WebsiteConfigController::class, 'updateThirdPartyLinks'])->name('third-party-links.update');
         });
 
+        // ── Legal Pages ──────────────────────────────────────────
+        Route::middleware('permission:view-legal-pages')->group(function () {
+            Route::get('/legal-pages', [AdminLegalPageController::class, 'index'])->name('legal-pages.index');
+        });
+        Route::middleware('permission:create-legal-pages')->group(function () {
+            Route::get('/legal-pages/create', [AdminLegalPageController::class, 'create'])->name('legal-pages.create');
+            Route::post('/legal-pages', [AdminLegalPageController::class, 'store'])->name('legal-pages.store');
+        });
+        Route::middleware('permission:edit-legal-pages')->group(function () {
+            Route::get('/legal-pages/{id}/edit', [AdminLegalPageController::class, 'edit'])->name('legal-pages.edit');
+            Route::put('/legal-pages/{id}', [AdminLegalPageController::class, 'update'])->name('legal-pages.update');
+        });
+        Route::middleware('permission:delete-legal-pages')->group(function () {
+            Route::delete('/legal-pages/{id}', [AdminLegalPageController::class, 'destroy'])->name('legal-pages.destroy');
+        });
+        Route::middleware('permission:view-legal-pages')->group(function () {
+            Route::get('/legal-pages/{id}/preview', [AdminLegalPageController::class, 'preview'])->name('legal-pages.preview');
+        });
+
         // ── User Management (super_admin & admin only) ──────────────
         Route::middleware('permission:view-users')->group(function () {
             Route::get('/users', [UserController::class, 'index'])->name('users.index');
@@ -460,6 +480,11 @@ Route::middleware(['auth'])->group(function () {
             // Website Config
             Route::middleware('permission:view-website-config')->group(function () {
                 Route::get('/website-config', [WebsiteConfigController::class, 'index'])->name('website-config');
+            });
+
+            // Legal Pages
+            Route::middleware('permission:view-legal-pages')->group(function () {
+                Route::get('/legal-pages', [AdminLegalPageController::class, 'index'])->name('legal-pages.index');
             });
 
             // Roles & Users

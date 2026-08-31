@@ -65,6 +65,12 @@ class RolePermissionSeeder extends Seeder
             'manage-about-page',
             'manage-contact-page',
 
+            // Legal Pages
+            'view-legal-pages',
+            'create-legal-pages',
+            'edit-legal-pages',
+            'delete-legal-pages',
+
             // Website Config
             'view-website-config',
             'edit-website-config',
@@ -108,6 +114,7 @@ class RolePermissionSeeder extends Seeder
             'view-contact-messages', 'manage-contact-messages', 'delete-contact-messages',
             'manage-quick-contact-methods', 'manage-inquiry-types', 'manage-office-locations',
             'manage-plans-page', 'manage-about-page', 'manage-contact-page',
+            'view-legal-pages', 'create-legal-pages', 'edit-legal-pages', 'delete-legal-pages',
             'view-website-config', 'edit-website-config',
             'edit-own-profile',
         ]);
@@ -127,6 +134,7 @@ class RolePermissionSeeder extends Seeder
             'view-contact-messages', 'manage-contact-messages',
             'manage-quick-contact-methods', 'manage-inquiry-types', 'manage-office-locations',
             'manage-plans-page', 'manage-about-page', 'manage-contact-page',
+            'view-legal-pages', 'create-legal-pages', 'edit-legal-pages',
             'edit-own-profile',
         ]);
 
@@ -139,8 +147,8 @@ class RolePermissionSeeder extends Seeder
             'view-plan-categories',
             'view-services',
             'view-homepage',
-            'view-hero-config',
-            'view-contact-messages',
+            'view-hero-config',            'view-contact-messages',
+            'view-legal-pages',
             'edit-own-profile',
         ]);
 

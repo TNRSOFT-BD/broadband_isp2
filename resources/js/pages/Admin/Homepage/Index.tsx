@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { CheckCircle2 } from 'lucide-react';
-import { LayoutGrid, Edit3, Star, HelpCircle, MapPin, ArrowRight, Settings, Zap, Home } from 'lucide-react';
+import { LayoutGrid, Edit3, Star, HelpCircle, MapPin, ArrowRight, Settings, Zap, Home, Target } from 'lucide-react';
 
 
 interface SectionSetting {
@@ -22,6 +22,7 @@ const sectionConfig: Record<string, { label: string; description: string; icon: 
     technology: { label: 'Technology & Infrastructure', description: 'Network capabilities and tech stack', icon: Settings },
     coverage: { label: 'Coverage Areas', description: 'Service coverage regions', icon: MapPin },
     cta: { label: 'Final CTA', description: 'Bottom conversion section', icon: ArrowRight },
+    why_choose_us: { label: 'Why Choose Us', description: 'Section heading and subtitle for Why Choose Us', icon: Target },
 };
 
 export default function HomepageIndex() {

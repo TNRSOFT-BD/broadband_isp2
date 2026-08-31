@@ -103,6 +103,11 @@ class HomepageService
                 'title' => $item->title,
                 'description' => $item->description,
             ])->toArray(),
+            'whyChooseUsSettings' => $this->extractSectionData($settings, 'why_choose_us', [
+                'eyebrow' => 'Why Us',
+                'title' => 'More Than Just Internet',
+                'description' => 'We deliver more than bandwidth \u2014 we deliver peace of mind with cutting-edge technology and dedicated support.',
+            ]),
             'statistics' => $this->homepageRepository->getActiveStatistics()->map(fn ($stat) => [
                 'id' => $stat->id,
                 'label' => $stat->label,

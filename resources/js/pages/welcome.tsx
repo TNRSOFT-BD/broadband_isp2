@@ -51,6 +51,11 @@ interface HomepageProps {
         title: string;
         description: string;
     }>;
+    whyChooseUsSettings?: {
+        eyebrow?: string;
+        title?: string;
+        description?: string;
+    };
     statistics?: Array<{
         id: number;
         label: string;
@@ -155,7 +160,7 @@ export default function Welcome() {
             )}
 
             {props.whyChooseUs && props.whyChooseUs.length > 0 && (
-                <WhyChooseUsSection items={props.whyChooseUs} />
+                <WhyChooseUsSection items={props.whyChooseUs} settings={props.whyChooseUsSettings} />
             )}
 
             {props.services && props.services.length > 0 && (

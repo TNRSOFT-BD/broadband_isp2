@@ -10,6 +10,8 @@ const quickLinks = [
     { title: 'Contact', href: '/contact' },
 ];
 
+
+
 const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
     { icon: Twitter, href: '#', label: 'Twitter' },
@@ -37,10 +39,16 @@ interface QuickContactMethod {
     href?: string | null;
 }
 
+interface LegalPageLink {
+    title: string;
+    slug: string;
+}
+
 export default function SiteFooter() {
     const page = usePage();
     const site = page.props.site as { site_name?: string | null } | undefined;
     const quickContactMethods = (page.props.footerContactMethods as QuickContactMethod[] | undefined) ?? [];
+    const legalPages = (page.props.legalPages as LegalPageLink[] | undefined) ?? [];
 
     // Only show contact methods that have both label and value
     const validContactMethods = quickContactMethods.filter((m) => m.label && m.value);
@@ -55,16 +63,16 @@ export default function SiteFooter() {
             <div className="pointer-events-none absolute -right-40 bottom-0 h-80 w-80 rounded-full bg-[var(--isp-accent)]/5 blur-[120px]" />
 
             <div className="relative mx-auto max-w-7xl px-4 pt-10 pb-6 sm:px-6 lg:px-8">
-                {/* Brand row - full width */}
-                <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-12">
-                    <div className="flex-1 text-center md:text-left">
+                {/* Main row: Logo left, Links + Contact right */}
+                <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-12 text-center md:text-left">
+                    {/* Left: Logo + tagline + social */}
+                    <div className="flex-1">
                         <Link href="/" className="inline-block">
                             <IspLogo />
                         </Link>
                         <p className="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-slate-400 md:mx-0">
                             Empowering your digital world with ultra-fast, reliable internet connectivity. Experience the future of broadband today.
                         </p>
-                        {/* Social icons */}
                         <div className="mt-6 flex items-center justify-center gap-3 md:justify-start">
                             {socialLinks
                                 .filter((social) => social.href && social.href !== '#')
@@ -80,10 +88,9 @@ export default function SiteFooter() {
                             ))}
                         </div>
                     </div>
-                </div>
 
-                {/* Links grid - separate row */}
-                <div className="mt-8 grid gap-8 text-center sm:grid-cols-2 md:text-left lg:grid-cols-2">
+                    {/* Right: Quick Links + Contact Us */}
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:w-1/2">
                     {/* Quick Links */}
                     <div>
                         <h3 className="text-sm font-bold uppercase tracking-wider text-white">Quick Links</h3>
@@ -141,6 +148,7 @@ export default function SiteFooter() {
                             </ul>
                         </div>
                     )}
+                    </div>
                 </div>
 
                 {/* Bottom bar */}
@@ -152,15 +160,15 @@ export default function SiteFooter() {
                             . All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
-                            <a href="#" className="text-xs text-slate-500 transition-colors hover:text-slate-300">
-                                Privacy Policy
-                            </a>
-                            <a href="#" className="text-xs text-slate-500 transition-colors hover:text-slate-300">
-                                Terms of Service
-                            </a>
-                            <a href="#" className="text-xs text-slate-500 transition-colors hover:text-slate-300">
-                                Cookie Policy
-                            </a>
+                            {legalPages.map((link) => (
+                                <Link
+                                    key={link.slug}
+                                    href={`/legal/${link.slug}`}
+                                    className="text-xs text-slate-500 transition-colors hover:text-slate-300"
+                                >
+                                    {link.title}
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>

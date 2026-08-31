@@ -22,6 +22,7 @@ import {
     Shield,
     UserPlus,
     ServerCog,
+    FileText,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -60,6 +61,7 @@ const navGroups: NavGroup[] = [
             { title: 'Plans Page', url: '/admin/pages/plans', icon: Globe, permission: 'manage-plans-page' },
             { title: 'About Page', url: '/admin/pages/about', icon: Users, permission: 'manage-about-page' },
             { title: 'Contact Page', url: '/admin/pages/contact', icon: PhoneCall, permission: 'manage-contact-page' },
+            { title: 'Legal Pages', url: '/admin/legal-pages', icon: FileText, permission: 'view-legal-pages' },
         ],
     },
     {

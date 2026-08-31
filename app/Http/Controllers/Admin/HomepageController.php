@@ -51,6 +51,7 @@ class HomepageController extends Controller
             'technology' => $this->getTechnologyData($setting),
             'coverage' => $this->getCoverageData($setting),
             'cta' => $this->getCtaData($setting),
+            'why_choose_us' => $this->getWhyChooseUsData($setting),
             default => [],
         };
 
@@ -504,6 +505,15 @@ class HomepageController extends Controller
             'primary_button_url' => '/plans',
             'secondary_button_text' => 'Contact Us',
             'secondary_button_url' => '/contact',
+        ];
+    }
+
+    private function getWhyChooseUsData(?HomepageSetting $setting): array
+    {
+        return $setting?->data ?? [
+            'eyebrow' => 'Why Us',
+            'title' => 'More Than Just Internet',
+            'description' => 'We deliver more than bandwidth — we deliver peace of mind with cutting-edge technology and dedicated support.',
         ];
     }
 }
