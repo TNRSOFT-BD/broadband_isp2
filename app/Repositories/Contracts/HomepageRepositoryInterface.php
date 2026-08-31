@@ -58,11 +58,6 @@ interface HomepageRepositoryInterface
     public function getFeaturedServices(): Collection;
 
     /**
-     * Get active intro network features.
-     */
-    public function getActiveIntroFeatures(): Collection;
-
-    /**
      * Get active "why choose us" items.
      */
     public function getActiveWhyChooseUs(): Collection;

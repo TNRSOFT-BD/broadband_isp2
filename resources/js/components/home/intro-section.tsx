@@ -1,14 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
 
-interface IntroFeature {
-    id: number;
-    label: string;
-    sub_label: string | null;
-    icon: string | null;
-    color: string | null;
-}
-
 interface HudStat {
     value: string;
     label: string;
@@ -32,36 +24,9 @@ interface IntroData {
     hud_panels?: HudPanel[];
 }
 
-export default function IntroSection({ data, features = [] }: { data: IntroData; features?: IntroFeature[] }) {
+export default function IntroSection({ data }: { data: IntroData }) {
     const accent = 'var(--isp-primary)';
     const accentAlt = 'var(--isp-accent)';
-
-    // Maximum 6 node positions around the hub
-    const nodePositions = [
-        { x: '12%', y: '18%' },
-        { x: '82%', y: '15%' },
-        { x: '92%', y: '50%' },
-        { x: '82%', y: '82%' },
-        { x: '12%', y: '82%' },
-        { x: '5%', y: '50%' },
-    ];
-
-    // Lucide icon SVG paths
-    const iconPaths: Record<string, string> = {
-        Zap: 'M13 10V3L4 14h7v7l9-11h-7z',
-        Globe: 'M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945',
-        Shield: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
-        Headphones: 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z',
-        Clock: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
-        Wifi: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
-        Server: 'M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01',
-        Activity: 'M22 12h-4l-3 9L9 3l-3 9H2',
-        Cpu: 'M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z',
-        Signal: 'M2 20h.01M7 20v-4M12 20v-8M17 20V8',
-        Lock: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
-        Star: 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z',
-        Default: 'M13 10V3L4 14h7v7l9-11h-7z',
-    };
 
     return (
         <section className="relative overflow-hidden bg-white py-10 sm:py-14 lg:py-16">
@@ -81,7 +46,6 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
                     <div className="intro-fade text-center sm:text-center lg:text-left">
                         <h2
                             className="mb-3 text-center font-bold uppercase tracking-wider sm:text-center lg:text-left" style={{ fontSize: '12.25px', color: accent }}
-                            style={{ color: accent }}
                         >
                             {data.eyebrow}
                         </h2>
@@ -310,52 +274,6 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
                                 );
                             })}
 
-                            {/* Satellite nodes — dynamic from DB */}
-                            {nodePositions.map((pos, i) => {
-                                const feature = features[i];
-                                if (!feature) return null;
-                                const nodeColor = feature.color || (i % 2 === 0 ? accent : accentAlt);
-                                const iconPath = (feature.icon ? iconPaths[feature.icon] : null) ?? iconPaths.Default;
-                                return (
-                                <div
-                                    key={feature.id}
-                                    className="intro-node absolute flex items-center gap-2.5"
-                                    style={{
-                                        left: pos.x,
-                                        top: pos.y,
-                                        transform: 'translate(-50%, -50%)',
-                                        animationDelay: `${i * 0.7}s`,
-                                    }}
-                                >
-                                    <div className="relative">
-                                        {/* Node glow halo */}
-                                        <div
-                                            className="intro-node-halo absolute inset-0 -m-2 rounded-xl"
-                                            style={{ background: `radial-gradient(circle, color-mix(in srgb, ${nodeColor} 10%, transparent), transparent 70%)` }}
-                                            aria-hidden="true"
-                                        />
-                                        <div
-                                            className="intro-node-ring relative flex h-12 w-12 items-center justify-center rounded-xl border backdrop-blur-sm transition-all duration-300 hover:scale-110"
-                                            style={{
-                                                borderColor: `color-mix(in srgb, ${nodeColor} 22%, transparent)`,
-                                                background: `color-mix(in srgb, ${nodeColor} 7%, transparent)`,
-                                            }}
-                                        >
-                                            <svg className="h-5 w-5" style={{ color: nodeColor }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={iconPath} />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div className="hidden sm:block">
-                                        <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">{feature.label}</p>
-                                        {feature.sub_label && (
-                                            <p className="font-mono text-[9px] font-semibold" style={{ color: nodeColor }}>{feature.sub_label}</p>
-                                        )}
-                                    </div>
-                                </div>
-                            );
-                            })}
-
                             {/* Connection lines (SVG) with animated dots */}
                             <svg className="absolute inset-0 h-full w-full" aria-hidden="true">
                                 {/* Main lines from center to each node */}
@@ -482,31 +400,6 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
                     0%, 100% { opacity: 0.4; }
                     50% { opacity: 0.9; }
                 }
-                .intro-node { animation: introNodeFloat 5s ease-in-out infinite; }
-                .intro-node:nth-child(2) { animation-delay: 0.7s; }
-                .intro-node:nth-child(3) { animation-delay: 1.4s; }
-                .intro-node:nth-child(4) { animation-delay: 2.1s; }
-                .intro-node:nth-child(5) { animation-delay: 2.8s; }
-                .intro-node:nth-child(6) { animation-delay: 3.5s; }
-                @keyframes introNodeFloat {
-                    0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-                    50% { transform: translate(-50%, -50%) translateY(-8px); }
-                }
-                .intro-node-ring { animation: introNodeRingPulse 4s ease-in-out infinite; }
-                @keyframes introNodeRingPulse {
-                    0%, 100% { box-shadow: 0 0 0 0 transparent; }
-                    50% { box-shadow: 0 0 14px 3px color-mix(in srgb, var(--isp-primary) 10%, transparent); }
-                }
-                .intro-node-halo { animation: introHaloPulse 3s ease-in-out infinite; }
-                .intro-node:nth-child(2) .intro-node-halo { animation-delay: 0.5s; }
-                .intro-node:nth-child(3) .intro-node-halo { animation-delay: 1s; }
-                .intro-node:nth-child(4) .intro-node-halo { animation-delay: 1.5s; }
-                .intro-node:nth-child(5) .intro-node-halo { animation-delay: 2s; }
-                .intro-node:nth-child(6) .intro-node-halo { animation-delay: 2.5s; }
-                @keyframes introHaloPulse {
-                    0%, 100% { opacity: 0.5; }
-                    50% { opacity: 1; }
-                }
                 .intro-ring-dot { animation: introRingDotPulse 2s ease-in-out infinite; }
                 @keyframes introRingDotPulse {
                     0%, 100% { opacity: 0.4; transform: scale(1); }
@@ -553,7 +446,7 @@ export default function IntroSection({ data, features = [] }: { data: IntroData;
                 @media (prefers-reduced-motion: reduce) {
                     .intro-grid, .intro-orb, .intro-glow-disc, .intro-glow-disc-2, .intro-fade, .intro-fade-delayed,
                     .intro-hex, .intro-pulse, .intro-orbit, .intro-orbit-reverse,
-                    .intro-bracket, .intro-node, .intro-node-ring, .intro-node-halo,
+                    .intro-bracket,
                     .intro-gradient-ring, .intro-ring-dot,
                     .intro-hud-panel, .intro-hud-panel-2, .intro-hud-dot,
                     .intro-data-particle, .intro-scanline, .intro-scanline-2, .intro-trail,

@@ -20,6 +20,8 @@ class StoreOfficeLocationRequest extends FormRequest
             'address' => ['required', 'string', 'max:1000'],
             'phone' => ['nullable', 'string', 'max:50'],
             'email' => ['nullable', 'email', 'max:255'],
+            'google_maps_url' => ['nullable', 'string', 'max:1024'],
+            'location_query' => ['nullable', 'string', 'max:500'],
             'map_url' => ['nullable', 'url', 'max:1024'],
             'map_embed_url' => ['nullable', 'string', 'max:4000'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],

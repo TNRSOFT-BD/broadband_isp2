@@ -5,7 +5,6 @@ namespace App\Repositories\Eloquent;
 use App\Models\AboutClient;
 use App\Models\AboutStatistic;
 use App\Models\AboutWhyChooseUs;
-use App\Models\IntroFeature;
 use App\Models\HomepageCoverageArea;
 use App\Models\HomepageFaq;
 use App\Models\HomepageSetting;
@@ -86,11 +85,6 @@ class EloquentHomepageRepository implements HomepageRepositoryInterface
             ->orderBy('sort_order')
             ->orderBy('id')
             ->get();
-    }
-
-    public function getActiveIntroFeatures(): Collection
-    {
-        return IntroFeature::active()->ordered()->get();
     }
 
     public function getActiveWhyChooseUs(): Collection

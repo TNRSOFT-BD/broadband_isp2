@@ -7,7 +7,6 @@ import {
     CreditCard,
     Tag,
     Tv,
-    Home,
     Users,
     PhoneCall,
     MessageSquare,
@@ -21,7 +20,6 @@ import {
     Handshake,
     Shield,
     UserPlus,
-    ServerCog,
     FileText,
 } from 'lucide-react';
 import AppLogo from './app-logo';
@@ -55,9 +53,6 @@ const navGroups: NavGroup[] = [
         title: 'Pages',
         items: [
             { title: 'Homepage', url: '/admin/homepage', icon: LayoutGrid, permission: 'view-homepage' },
-            { title: 'Partners', url: '/admin/homepage/partners', icon: Handshake, permission: 'manage-homepage-partners' },
-            { title: 'Homepage Services', url: '/admin/homepage-services', icon: ServerCog, permission: 'view-homepage' },
-            { title: 'Hero Section', url: '/admin/hero-config', icon: Home, permission: 'view-hero-config' },
             { title: 'Plans Page', url: '/admin/pages/plans', icon: Globe, permission: 'manage-plans-page' },
             { title: 'About Page', url: '/admin/pages/about', icon: Users, permission: 'manage-about-page' },
             { title: 'Contact Page', url: '/admin/pages/contact', icon: PhoneCall, permission: 'manage-contact-page' },

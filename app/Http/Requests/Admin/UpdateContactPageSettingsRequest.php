@@ -46,11 +46,6 @@ class UpdateContactPageSettingsRequest extends FormRequest
             'hours_title' => ['nullable', 'string', 'max:255'],
             'hours_description' => ['nullable', 'string', 'max:1000'],
 
-            // Resources
-            'resources_enabled' => ['boolean'],
-            'resources_title' => ['nullable', 'string', 'max:255'],
-            'resources_description' => ['nullable', 'string', 'max:1000'],
-
             // FAQ
             'faq_enabled' => ['boolean'],
             'faq_title' => ['nullable', 'string', 'max:255'],
@@ -62,11 +57,6 @@ class UpdateContactPageSettingsRequest extends FormRequest
             'office_hours_entries.*.title' => ['required_with:office_hours_entries', 'string', 'max:100'],
             'office_hours_entries.*.schedule' => ['required_with:office_hours_entries', 'string', 'max:255'],
             'office_hours_entries.*.note' => ['nullable', 'string', 'max:500'],
-            'helpful_resources' => ['nullable', 'array'],
-            'helpful_resources.*.icon' => ['required_with:helpful_resources', 'string', 'max:50'],
-            'helpful_resources.*.title' => ['required_with:helpful_resources', 'string', 'max:100'],
-            'helpful_resources.*.description' => ['required_with:helpful_resources', 'string', 'max:500'],
-            'helpful_resources.*.href' => ['required_with:helpful_resources', 'string', 'max:512'],
             'faq_items' => ['nullable', 'array'],
             'faq_items.*.question' => ['required_with:faq_items', 'string', 'max:500'],
             'faq_items.*.answer' => ['required_with:faq_items', 'string', 'max:2000'],

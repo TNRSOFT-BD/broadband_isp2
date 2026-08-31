@@ -126,6 +126,14 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/homepage/{section}', [HomepageController::class, 'update'])->name('homepage.update');
         });
 
+        // ── Homepage Why Choose Us Items ─────────────────────────
+        Route::middleware('permission:edit-homepage')->group(function () {
+            Route::post('/homepage/why-choose-us-items', [HomepageController::class, 'storeWhyChooseUsItem'])->name('homepage.why-choose-us-items.store');
+            Route::put('/homepage/why-choose-us-items/{id}', [HomepageController::class, 'updateWhyChooseUsItem'])->name('homepage.why-choose-us-items.update');
+            Route::delete('/homepage/why-choose-us-items/{id}', [HomepageController::class, 'destroyWhyChooseUsItem'])->name('homepage.why-choose-us-items.destroy');
+            Route::patch('/homepage/why-choose-us-items/{id}/toggle-status', [HomepageController::class, 'toggleWhyChooseUsItemStatus'])->name('homepage.why-choose-us-items.toggle-status');
+        });
+
         // ── Homepage Partners ───────────────────────────────────────
         Route::middleware('permission:manage-homepage-partners')->group(function () {
             Route::get('/homepage/partners', [HomepageController::class, 'partners'])->name('homepage.partners');
@@ -134,15 +142,6 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/homepage/partners/{id}', [HomepageController::class, 'updatePartner'])->name('homepage.partners.update');
             Route::delete('/homepage/partners/{id}', [HomepageController::class, 'destroyPartner'])->name('homepage.partners.destroy');
             Route::patch('/homepage/partners/{id}/toggle-status', [HomepageController::class, 'togglePartnerStatus'])->name('homepage.partners.toggle-status');
-        });
-
-        // ── Homepage Intro Features ─────────────────────────────────
-        Route::middleware('permission:manage-homepage-intro-features')->group(function () {
-            Route::get('/homepage/intro-features', [HomepageController::class, 'introFeatures'])->name('homepage.intro-features');
-            Route::post('/homepage/intro-features', [HomepageController::class, 'storeIntroFeature'])->name('homepage.intro-features.store');
-            Route::put('/homepage/intro-features/{id}', [HomepageController::class, 'updateIntroFeature'])->name('homepage.intro-features.update');
-            Route::delete('/homepage/intro-features/{id}', [HomepageController::class, 'destroyIntroFeature'])->name('homepage.intro-features.destroy');
-            Route::patch('/homepage/intro-features/toggle', [HomepageController::class, 'toggleIntroFeatures'])->name('homepage.intro-features.toggle');
         });
 
         // ── Homepage Testimonials ───────────────────────────────────
@@ -215,6 +214,7 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/contact/locations/{id}', [AdminOfficeLocationController::class, 'update'])->name('office-locations.update');
             Route::delete('/contact/locations/{id}', [AdminOfficeLocationController::class, 'destroy'])->name('office-locations.destroy');
             Route::patch('/contact/locations/{id}/toggle-status', [AdminOfficeLocationController::class, 'toggleStatus'])->name('office-locations.toggle-status');
+            Route::post('/contact/locations/resolve', [AdminOfficeLocationController::class, 'resolveLocation'])->name('office-locations.resolve');
         });
 
         // ── Plans Page CMS ──────────────────────────────────────────
@@ -423,9 +423,6 @@ Route::middleware(['auth'])->group(function () {
             });
             Route::middleware('permission:manage-homepage-partners')->group(function () {
                 Route::get('/homepage/partners', [HomepageController::class, 'partners'])->name('homepage.partners');
-            });
-            Route::middleware('permission:manage-homepage-intro-features')->group(function () {
-                Route::get('/homepage/intro-features', [HomepageController::class, 'introFeatures'])->name('homepage.intro-features');
             });
             Route::middleware('permission:manage-homepage-testimonials')->group(function () {
                 Route::get('/homepage/testimonials', [HomepageController::class, 'testimonials'])->name('homepage.testimonials');

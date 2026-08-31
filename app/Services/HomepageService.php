@@ -90,13 +90,6 @@ class HomepageService
                 ],
             ]),
             'featuredPlans' => $this->getPlansWithFallback(),
-            'introFeatures' => $this->homepageRepository->getActiveIntroFeatures()->map(fn ($f) => [
-                'id' => $f->id,
-                'label' => $f->label,
-                'sub_label' => $f->sub_label,
-                'icon' => $f->icon,
-                'color' => $f->color,
-            ])->toArray(),
             'whyChooseUs' => $this->homepageRepository->getActiveWhyChooseUs()->map(fn ($item) => [
                 'id' => $item->id,
                 'icon' => $item->icon,
@@ -142,18 +135,11 @@ class HomepageService
                 'network_stats' => [
                     'uptime' => '99.99%',
                     'peers' => '2,847',
-                ],
-                'nodes' => [
-                    ['label' => 'POP', 'sub' => 'ACCESS'],
-                    ['label' => 'DATA CENTER', 'sub' => 'CORE'],
-                    ['label' => 'IX PEERING', 'sub' => 'TRANSIT'],
-                    ['label' => 'CDN EDGE', 'sub' => 'CACHE'],
-                    ['label' => 'ACCESS NODE', 'sub' => 'LAST MILE'],
-                    ['label' => 'CORE ROUTER', 'sub' => 'BACKBONE'],
-                    ['label' => 'DNS CLUSTER', 'sub' => 'RESOLVE'],
-                    ['label' => 'BGP PEER', 'sub' => 'ROUTING'],
-                    ['label' => 'SECURITY', 'sub' => 'FIREWALL'],
-                    ['label' => 'WIRELESS', 'sub' => '5G/LTE'],
+                    'mini_stats' => [
+                        ['value' => '2,847', 'label' => 'PEERS'],
+                        ['value' => '10 Gbps', 'label' => 'BACKBONE'],
+                        ['value' => '24/7', 'label' => 'MONITORING'],
+                    ],
                 ],
             ]),
             'coverage' => $this->extractSectionData($settings, 'coverage', [
@@ -225,10 +211,6 @@ class HomepageService
         foreach ($allSections as $key) {
             $visibility[$key] = isset($settings[$key]) ? $settings[$key]->is_active : true;
         }
-
-        // Intro network features visibility (toggleable from admin)
-        $introFeaturesSetting = \App\Models\HomepageSetting::findByKey('intro_features');
-        $visibility['introFeatures'] = $introFeaturesSetting ? $introFeaturesSetting->is_active : true;
 
         // These sections are always visible if they have data
         $visibility['featuredPlans'] = true;

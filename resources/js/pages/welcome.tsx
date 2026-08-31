@@ -121,13 +121,6 @@ interface HomepageProps {
         answer: string;
         category: string | null;
     }>;
-    introFeatures?: Array<{
-        id: number;
-        label: string;
-        sub_label: string | null;
-        icon: string | null;
-        color: string | null;
-    }>;
     sectionVisibility?: Record<string, boolean>;
 }
 
@@ -152,7 +145,7 @@ export default function Welcome() {
 
             {/* Homepage sections below */}
             {vis.intro !== false && props.intro && (
-                <IntroSection data={props.intro} features={vis.introFeatures === false ? [] : (props.introFeatures ?? [])} />
+                <IntroSection data={props.intro} />
             )}
 
             {props.featuredPlans && props.featuredPlans.length > 0 && (

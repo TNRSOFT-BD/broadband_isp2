@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import type { BreadcrumbItem, SharedData } from '@/types';
-import type { ContactPageSettings, OfficeHoursEntry, HelpfulResource, FAQItem } from '@/types/contact';
+import type { ContactPageSettings, OfficeHoursEntry, FAQItem } from '@/types/contact';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { useAdminUrl } from '@/hooks/use-admin-url';
@@ -37,7 +37,7 @@ const ICON_OPTIONS = [
     'Wifi', 'ExternalLink', 'Send', 'CheckCircle2', 'Star', 'Shield', 'Zap', 'Heart',
 ];
 
-const TABS = ['Hero', 'Sections', 'Content', 'FAQ', 'SEO'] as const;
+const TABS = ['Hero', 'Sections', 'FAQ', 'SEO'] as const;
 
 /* ─── Tiny helper components ─── */
 
@@ -210,9 +210,6 @@ export default function ContactPageIndex() {
         hours_enabled: settings.hours_enabled ?? true,
         hours_title: settings.hours_title ?? '',
         hours_description: settings.hours_description ?? '',
-        resources_enabled: settings.resources_enabled ?? true,
-        resources_title: settings.resources_title ?? '',
-        resources_description: settings.resources_description ?? '',
         faq_enabled: settings.faq_enabled ?? true,
         faq_title: settings.faq_title ?? '',
         faq_description: settings.faq_description ?? '',
@@ -220,7 +217,6 @@ export default function ContactPageIndex() {
         meta_description: settings.meta_description ?? '',
         meta_keywords: settings.meta_keywords ?? '',
         office_hours_entries: (settings.office_hours_entries ?? []) as OfficeHoursEntry[],
-        helpful_resources: (settings.helpful_resources ?? []) as HelpfulResource[],
         faq_items: (settings.faq_items ?? []) as FAQItem[],
     });
 
@@ -239,20 +235,6 @@ export default function ContactPageIndex() {
     };
     const removeHoursEntry = (i: number) =>
         form.setData('office_hours_entries', form.data.office_hours_entries.filter((_, idx) => idx !== i));
-
-    /* ─── Helpful Resources helpers ─── */
-    const addResource = () =>
-        form.setData('helpful_resources', [
-            ...form.data.helpful_resources,
-            { icon: 'HelpCircle', title: '', description: '', href: '' },
-        ]);
-    const updateResource = (i: number, field: keyof HelpfulResource, value: string) => {
-        const u = [...form.data.helpful_resources];
-        u[i] = { ...u[i], [field]: value };
-        form.setData('helpful_resources', u);
-    };
-    const removeResource = (i: number) =>
-        form.setData('helpful_resources', form.data.helpful_resources.filter((_, idx) => idx !== i));
 
     /* ─── FAQ helpers ─── */
     const addFaq = () =>
@@ -371,22 +353,6 @@ export default function ContactPageIndex() {
                                 onChange={(v) => form.setData('hero_background_image', v)}
                                 uploadUrl={'/admin/pages/contact/upload'}
                             />
-                            <Separator className="my-1" />
-                            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Call-to-Action Buttons</p>
-                            <div className="grid gap-3 sm:grid-cols-2">
-                                <FieldGroup label="Primary Text">
-                                    <Input value={form.data.hero_cta_primary_text} onChange={(e) => form.setData('hero_cta_primary_text', e.target.value)} className={inputCls} />
-                                </FieldGroup>
-                                <FieldGroup label="Primary URL">
-                                    <Input value={form.data.hero_cta_primary_url} onChange={(e) => form.setData('hero_cta_primary_url', e.target.value)} className={inputCls} />
-                                </FieldGroup>
-                                <FieldGroup label="Secondary Text">
-                                    <Input value={form.data.hero_cta_secondary_text} onChange={(e) => form.setData('hero_cta_secondary_text', e.target.value)} className={inputCls} />
-                                </FieldGroup>
-                                <FieldGroup label="Secondary URL">
-                                    <Input value={form.data.hero_cta_secondary_url} onChange={(e) => form.setData('hero_cta_secondary_url', e.target.value)} className={inputCls} />
-                                </FieldGroup>
-                            </div>
                         </SectionCard>
                     )}
 
@@ -477,66 +443,6 @@ export default function ContactPageIndex() {
                                                 <div>
                                                     <Label className="text-xs text-gray-500">Note</Label>
                                                     <Input value={entry.note ?? ''} onChange={(e) => updateHoursEntry(i, 'note', e.target.value)} placeholder="For urgent issues" className={inputCls} />
-                                                </div>
-                                            </div>
-                                        </EntryCard>
-                                    ))}
-                                </div>
-                            </SectionCard>
-                        </div>
-                    )}
-
-                    {/* ═══════ CONTENT TAB ═══════ */}
-                    {activeTab === 'Content' && (
-                        <div className="grid gap-6 xl:grid-cols-2">
-                            <SectionCard
-                                title="Helpful Resources"
-                                description="Quick link cards to key pages"
-                                icon={<HelpCircle className="h-4 w-4" />}
-                            >
-                                <ToggleField label="Show Section" checked={form.data.resources_enabled} onChange={(v) => form.setData('resources_enabled', v)} />
-                                <div className="grid gap-3 sm:grid-cols-2">
-                                    <FieldGroup label="Section Title">
-                                        <Input value={form.data.resources_title} onChange={(e) => form.setData('resources_title', e.target.value)} className={inputCls} />
-                                    </FieldGroup>
-                                    <FieldGroup label="Description">
-                                        <Input value={form.data.resources_description ?? ''} onChange={(e) => form.setData('resources_description', e.target.value)} className={inputCls} />
-                                    </FieldGroup>
-                                </div>
-                                <Separator />
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                        Resources · {form.data.helpful_resources.length}
-                                    </span>
-                                    <Button type="button" size="sm" variant="outline" onClick={addResource} className="gap-1.5">
-                                        <Plus className="h-3.5 w-3.5" /> Add
-                                    </Button>
-                                </div>
-                                {form.data.helpful_resources.length === 0 && (
-                                    <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50/50 py-8 text-center">
-                                        <HelpCircle className="mx-auto h-8 w-8 text-gray-300" />
-                                        <p className="mt-2 text-sm text-gray-400">No resources yet</p>
-                                    </div>
-                                )}
-                                <div className="space-y-3">
-                                    {form.data.helpful_resources.map((resource, i) => (
-                                        <EntryCard key={i} index={i} label={`Resource ${i + 1}`} onRemove={() => removeResource(i)}>
-                                            <div className="grid gap-2 sm:grid-cols-2">
-                                                <div>
-                                                    <Label className="text-xs text-gray-500">Icon</Label>
-                                                    <IconSelect value={resource.icon} onChange={(v) => updateResource(i, 'icon', v)} />
-                                                </div>
-                                                <div>
-                                                    <Label className="text-xs text-gray-500">Title</Label>
-                                                    <Input value={resource.title} onChange={(e) => updateResource(i, 'title', e.target.value)} placeholder="FAQs" className={inputCls} />
-                                                </div>
-                                                <div className="sm:col-span-2">
-                                                    <Label className="text-xs text-gray-500">Description</Label>
-                                                    <Input value={resource.description} onChange={(e) => updateResource(i, 'description', e.target.value)} placeholder="Find answers to commonly asked questions." className={inputCls} />
-                                                </div>
-                                                <div className="sm:col-span-2">
-                                                    <Label className="text-xs text-gray-500">Link URL</Label>
-                                                    <Input value={resource.href} onChange={(e) => updateResource(i, 'href', e.target.value)} placeholder="/plans" className={inputCls} />
                                                 </div>
                                             </div>
                                         </EntryCard>

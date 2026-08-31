@@ -16,6 +16,8 @@ class OfficeLocation extends Model
         'address',
         'phone',
         'email',
+        'google_maps_url',
+        'location_query',
         'map_url',
         'map_embed_url',
         'latitude',

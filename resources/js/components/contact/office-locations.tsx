@@ -87,34 +87,61 @@ export default function OfficeLocations({ settings, locations }: OfficeLocations
 
                     {/* Map */}
                     <div className="flex h-full min-h-[300px] items-center justify-center overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
-                        {selectedLocation?.map_embed_url ? (
-                            <iframe
-                                src={selectedLocation.map_embed_url}
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0, minHeight: '300px' }}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                title={`Map of ${selectedLocation.name}`}
-                                className="h-full w-full"
-                            />
-                        ) : selectedLocation?.map_url ? (
-                            <a
-                                href={selectedLocation.map_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex flex-col items-center gap-3 text-[var(--isp-primary)] transition-colors hover:text-[var(--isp-primary-dark)]"
-                            >
-                                <ExternalLink className="h-12 w-12" />
-                                <span className="text-sm font-semibold">Open in Google Maps</span>
-                            </a>
-                        ) : (
-                            <div className="text-center">
-                                <MapPin className="mx-auto h-12 w-12 text-gray-500" />
-                                <p className="mt-3 text-sm text-gray-500">No map available for this location</p>
-                            </div>
-                        )}
+                        {selectedLocation && (() => {
+                            // Priority 1: coordinates
+                            if (selectedLocation.latitude && selectedLocation.longitude) {
+                                return (
+                                    <iframe
+                                        src={`https://www.google.com/maps?q=${selectedLocation.latitude},${selectedLocation.longitude}&output=embed`}
+                                        width="100%"
+                                        height="100%"
+                                        style={{ border: 0, minHeight: '300px' }}
+                                        allowFullScreen
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        title={`Map of ${selectedLocation.name}`}
+                                        className="h-full w-full"
+                                    />
+                                );
+                            }
+                            // Priority 2: location query
+                            const locQuery = selectedLocation.location_query;
+                            if (locQuery && typeof locQuery === 'string' && locQuery.trim()) {
+                                return (
+                                    <iframe
+                                        src={`https://www.google.com/maps?q=${encodeURIComponent(locQuery)}&output=embed`}
+                                        width="100%"
+                                        height="100%"
+                                        style={{ border: 0, minHeight: '300px' }}
+                                        allowFullScreen
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        title={`Map of ${selectedLocation.name}`}
+                                        className="h-full w-full"
+                                    />
+                                );
+                            }
+                            // Priority 3: fallback
+                            if (selectedLocation.map_url) {
+                                return (
+                                    <a
+                                        href={selectedLocation.map_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex flex-col items-center gap-3 text-[var(--isp-primary)] transition-colors hover:text-[var(--isp-primary-dark)]"
+                                    >
+                                        <ExternalLink className="h-12 w-12" />
+                                        <span className="text-sm font-semibold">Open in Google Maps</span>
+                                    </a>
+                                );
+                            }
+                            return (
+                                <div className="text-center">
+                                    <MapPin className="mx-auto h-12 w-12 text-gray-500" />
+                                    <p className="mt-3 text-sm text-gray-500">No map available for this location</p>
+                                </div>
+                            );
+                        })()}
                     </div>
                 </div>
             </div>

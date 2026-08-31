@@ -100,7 +100,7 @@ interface PageProps extends Record<string, unknown> {
     whyChooseUsCount: number;
 }
 
-const TABS = ['Hero', 'Company', 'Vision & Mission', 'CTA', 'SEO'] as const;
+const TABS = ['Hero', 'Company', 'Vision & Mission', 'Capabilities', 'Repeatable Content', 'CTA', 'SEO'] as const;
 
 const inputCls = 'rounded-lg border-gray-200 focus:border-[var(--isp-primary)] focus:ring-[var(--isp-primary)]';
 
@@ -476,6 +476,69 @@ export default function AboutUsIndex() {
                         </div>
                     )}
 
+                    {/* ═══════ CAPABILITIES TAB ═══════ */}
+                    {activeTab === 'Capabilities' && (
+                        <div className="grid gap-6 xl:grid-cols-2">
+                            <SectionCard title="Network Capabilities" description="Manage network and service capabilities section" icon={<Zap className="h-4 w-4" />} accent>
+                                <FieldGroup label="Eyebrow">
+                                    <Input value={form.data.capabilities_eyebrow} onChange={(e) => form.setData('capabilities_eyebrow', e.target.value)} placeholder="Our Capabilities" className={inputCls} />
+                                </FieldGroup>
+                                <FieldGroup label="Title">
+                                    <Input value={form.data.capabilities_title} onChange={(e) => form.setData('capabilities_title', e.target.value)} placeholder="Network Capabilities" className={inputCls} />
+                                </FieldGroup>
+                                <FieldGroup label="Description">
+                                    <textarea rows={3} value={form.data.capabilities_description ?? ''} onChange={(e) => form.setData('capabilities_description', e.target.value)}
+                                        className="flex w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]" />
+                                </FieldGroup>
+                                <Button asChild className="mt-2 w-full gap-1.5" style={{ background: 'var(--isp-primary)' }}>
+                                    <Link href={adminUrl('/pages/about/capabilities')}>Manage Features →</Link>
+                                </Button>
+                            </SectionCard>
+                            <div className="flex flex-col gap-6">
+                                <SectionCard title="Capabilities Image" description="Featured image for the capabilities section" icon={<Image className="h-4 w-4" />}>
+                                    <ImageUploadField
+                                        label="Capabilities Image"
+                                        value={form.data.capabilities_image ?? ''}
+                                        onChange={(v) => form.setData('capabilities_image', v)}
+                                        altValue={form.data.capabilities_image_alt ?? ''}
+                                        onAltChange={(v) => form.setData('capabilities_image_alt', v)}
+                                    />
+                                </SectionCard>
+                                <SectionCard title="Section Visibility" description="Toggle capabilities section visibility" icon={<Eye className="h-4 w-4" />}>
+                                    <ToggleField label="Show Capabilities Section" checked={form.data.capabilities_enabled} onChange={(v) => form.setData('capabilities_enabled', v)} />
+                                </SectionCard>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ═══════ REPEATABLE CONTENT TAB ═══════ */}
+                    {activeTab === 'Repeatable Content' && (
+                        <div className="space-y-4">
+                            <p className="text-sm text-muted-foreground">Add, edit, or remove items for each section.</p>
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                {sections.filter(s => s.editUrl).map((section) => (
+                                    <Card key={section.title} className="transition-shadow duration-200 hover:shadow-md">
+                                        <CardContent className="flex items-center justify-between gap-3 p-4">
+                                            <div className="flex min-w-0 items-center gap-3">
+                                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                                                    style={{ background: 'color-mix(in srgb, var(--isp-primary) 6%, transparent)', color: 'var(--isp-primary)' }}>
+                                                    {section.icon}
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <p className="truncate text-sm font-medium">{section.title}</p>
+                                                    <p className="text-xs text-muted-foreground">{section.count} items</p>
+                                                </div>
+                                            </div>
+                                            <Button asChild variant="outline" size="sm" className="shrink-0">
+                                                <Link href={section.editUrl!}>Manage</Link>
+                                            </Button>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {/* ═══════ CTA TAB ═══════ */}
                     {activeTab === 'CTA' && (
                         <SectionCard title="Final Call to Action" description="The closing call-to-action banner" icon={<Zap className="h-4 w-4" />} accent>
@@ -520,31 +583,7 @@ export default function AboutUsIndex() {
                     </div>
                 </form>
 
-                {/* ═══════ SECTION MANAGEMENT LINKS ═══════ */}
-                <div>
-                    <h2 className="mb-4 text-lg font-bold">Manage Repeatable Content</h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {sections.filter(s => s.editUrl).map((section) => (
-                            <Card key={section.title} className="transition-shadow duration-200 hover:shadow-md">
-                                <CardContent className="flex items-center justify-between gap-3 p-4">
-                                    <div className="flex min-w-0 items-center gap-3">
-                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-                                            style={{ background: 'color-mix(in srgb, var(--isp-primary) 6%, transparent)', color: 'var(--isp-primary)' }}>
-                                            {section.icon}
-                                        </div>
-                                        <div className="min-w-0">
-                                            <p className="truncate text-sm font-medium">{section.title}</p>
-                                            <p className="text-xs text-muted-foreground">{section.count} items</p>
-                                        </div>
-                                    </div>
-                                    <Button asChild variant="outline" size="sm" className="shrink-0">
-                                        <Link href={section.editUrl!}>Manage</Link>
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </div>
+
             </div>
         </AppLayout>
     );

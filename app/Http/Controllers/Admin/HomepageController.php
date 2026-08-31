@@ -9,7 +9,7 @@ use App\Models\HomepageCoverageArea;
 use App\Models\HomepageFaq;
 use App\Models\HomepageSetting;
 use App\Models\HomepageTestimonial;
-use App\Models\IntroFeature;
+use App\Models\AboutWhyChooseUs;
 use App\Services\HomepageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -29,13 +29,36 @@ class HomepageController extends Controller
      */
     public function index(): Response
     {
+        $allDefaults = [
+            'hero' => ['eyebrow' => 'Hero', 'title' => 'Main Hero Banner'],
+            'intro' => ['eyebrow' => 'About Us', 'title' => 'Powering a More Connected Future'],
+            'technology' => ['eyebrow' => 'Our Technology', 'title' => 'Engineered for Reliable Connectivity'],
+            'testimonials' => ['eyebrow' => 'Testimonials', 'title' => 'Customer Reviews & Testimonials'],
+            'faqs' => ['eyebrow' => 'FAQs', 'title' => 'Frequently Asked Questions'],
+            'partners' => ['eyebrow' => 'Partners', 'title' => 'Our Trusted Partners'],
+            'services' => ['eyebrow' => 'Services', 'title' => 'Digital Services Section'],
+            'why_choose_us' => ['eyebrow' => 'Why Us', 'title' => 'More Than Just Internet'],
+        ];
+
+        // Get existing settings from DB
+        $existingSettings = HomepageSetting::ordered()->get()->keyBy('section_key');
+
+        // Build settings list for all known sections
+        $settings = collect($allDefaults)->map(function ($defaults, $key) use ($existingSettings) {
+            $s = $existingSettings->get($key);
+            $data = $s?->data ?? [];
+            return [
+                'id' => $s?->id,
+                'section_key' => $key,
+                'is_active' => $s?->is_active ?? true,
+                'sort_order' => $s?->sort_order ?? 0,
+                'eyebrow' => $data['eyebrow'] ?? $defaults['eyebrow'] ?? null,
+                'title' => $data['title'] ?? $defaults['title'] ?? null,
+            ];
+        })->values();
+
         return Inertia::render('Admin/Homepage/Index', [
-            'settings' => HomepageSetting::ordered()->get()->map(fn ($s) => [
-                'id' => $s->id,
-                'section_key' => $s->section_key,
-                'is_active' => $s->is_active,
-                'sort_order' => $s->sort_order,
-            ]),
+            'settings' => $settings,
         ]);
     }
 
@@ -49,16 +72,20 @@ class HomepageController extends Controller
         $data = match ($section) {
             'intro' => $this->getIntroData($setting),
             'technology' => $this->getTechnologyData($setting),
-            'coverage' => $this->getCoverageData($setting),
-            'cta' => $this->getCtaData($setting),
             'why_choose_us' => $this->getWhyChooseUsData($setting),
             default => [],
         };
+
+        $extra = [];
+        if ($section === 'why_choose_us') {
+            $extra['items'] = AboutWhyChooseUs::ordered()->get();
+        }
 
         return Inertia::render('Admin/Homepage/EditSection', [
             'section' => $section,
             'data' => $data,
             'is_active' => $setting?->is_active ?? true,
+            ...$extra,
         ]);
     }
 
@@ -256,85 +283,6 @@ class HomepageController extends Controller
             ->with('success', 'Coverage area deleted successfully.');
     }
 
-    // ─── Intro Features CRUD ──────────────────────────────────────
-
-    public function introFeatures(): Response
-    {
-        return Inertia::render('Admin/Homepage/IntroFeatures', [
-            'features' => IntroFeature::ordered()->get(),
-            'enabled' => (HomepageSetting::findByKey('intro_features')?->is_active) ?? true,
-        ]);
-    }
-
-    public function storeIntroFeature(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'label' => 'required|string|max:255',
-            'sub_label' => 'nullable|string|max:255',
-            'icon' => 'nullable|string|max:50',
-            'color' => 'nullable|string|max:20',
-            'sort_order' => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
-        ]);
-
-        IntroFeature::create($validated);
-        $this->homepageService->flushCache();
-
-        return redirect()->route('admin.homepage.intro-features')
-            ->with('success', 'Intro feature created successfully.');
-    }
-
-    public function updateIntroFeature(Request $request, int $id): RedirectResponse
-    {
-        $feature = IntroFeature::findOrFail($id);
-
-        $validated = $request->validate([
-            'label' => 'required|string|max:255',
-            'sub_label' => 'nullable|string|max:255',
-            'icon' => 'nullable|string|max:50',
-            'color' => 'nullable|string|max:20',
-            'sort_order' => 'nullable|integer|min:0',
-            'is_active' => 'boolean',
-        ]);
-
-        $feature->update($validated);
-        $this->homepageService->flushCache();
-
-        return redirect()->route('admin.homepage.intro-features')
-            ->with('success', 'Intro feature updated successfully.');
-    }
-
-    public function destroyIntroFeature(int $id): RedirectResponse
-    {
-        IntroFeature::findOrFail($id)->delete();
-        $this->homepageService->flushCache();
-
-        return redirect()->route('admin.homepage.intro-features')
-            ->with('success', 'Intro feature deleted successfully.');
-    }
-
-    public function toggleIntroFeatures(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'is_active' => 'required|boolean',
-        ]);
-
-        HomepageSetting::updateOrCreate(
-            ['section_key' => 'intro_features'],
-            [
-                'data' => [],
-                'is_active' => $validated['is_active'],
-            ]
-        );
-
-        $this->homepageService->flushCache();
-
-        return redirect()->route('admin.homepage.intro-features')
-            ->with('success', $validated['is_active']
-                ? 'Intro Network Features shown on the homepage.'
-                : 'Intro Network Features hidden from the homepage.');
-    }
-
     // ─── Partners CRUD ─────────────────────────────────────────────
 
     public function uploadPartnerImage(StorePartnerImageRequest $request): JsonResponse
@@ -469,18 +417,11 @@ class HomepageController extends Controller
             'network_stats' => [
                 'uptime' => '99.99%',
                 'peers' => '2,847',
-            ],
-            'nodes' => [
-                ['label' => 'POP', 'sub' => 'ACCESS'],
-                ['label' => 'DATA CENTER', 'sub' => 'CORE'],
-                ['label' => 'IX PEERING', 'sub' => 'TRANSIT'],
-                ['label' => 'CDN EDGE', 'sub' => 'CACHE'],
-                ['label' => 'ACCESS NODE', 'sub' => 'LAST MILE'],
-                ['label' => 'CORE ROUTER', 'sub' => 'BACKBONE'],
-                ['label' => 'DNS CLUSTER', 'sub' => 'RESOLVE'],
-                ['label' => 'BGP PEER', 'sub' => 'ROUTING'],
-                ['label' => 'SECURITY', 'sub' => 'FIREWALL'],
-                ['label' => 'WIRELESS', 'sub' => '5G/LTE'],
+                'mini_stats' => [
+                    ['value' => '2,847', 'label' => 'PEERS'],
+                    ['value' => '10 Gbps', 'label' => 'BACKBONE'],
+                    ['value' => '24/7', 'label' => 'MONITORING'],
+                ],
             ],
         ];
     }
@@ -515,5 +456,60 @@ class HomepageController extends Controller
             'title' => 'More Than Just Internet',
             'description' => 'We deliver more than bandwidth — we deliver peace of mind with cutting-edge technology and dedicated support.',
         ];
+    }
+
+    // ─── Why Choose Us Items CRUD ──────────────────────────────
+
+    public function storeWhyChooseUsItem(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'icon' => 'nullable|string|max:50',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'sort_order' => 'nullable|integer|min:0',
+            'is_active' => 'boolean',
+        ]);
+
+        AboutWhyChooseUs::create($validated);
+        $this->homepageService->flushCache();
+
+        return redirect()->route('admin.homepage.edit', 'why_choose_us')
+            ->with('success', 'Item created successfully.');
+    }
+
+    public function updateWhyChooseUsItem(Request $request, int $id): RedirectResponse
+    {
+        $item = AboutWhyChooseUs::findOrFail($id);
+        $validated = $request->validate([
+            'icon' => 'nullable|string|max:50',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'sort_order' => 'nullable|integer|min:0',
+            'is_active' => 'boolean',
+        ]);
+
+        $item->update($validated);
+        $this->homepageService->flushCache();
+
+        return redirect()->route('admin.homepage.edit', 'why_choose_us')
+            ->with('success', 'Item updated successfully.');
+    }
+
+    public function destroyWhyChooseUsItem(int $id): RedirectResponse
+    {
+        AboutWhyChooseUs::findOrFail($id)->delete();
+        $this->homepageService->flushCache();
+
+        return redirect()->route('admin.homepage.edit', 'why_choose_us')
+            ->with('success', 'Item deleted successfully.');
+    }
+
+    public function toggleWhyChooseUsItemStatus(int $id): RedirectResponse
+    {
+        $item = AboutWhyChooseUs::findOrFail($id);
+        $item->update(['is_active' => ! $item->is_active]);
+        $this->homepageService->flushCache();
+
+        return back()->with('success', 'Item status updated.');
     }
 }
