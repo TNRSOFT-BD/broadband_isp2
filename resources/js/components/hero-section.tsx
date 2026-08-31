@@ -124,7 +124,7 @@ export default function HeroSection() {
 
                 {/* Main Heading */}
                 <h1
-                    className="hero-title mb-6 max-w-4xl text-2xl font-bold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl"
+                    className="hero-title mb-6 max-w-6xl text-2xl font-bold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl lg:text-6xl"
                     style={{ color: hero.heading_color }}
                 >
                     {hero.heading_line1}{' '}
@@ -148,7 +148,7 @@ export default function HeroSection() {
 
                 {/* Subtitle */}
                 <p
-                    className="hero-subtitle mb-10 max-w-2xl text-lg sm:text-xl"
+                    className="hero-subtitle mb-10 max-w-4xl text-lg sm:text-xl"
                     style={{ color: hero.subtitle_color }}
                 >
                     {hero.subtitle}
@@ -190,7 +190,7 @@ export default function HeroSection() {
                 )}
 
                 {/* Feature Cards */}
-                <div className="hero-features mx-auto grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4">
+                <div className="hero-features mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-4">
                     {defaultFeatures.map((feature, i) => (
                         <div
                             key={feature.label}

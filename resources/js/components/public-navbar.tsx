@@ -164,7 +164,7 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
                                 );
                             }
                         `}</style>
-                        <Link href="#" className="futuristic-btn">
+                        <Link href="/paybill" className="futuristic-btn">
                             <span className="relative z-10">PayBill</span>
                         </Link>
                         <Link href="#" className="futuristic-btn">
@@ -222,7 +222,7 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
                                     <div className="border-t border-gray-200 bg-white p-6">
                                         <div className="flex flex-col gap-3">
                                             <SheetClose asChild>
-                                                <Link href="#" className="futuristic-btn futuristic-btn-mobile w-full justify-center">
+                                                <Link href="/paybill" className="futuristic-btn futuristic-btn-mobile w-full justify-center">
                                                     PayBill
                                                 </Link>
                                             </SheetClose>

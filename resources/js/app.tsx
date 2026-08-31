@@ -14,6 +14,11 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 let companyName = appName;
 
+// Disable browser scroll restoration to prevent unwanted scroll jumps on reload
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
 createInertiaApp({
     title: (title) => `${title} - ${companyName}`,
     resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),

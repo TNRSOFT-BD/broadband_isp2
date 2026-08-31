@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PlanCategoryController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PlansPageController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\AdminHomepageServiceController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\UserController;
@@ -84,6 +85,24 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::middleware('permission:delete-services')->group(function () {
             Route::delete('/services/{id}', [AdminServiceController::class, 'destroy'])->name('services.destroy');
+        });
+
+        // ── Homepage Services (Digital Services Section) ────────────
+        Route::middleware('permission:view-homepage')->group(function () {
+            Route::get('/homepage-services', [AdminHomepageServiceController::class, 'index'])->name('homepage-services.index');
+        });
+        Route::middleware('permission:create-plans')->group(function () {
+            Route::post('/homepage-services', [AdminHomepageServiceController::class, 'store'])->name('homepage-services.store');
+            Route::post('/homepage-services/upload', [AdminHomepageServiceController::class, 'upload'])->name('homepage-services.upload');
+        });
+        Route::middleware('permission:edit-plans')->group(function () {
+            Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update');
+        });
+        Route::middleware('permission:delete-plans')->group(function () {
+            Route::delete('/homepage-services/{id}', [AdminHomepageServiceController::class, 'destroy'])->name('homepage-services.destroy');
+        });
+        Route::middleware('permission:edit-homepage')->group(function () {
+            Route::put('/homepage-services/settings', [AdminHomepageServiceController::class, 'updateSectionSettings'])->name('homepage-services.settings');
         });
 
         // ── Homepage Management ─────────────────────────────────────
@@ -348,6 +367,11 @@ Route::middleware(['auth'])->group(function () {
             });
             Route::middleware('permission:delete-services')->group(function () {
                 Route::delete('/services/{id}', [AdminServiceController::class, 'destroy'])->name('services.destroy');
+            });
+
+            // Homepage Services
+            Route::middleware('permission:view-homepage')->group(function () {
+                Route::get('/homepage-services', [AdminHomepageServiceController::class, 'index'])->name('homepage-services.index');
             });
 
             // Homepage

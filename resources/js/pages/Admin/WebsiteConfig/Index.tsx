@@ -43,7 +43,7 @@ interface PageProps {
     fonts: FontData[];
     activeTheme: ThemeData | null;
     activeFont: FontData | null;
-    siteSettings?: { site_name: string | null; logo: string | null; favicon: string | null };
+    siteSettings?: { site_name: string | null; paybill_client_id: string | null; logo: string | null; favicon: string | null };
 }
 
 const defaultColors: ThemeColors = {
@@ -111,6 +111,7 @@ export default function WebsiteConfig() {
 
     const brandingForm = useForm({
         site_name: siteSettings?.site_name ?? '',
+        paybill_client_id: siteSettings?.paybill_client_id ?? '',
         logo: siteSettings?.logo ?? '',
         favicon: siteSettings?.favicon ?? '',
     });
@@ -253,6 +254,22 @@ export default function WebsiteConfig() {
                                 </p>
                                 {brandingForm.errors.site_name && (
                                     <p className="text-sm text-destructive">{brandingForm.errors.site_name}</p>
+                                )}
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="paybill-client-id">PayBill Client ID</Label>
+                                <Input
+                                    id="paybill-client-id"
+                                    value={brandingForm.data.paybill_client_id}
+                                    onChange={(e) => brandingForm.setData('paybill_client_id', e.target.value)}
+                                    placeholder="e.g. 381"
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    This client ID is used for the PayBill page payment URL (https://soft.nrlink.net/pay.php?c=ID).
+                                </p>
+                                {brandingForm.errors.paybill_client_id && (
+                                    <p className="text-sm text-destructive">{brandingForm.errors.paybill_client_id}</p>
                                 )}
                             </div>
 

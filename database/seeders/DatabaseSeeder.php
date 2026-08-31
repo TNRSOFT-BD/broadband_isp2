@@ -61,6 +61,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PlansPageSettingsSeeder::class,
             PlanCategorySeeder::class,
+            HomepageServiceCategorySeeder::class,
             ServiceSeeder::class,
             PlanSeeder::class,
             AboutUsSeeder::class,
