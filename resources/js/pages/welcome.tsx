@@ -1,10 +1,12 @@
 import PublicLayout from '@/layouts/public-layout';
 import { Head, usePage } from '@inertiajs/react';
+import { useLayoutEffect } from 'react';
 import HeroSection from '@/components/hero-section';
 import IntroSection from '@/components/home/intro-section';
 import FeaturedPlansSection from '@/components/home/featured-plans-section';
 import WhyChooseUsSection from '@/components/home/why-choose-us-section';
 import ServicesSection from '@/components/home/services-section';
+import HomepageServicesSection from '@/components/home/homepage-services-section';
 import TechnologySection from '@/components/home/technology-section';
 import TestimonialsSection from '@/components/home/testimonials-section';
 import PartnersSection from '@/components/home/partners-section';
@@ -68,6 +70,20 @@ interface HomepageProps {
         logo: string | null;
         website_url: string | null;
     }>;
+    homepageServices?: {
+        title: string;
+        subtitle: string;
+        categories: string[];
+        items: Array<{
+            id: number;
+            title: string;
+            category: string | null;
+            description: string | null;
+            image: string;
+            link: string;
+            open_in_new_tab: boolean;
+        }>;
+    };
     technology?: {
         eyebrow: string;
         title: string;
@@ -114,6 +130,11 @@ export default function Welcome() {
     const props = usePage().props as unknown as HomepageProps;
     const vis = props.sectionVisibility ?? {};
 
+    // Scroll to top before paint on mount.
+    useLayoutEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <PublicLayout>
             <Head title="Home">
@@ -139,6 +160,10 @@ export default function Welcome() {
 
             {props.services && props.services.length > 0 && (
                 <ServicesSection services={props.services} />
+            )}
+
+            {vis.homepageServices !== false && props.homepageServices && props.homepageServices.items.length > 0 && (
+                <HomepageServicesSection data={props.homepageServices} />
             )}
 
             {vis.technology !== false && props.technology && (

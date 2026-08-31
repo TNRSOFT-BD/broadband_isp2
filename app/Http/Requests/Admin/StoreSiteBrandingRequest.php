@@ -15,6 +15,7 @@ class StoreSiteBrandingRequest extends FormRequest
     {
         return [
             'site_name' => ['nullable', 'string', 'max:255'],
+            'paybill_client_id' => ['nullable', 'string', 'max:255'],
             'logo' => ['nullable', 'string', 'max:512'],
             'favicon' => ['nullable', 'string', 'max:512'],
         ];

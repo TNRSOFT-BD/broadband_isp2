@@ -11,6 +11,8 @@ use App\Repositories\Contracts\AboutClientRepositoryInterface;
 use App\Repositories\Contracts\AboutCertificationRepositoryInterface;
 use App\Repositories\Contracts\AboutWhyChooseUsRepositoryInterface;
 use App\Repositories\Contracts\HomepageRepositoryInterface;
+use App\Repositories\Contracts\HomepageServiceItemRepositoryInterface;
+use App\Repositories\Contracts\HomepageServiceCategoryRepositoryInterface;
 use App\Repositories\Contracts\ContactInquiryTypeRepositoryInterface;
 use App\Repositories\Contracts\ContactMessageRepositoryInterface;
 use App\Repositories\Contracts\ContactPageSettingRepositoryInterface;
@@ -35,6 +37,8 @@ use App\Repositories\Eloquent\EloquentAboutClientRepository;
 use App\Repositories\Eloquent\EloquentAboutCertificationRepository;
 use App\Repositories\Eloquent\EloquentAboutWhyChooseUsRepository;
 use App\Repositories\Eloquent\EloquentHomepageRepository;
+use App\Repositories\Eloquent\EloquentHomepageServiceItemRepository;
+use App\Repositories\Eloquent\EloquentHomepageServiceCategoryRepository;
 use App\Repositories\Eloquent\EloquentContactInquiryTypeRepository;
 use App\Repositories\Eloquent\EloquentContactMessageRepository;
 use App\Repositories\Eloquent\EloquentContactPageSettingRepository;
@@ -81,6 +85,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AboutCertificationRepositoryInterface::class, EloquentAboutCertificationRepository::class);
         $this->app->bind(AboutWhyChooseUsRepositoryInterface::class, EloquentAboutWhyChooseUsRepository::class);
         $this->app->bind(HomepageRepositoryInterface::class, EloquentHomepageRepository::class);
+        $this->app->bind(HomepageServiceItemRepositoryInterface::class, EloquentHomepageServiceItemRepository::class);
+        $this->app->bind(HomepageServiceCategoryRepositoryInterface::class, EloquentHomepageServiceCategoryRepository::class);
         $this->app->bind(RoleRepositoryInterface::class, EloquentRoleRepository::class);
         $this->app->bind(UserRepositoryInterface::class, EloquentUserRepository::class);
     }

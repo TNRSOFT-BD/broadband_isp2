@@ -162,6 +162,13 @@
         @apply border-border;
     }
 
+    /* Only show focus outlines for keyboard (Tab) users. This prevents the
+       browser from flashing a focus ring on an element right after a page
+       reload / mouse click, while keeping keyboard accessibility intact. */
+    :focus:not(:focus-visible) {
+        outline: none;
+    }
+
     html {
         font-size: 14px;
     }

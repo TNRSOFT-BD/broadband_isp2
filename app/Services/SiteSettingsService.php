@@ -33,6 +33,7 @@ class SiteSettingsService
 
             return [
                 'site_name' => $setting?->site_name,
+                'paybill_client_id' => $setting?->paybill_client_id,
                 'logo' => $setting?->logo,
                 'favicon' => $setting?->favicon,
             ];

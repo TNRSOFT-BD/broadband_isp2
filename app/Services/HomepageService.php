@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Contracts\HomepageRepositoryInterface;
+use App\Repositories\Contracts\HomepageServiceItemRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 
 class HomepageService
@@ -12,6 +13,7 @@ class HomepageService
 
     public function __construct(
         private HomepageRepositoryInterface $homepageRepository,
+        private HomepageServiceItemRepositoryInterface $homepageServiceItemRepository,
     ) {}
 
     /**
@@ -120,6 +122,7 @@ class HomepageService
                 'logo' => $svc->logo,
                 'website_url' => $svc->website_url,
             ])->toArray(),
+            'homepageServices' => $this->getHomepageServicesData(),
             'technology' => $this->extractSectionData($settings, 'technology', [
                 'eyebrow' => 'Our Technology',
                 'title' => 'Engineered for Reliable Connectivity',
@@ -226,12 +229,49 @@ class HomepageService
         $visibility['featuredPlans'] = true;
         $visibility['whyChooseUs'] = true;
         $visibility['statistics'] = true;
+        // Homepage Services section (dynamic ISP services)
+        $homepageServicesSetting = \App\Models\HomepageSetting::findByKey('services_section');
+        $visibility['homepageServices'] = $homepageServicesSetting ? $homepageServicesSetting->is_active : true;
+
         $visibility['services'] = true;
         $visibility['testimonials'] = true;
         $visibility['partners'] = true;
         $visibility['faqs'] = true;
 
         return $visibility;
+    }
+
+    /**
+     * Get homepage services section data (ISP services with background images).
+     */
+    private function getHomepageServicesData(): array
+    {
+        $sectionSetting = \App\Models\HomepageSetting::findByKey('services_section');
+        $sectionData = $sectionSetting?->data ?? [];
+
+        $items = $this->homepageServiceItemRepository->getActiveOrdered()->map(fn ($item) => [
+            'id' => $item->id,
+            'title' => $item->title,
+            'category' => $item->category?->name,
+            'description' => $item->description,
+            'image' => $item->image,
+            'link' => $item->link,
+            'open_in_new_tab' => $item->open_in_new_tab,
+        ])->toArray();
+
+        $categories = collect($items)
+            ->pluck('category')
+            ->filter()
+            ->unique()
+            ->values()
+            ->toArray();
+
+        return [
+            'title' => $sectionData['title'] ?? 'Explore Our Digital Services',
+            'subtitle' => $sectionData['subtitle'] ?? 'Access our high-speed platforms, entertainment services, customer tools, and digital infrastructure from one place.',
+            'categories' => $categories,
+            'items' => $items,
+        ];
     }
 
     private function getPlansWithFallback(): array

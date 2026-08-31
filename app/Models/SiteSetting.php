@@ -11,6 +11,7 @@ class SiteSetting extends Model
 
     protected $fillable = [
         'site_name',
+        'paybill_client_id',
         'logo',
         'favicon',
     ];

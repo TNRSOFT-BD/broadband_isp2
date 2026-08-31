@@ -6,3 +6,4 @@ Before planning or editing, find the row whose globs match the file's path and r
 | --- | --- |
 | app/Repositories/Eloquent/EloquentPlanCategoryRepository.php | .ai/rules/eloquent.md |
 | app/Services/OfficeLocationService.php | .ai/rules/services.md |
+| resources/views/app.blade.php | .ai/rules/views.md |
