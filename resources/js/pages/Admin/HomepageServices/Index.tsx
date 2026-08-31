@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
-import { ImagePlus, Pencil, Plus, Settings, Trash2 } from 'lucide-react';
+import { ImagePlus, Pencil, Plus, Settings, Trash2, FolderOpen } from 'lucide-react';
 import { useState } from 'react';
 
 interface ServiceItem {
@@ -80,12 +80,22 @@ export default function HomepageServicesIndex() {
     const [uploading, setUploading] = useState(false);
     const [imageError, setImageError] = useState('');
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
+    const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
+    const [deleteCategoryTarget, setDeleteCategoryTarget] = useState<CategoryItem | null>(null);
 
     const form = useForm<ServiceFormState>(emptyForm);
     const settingsForm = useForm({
         title: sectionSettings.title,
         subtitle: sectionSettings.subtitle,
         is_active: true,
+    });
+
+    const categoryForm = useForm({
+        name: '',
+        slug: '',
+        description: '',
+        sort_order: 0 as number | string,
     });
 
     const openCreate = () => {
@@ -118,6 +128,36 @@ export default function HomepageServicesIndex() {
             is_active: true,
         });
         setSettingsOpen(true);
+    };
+
+    const openCategoryCreate = () => {
+        setEditingCategoryId(null);
+        categoryForm.setData({ name: '', slug: '', description: '', sort_order: 0 });
+        setCategoryDialogOpen(true);
+    };
+
+    const openCategoryEdit = (cat: CategoryItem) => {
+        setEditingCategoryId(cat.id);
+        categoryForm.setData({
+            name: cat.name,
+            slug: cat.slug,
+            description: '',
+            sort_order: 0,
+        });
+        setCategoryDialogOpen(true);
+    };
+
+    const handleCategorySubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (editingCategoryId !== null) {
+            categoryForm.put(route('admin.homepage-service-categories.update', editingCategoryId), {
+                onSuccess: () => setCategoryDialogOpen(false),
+            });
+        } else {
+            categoryForm.post(route('admin.homepage-service-categories.store'), {
+                onSuccess: () => setCategoryDialogOpen(false),
+            });
+        }
     };
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,6 +239,50 @@ export default function HomepageServicesIndex() {
                         </Button>
                     </div>
                 </div>
+
+                {/* Categories Section */}
+                <Card>
+                    <CardContent className="p-6">
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                                    <FolderOpen className="h-5 w-5 text-primary" />
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-semibold">Service Categories</h2>
+                                    <p className="text-sm text-muted-foreground">Organize services into categories for the filter tabs.</p>
+                                </div>
+                            </div>
+                            <Button size="sm" onClick={openCategoryCreate}>
+                                <Plus /> Add Category
+                            </Button>
+                        </div>
+
+                        {categories.length === 0 ? (
+                            <p className="mt-4 text-sm text-muted-foreground">No categories yet. Add one to organize your services.</p>
+                        ) : (
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                {categories.map((cat) => (
+                                    <div
+                                        key={cat.id}
+                                        className="group flex items-center gap-2 rounded-lg border bg-background px-4 py-2.5 transition-colors hover:border-primary/30"
+                                    >
+                                        <span className="text-sm font-medium">{cat.name}</span>
+                                        <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">{cat.slug}</span>
+                                        <div className="ml-1 flex gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
+                                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openCategoryEdit(cat)} title={`Edit ${cat.name}`}>
+                                                <Pencil className="h-3.5 w-3.5" />
+                                            </Button>
+                                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setDeleteCategoryTarget(cat)} title={`Delete ${cat.name}`}>
+                                                <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
 
                 {flash?.success && (
                     <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">{flash.success}</div>
@@ -410,6 +494,101 @@ export default function HomepageServicesIndex() {
                             }}
                         >
                             Delete Service
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Category Create/Edit dialog */}
+            <Dialog open={categoryDialogOpen} onOpenChange={(open) => !open && setCategoryDialogOpen(false)}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>{editingCategoryId !== null ? `Edit "${categoryForm.data.name}"` : 'New Category'}</DialogTitle>
+                        <DialogDescription>Categories appear as filter tabs in the services section.</DialogDescription>
+                    </DialogHeader>
+
+                    <form onSubmit={handleCategorySubmit} className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="cat-name">Name *</Label>
+                            <Input
+                                id="cat-name"
+                                value={categoryForm.data.name}
+                                onChange={(e) => categoryForm.setData('name', e.target.value)}
+                                placeholder="e.g. Streaming"
+                            />
+                            {errors['name'] && <p className="text-xs text-destructive">{errors['name']}</p>}
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="cat-slug">Slug</Label>
+                            <Input
+                                id="cat-slug"
+                                value={categoryForm.data.slug}
+                                onChange={(e) => categoryForm.setData('slug', e.target.value)}
+                                placeholder="auto-generated from name"
+                            />
+                            {errors['slug'] && <p className="text-xs text-destructive">{errors['slug']}</p>}
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="cat-description">Description</Label>
+                            <textarea
+                                id="cat-description"
+                                value={categoryForm.data.description}
+                                onChange={(e) => categoryForm.setData('description', e.target.value)}
+                                placeholder="Optional description"
+                                rows={2}
+                                className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="cat-sort">Sort Order</Label>
+                            <Input
+                                id="cat-sort"
+                                type="number"
+                                min="0"
+                                value={categoryForm.data.sort_order}
+                                onChange={(e) => categoryForm.setData('sort_order', e.target.value)}
+                            />
+                        </div>
+
+                        <DialogFooter>
+                            <Button type="button" variant="outline" onClick={() => setCategoryDialogOpen(false)}>
+                                Cancel
+                            </Button>
+                            <Button type="submit" disabled={categoryForm.processing}>
+                                {categoryForm.processing ? 'Saving...' : editingCategoryId !== null ? 'Update Category' : 'Create Category'}
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* Category Delete confirmation */}
+            <Dialog open={deleteCategoryTarget !== null} onOpenChange={(open) => !open && setDeleteCategoryTarget(null)}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Delete "{deleteCategoryTarget?.name}"?</DialogTitle>
+                        <DialogDescription>
+                            Services in this category will become uncategorized. This action cannot be undone.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setDeleteCategoryTarget(null)}>
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={() => {
+                                if (!deleteCategoryTarget) return;
+                                router.delete(route('admin.homepage-service-categories.destroy', deleteCategoryTarget.id), {
+                                    preserveScroll: true,
+                                    onSuccess: () => setDeleteCategoryTarget(null),
+                                });
+                            }}
+                        >
+                            Delete Category
                         </Button>
                     </DialogFooter>
                 </DialogContent>

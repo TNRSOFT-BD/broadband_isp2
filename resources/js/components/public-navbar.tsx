@@ -32,6 +32,8 @@ interface PublicNavbarProps {
 export function PublicNavbar({ children }: PublicNavbarProps) {
     const page = usePage();
     const currentUrl = page.url;
+    const thirdPartyLinks = (page.props as any).thirdPartyLinks as Record<string, string> | undefined;
+    const selfcareUrl = thirdPartyLinks?.selfcare || '#';
 
     // Smart navbar: hide on scroll down, show on scroll up
     const [isHidden, setIsHidden] = useState(false);
@@ -167,9 +169,9 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
                         <Link href="/paybill" className="futuristic-btn">
                             <span className="relative z-10">PayBill</span>
                         </Link>
-                        <Link href="#" className="futuristic-btn">
+                        <a href={selfcareUrl} target="_blank" rel="noopener noreferrer" className="futuristic-btn">
                             <span className="relative z-10">Selfcare</span>
-                        </Link>
+                        </a>
                     </div>
 
                     {/* Mobile Menu */}
@@ -227,9 +229,9 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
                                                 </Link>
                                             </SheetClose>
                                             <SheetClose asChild>
-                                                <Link href="#" className="futuristic-btn futuristic-btn-mobile w-full justify-center">
+                                                <a href={selfcareUrl} target="_blank" rel="noopener noreferrer" className="futuristic-btn futuristic-btn-mobile w-full justify-center">
                                                     Selfcare
-                                                </Link>
+                                                </a>
                                             </SheetClose>
                                         </div>
                                     </div>

@@ -36,6 +36,7 @@ class SiteSettingsService
                 'paybill_client_id' => $setting?->paybill_client_id,
                 'logo' => $setting?->logo,
                 'favicon' => $setting?->favicon,
+                'third_party_links' => $setting?->third_party_links ?? [],
             ];
         });
     }

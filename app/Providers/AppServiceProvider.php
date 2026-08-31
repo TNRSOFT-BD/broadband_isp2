@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\SiteSettingsService;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Inertia::share('thirdPartyLinks', function () {
+            $settings = app(SiteSettingsService::class)->get();
+            $links = $settings['third_party_links'] ?? [];
+
+            return collect($links)->pluck('url', 'key')->toArray();
+        });
     }
 }

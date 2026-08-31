@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\UpdateHomepageServiceRequest;
 use App\Models\HomepageSetting;
 use App\Repositories\Contracts\HomepageServiceCategoryRepositoryInterface;
 use App\Services\HomepageServiceItemService;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -86,6 +87,67 @@ class AdminHomepageServiceController extends Controller
         $url = $this->service->storeImage($request->file('image'));
 
         return response()->json(['url' => $url]);
+    }
+
+    // ── Category CRUD ──────────────────────────────────────────────
+
+    /**
+     * Store a new homepage service category.
+     */
+    public function storeCategory(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:homepage_service_categories,slug'],
+            'description' => ['nullable', 'string', 'max:500'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
+        ]);
+
+        // Auto-generate slug from name if not provided
+        if (empty($validated['slug'])) {
+            $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+        }
+
+        $this->categoryRepository->create($validated);
+
+        return redirect()
+            ->route('admin.homepage-services.index')
+            ->with('success', 'Category created successfully.');
+    }
+
+    /**
+     * Update an existing homepage service category.
+     */
+    public function updateCategory(Request $request, int $id): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', Rule::unique('homepage_service_categories', 'slug')->ignore($id)],
+            'description' => ['nullable', 'string', 'max:500'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
+        ]);
+
+        if (empty($validated['slug'])) {
+            $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+        }
+
+        $this->categoryRepository->update($id, $validated);
+
+        return redirect()
+            ->route('admin.homepage-services.index')
+            ->with('success', 'Category updated successfully.');
+    }
+
+    /**
+     * Delete a homepage service category.
+     */
+    public function destroyCategory(int $id): RedirectResponse
+    {
+        $this->categoryRepository->delete($id);
+
+        return redirect()
+            ->route('admin.homepage-services.index')
+            ->with('success', 'Category deleted successfully.');
     }
 
     /**
