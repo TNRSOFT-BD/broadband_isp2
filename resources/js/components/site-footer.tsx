@@ -10,13 +10,6 @@ const quickLinks = [
     { title: 'Contact', href: '/contact' },
 ];
 
-const serviceLinks = [
-    { title: 'Fiber Internet', href: '#' },
-    { title: 'Business Solutions', href: '#' },
-    { title: 'Home broadband', href: '#' },
-    { title: 'Dedicated Leased Lines', href: '#' },
-];
-
 const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
     { icon: Twitter, href: '#', label: 'Twitter' },
@@ -90,32 +83,13 @@ export default function SiteFooter() {
                 </div>
 
                 {/* Links grid - separate row */}
-                <div className="mt-8 grid gap-8 text-center sm:grid-cols-2 md:text-left lg:grid-cols-3">
+                <div className="mt-8 grid gap-8 text-center sm:grid-cols-2 md:text-left lg:grid-cols-2">
                     {/* Quick Links */}
                     <div>
                         <h3 className="text-sm font-bold uppercase tracking-wider text-white">Quick Links</h3>
                         <div className="mx-auto mt-1 mb-3 h-0.5 w-8 rounded-full bg-[var(--isp-primary)] md:mx-0" />
                         <ul className="space-y-3">
                             {quickLinks.map((link) => (
-                                <li key={link.title}>
-                                    <Link
-                                        href={link.href}
-                                        className="group inline-flex items-center gap-2 text-sm text-slate-400 transition-colors duration-200 hover:text-white"
-                                    >
-                                        <ArrowRight className="h-3 w-3 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
-                                        <span className="transition-transform duration-200 group-hover:translate-x-1">{link.title}</span>
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Services */}
-                    <div className="hidden sm:block">
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-white">Our Services</h3>
-                        <div className="mx-auto mt-1 mb-3 h-0.5 w-8 rounded-full bg-[var(--isp-primary)] md:mx-0" />
-                        <ul className="space-y-3">
-                            {serviceLinks.map((link) => (
                                 <li key={link.title}>
                                     <Link
                                         href={link.href}

@@ -66,6 +66,7 @@ const navGroups: NavGroup[] = [
         title: 'Configuration',
         items: [
             { title: 'Website Config', url: '/admin/website-config', icon: Palette, permission: 'view-website-config' },
+            { title: '3rd Party Site Config', url: '/admin/third-party-links', icon: Globe, permission: 'view-website-config' },
         ],
     },
     {

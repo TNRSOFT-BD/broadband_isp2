@@ -105,6 +105,17 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/homepage-services/settings', [AdminHomepageServiceController::class, 'updateSectionSettings'])->name('homepage-services.settings');
         });
 
+        // ── Homepage Service Categories ──────────────────────────────
+        Route::middleware('permission:create-plans')->group(function () {
+            Route::post('/homepage-service-categories', [AdminHomepageServiceController::class, 'storeCategory'])->name('homepage-service-categories.store');
+        });
+        Route::middleware('permission:edit-plans')->group(function () {
+            Route::put('/homepage-service-categories/{id}', [AdminHomepageServiceController::class, 'updateCategory'])->name('homepage-service-categories.update');
+        });
+        Route::middleware('permission:delete-plans')->group(function () {
+            Route::delete('/homepage-service-categories/{id}', [AdminHomepageServiceController::class, 'destroyCategory'])->name('homepage-service-categories.destroy');
+        });
+
         // ── Homepage Management ─────────────────────────────────────
         Route::middleware('permission:view-homepage')->group(function () {
             Route::get('/homepage', [HomepageController::class, 'index'])->name('homepage.index');
@@ -272,6 +283,14 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/website-config/theme/reset', [WebsiteConfigController::class, 'resetTheme'])->name('website-config.theme.reset');
             Route::post('/website-config/upload', [WebsiteConfigController::class, 'uploadBranding'])->name('website-config.upload');
             Route::put('/website-config/branding', [WebsiteConfigController::class, 'updateBranding'])->name('website-config.branding.update');
+        });
+
+        // ── Third-Party Links ────────────────────────────────────────
+        Route::middleware('permission:view-website-config')->group(function () {
+            Route::get('/third-party-links', [WebsiteConfigController::class, 'thirdPartyLinks'])->name('third-party-links');
+        });
+        Route::middleware('permission:edit-website-config')->group(function () {
+            Route::put('/third-party-links', [WebsiteConfigController::class, 'updateThirdPartyLinks'])->name('third-party-links.update');
         });
 
         // ── User Management (super_admin & admin only) ──────────────

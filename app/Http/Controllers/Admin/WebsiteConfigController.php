@@ -14,6 +14,7 @@ use App\Services\SiteSettingsService;
 use App\Services\ThemeService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -109,5 +110,61 @@ class WebsiteConfigController extends Controller
         return response()->json([
             'colors' => $this->themeService->getActiveThemeColors(),
         ]);
+    }
+
+    // ── Third-Party Links ──────────────────────────────────────────
+
+    /**
+     * Show the third-party links configuration page.
+     */
+    public function thirdPartyLinks(): Response
+    {
+        $settings = $this->siteSettingsService->get();
+        $links = $settings['third_party_links'] ?? [];
+
+        // Convert array of objects to key=>value map for the frontend
+        $linksMap = [];
+        foreach ($links as $link) {
+            if (isset($link['key'])) {
+                $linksMap[$link['key']] = $link['url'] ?? '';
+            }
+        }
+
+        return Inertia::render('Admin/ThirdPartyLinks/Index', [
+            'thirdPartyLinks' => $linksMap,
+            'paybillClientId' => $settings['paybill_client_id'] ?? null,
+        ]);
+    }
+
+    /**
+     * Save third-party links.
+     */
+    public function updateThirdPartyLinks(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'selfcare_url' => ['nullable', 'url', 'max:500'],
+            'paybill_client_id' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        // Build the third_party_links array
+        $links = [];
+        if (!empty($validated['selfcare_url'])) {
+            $links[] = [
+                'key' => 'selfcare',
+                'label' => 'Self Care Portal',
+                'url' => $validated['selfcare_url'],
+            ];
+        }
+
+        $data = [
+            'third_party_links' => $links,
+            'paybill_client_id' => $validated['paybill_client_id'] ?? null,
+        ];
+
+        $this->siteSettingsService->save($data);
+
+        return redirect()
+            ->route('admin.third-party-links')
+            ->with('success', 'Settings updated successfully.');
     }
 }
