@@ -44,12 +44,12 @@ export default function AdminProfile() {
 
     const handleProfileSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        profileForm.put(route('admin.profile.update'));
+        profileForm.put(adminUrl('/profile'));
     };
 
     const handlePasswordSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        passwordForm.put(route('admin.profile.password.update'), {
+        passwordForm.put(adminUrl('/profile/password'), {
             onSuccess: () => passwordForm.reset(),
         });
     };
