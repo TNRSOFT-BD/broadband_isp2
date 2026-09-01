@@ -176,6 +176,8 @@ class PlanService
     public function flushCache(): void
     {
         Cache::forget(self::CACHE_KEY.'.active');
+        // Invalidate the homepage banner too, since plan changes affect featured plans.
+        Cache::forget('homepage.data');
         // Slug-level entries expire naturally; clear known ones defensively is not feasible,
         // so rely on short TTL for detail pages.
     }

@@ -46,16 +46,18 @@ function SectionCard({
     description,
     icon,
     accent = false,
+    className = '',
     children,
 }: {
     title: string;
     description: string;
     icon: React.ReactNode;
     accent?: boolean;
+    className?: string;
     children: React.ReactNode;
 }) {
     return (
-        <Card className={`transition-shadow duration-200 hover:shadow-md ${accent ? 'border-[var(--isp-primary)]/20' : ''}`}>
+        <Card className={`transition-shadow duration-200 hover:shadow-md ${accent ? 'border-[var(--isp-primary)]/20' : ''} ${className}`}>
             <CardHeader className="pb-4">
                 <div className="flex items-center gap-3">
                     <div
@@ -399,6 +401,7 @@ export default function ContactPageIndex() {
                                 title="Office Hours"
                                 description="Support availability time cards"
                                 icon={<Clock className="h-4 w-4" />}
+                                className="xl:col-span-2"
                             >
                                 <ToggleField label="Show Section" checked={form.data.hours_enabled} onChange={(v) => form.setData('hours_enabled', v)} />
                                 <div className="grid gap-3 sm:grid-cols-2">
@@ -424,7 +427,7 @@ export default function ContactPageIndex() {
                                         <p className="mt-2 text-sm text-gray-400">No entries yet</p>
                                     </div>
                                 )}
-                                <div className="space-y-3">
+                                <div className="grid gap-3 md:grid-cols-2">
                                     {form.data.office_hours_entries.map((entry, i) => (
                                         <EntryCard key={i} index={i} label={`Entry ${i + 1}`} onRemove={() => removeHoursEntry(i)}>
                                             <div className="grid gap-2 sm:grid-cols-2">
