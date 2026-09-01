@@ -21,6 +21,8 @@ import {
     Shield,
     UserPlus,
     FileText,
+    Share2,
+    Landmark,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -64,6 +66,8 @@ const navGroups: NavGroup[] = [
         items: [
             { title: 'Website Config', url: '/admin/website-config', icon: Palette, permission: 'view-website-config' },
             { title: '3rd Party Site Config', url: '/admin/third-party-links', icon: Globe, permission: 'view-website-config' },
+            { title: 'Social Media', url: '/admin/social-media', icon: Share2, permission: 'manage-social-media' },
+            { title: 'Payment Partners', url: '/admin/payment-partners', icon: Landmark, permission: 'manage-payment-partners' },
         ],
     },
     {

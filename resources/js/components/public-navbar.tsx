@@ -75,7 +75,7 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
     }, []);
 
     return (
-        <div className="flex min-h-screen flex-col overflow-x-hidden">
+        <div className="flex min-h-screen flex-col overflow-x-clip">
             {/* Spacer — keeps content below the fixed header */}
             <div className="h-16" aria-hidden="true" />
 

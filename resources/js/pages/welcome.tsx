@@ -11,6 +11,7 @@ import TechnologySection from '@/components/home/technology-section';
 import TestimonialsSection from '@/components/home/testimonials-section';
 import PartnersSection from '@/components/home/partners-section';
 import FaqSection from '@/components/home/faq-section';
+import PaymentPartner from '@/components/payment-partner';
 
 interface HomepageProps {
     intro?: {
@@ -180,6 +181,7 @@ export default function Welcome() {
                 <FaqSection items={props.faqs} />
             )}
 
+            <PaymentPartner />
 
         </PublicLayout>
     );

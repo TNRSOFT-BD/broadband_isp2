@@ -75,6 +75,12 @@ class RolePermissionSeeder extends Seeder
             'view-website-config',
             'edit-website-config',
 
+            // Social Media
+            'manage-social-media',
+
+            // Payment Partners
+            'manage-payment-partners',
+
             // Users
             'view-users',
             'create-users',
@@ -116,6 +122,8 @@ class RolePermissionSeeder extends Seeder
             'manage-plans-page', 'manage-about-page', 'manage-contact-page',
             'view-legal-pages', 'create-legal-pages', 'edit-legal-pages', 'delete-legal-pages',
             'view-website-config', 'edit-website-config',
+            'manage-social-media',
+            'manage-payment-partners',
             'edit-own-profile',
         ]);
 
@@ -135,6 +143,8 @@ class RolePermissionSeeder extends Seeder
             'manage-quick-contact-methods', 'manage-inquiry-types', 'manage-office-locations',
             'manage-plans-page', 'manage-about-page', 'manage-contact-page',
             'view-legal-pages', 'create-legal-pages', 'edit-legal-pages',
+            'manage-social-media',
+            'manage-payment-partners',
             'edit-own-profile',
         ]);
 

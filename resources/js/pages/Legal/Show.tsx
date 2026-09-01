@@ -104,10 +104,8 @@ export default function LegalShow() {
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex gap-8 lg:gap-12">
                             {/* Table of Contents (Sidebar) */}
-                            <aside className="hidden w-64 shrink-0 lg:block">
-                                <div className="sticky top-24">
-                                    <LegalTableOfContents content={page.content_json} />
-                                </div>
+                            <aside className="sticky top-24 hidden h-[calc(100vh-8rem)] w-64 shrink-0 overflow-y-auto self-start lg:block">
+                                <LegalTableOfContents content={page.content_json} />
                             </aside>
 
                             {/* Main Content */}

@@ -5,6 +5,8 @@ interface Partner {
     website_url: string | null;
 }
 
+import { useEffect, useRef, useState } from 'react';
+
 function PartnerCard({ partner, accent, accentAlt }: { partner: Partner; accent: string; accentAlt: string }) {
     const inner = (
         <div className="group relative flex shrink-0 items-center gap-3 rounded-xl border px-5 py-3 transition-all duration-300 hover:-translate-y-0.5"
@@ -51,6 +53,30 @@ export default function PartnersSection({ partners }: { partners: Partner[] }) {
     const accent = 'var(--isp-primary)';
     const accentAlt = 'var(--isp-accent)';
 
+    const containerRef = useRef<HTMLDivElement>(null);
+    const measureRef = useRef<HTMLDivElement>(null);
+    const [overflow, setOverflow] = useState(false);
+
+    useEffect(() => {
+        const measure = () => {
+            if (containerRef.current && measureRef.current) {
+                setOverflow(measureRef.current.scrollWidth > containerRef.current.clientWidth);
+            }
+        };
+
+        measure();
+
+        const ro = new ResizeObserver(measure);
+        if (containerRef.current) ro.observe(containerRef.current);
+        if (measureRef.current) ro.observe(measureRef.current);
+        window.addEventListener('resize', measure);
+
+        return () => {
+            ro.disconnect();
+            window.removeEventListener('resize', measure);
+        };
+    }, [partners]);
+
     if (partners.length === 0) return null;
 
     const mid = Math.ceil(partners.length / 2);
@@ -80,7 +106,7 @@ export default function PartnersSection({ partners }: { partners: Partner[] }) {
                 ))}
             </div>
 
-            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" ref={containerRef}>
                 {/* Header */}
                 <div className="pm-fade mb-12 text-center sm:mb-16">
                     <h2 className="mb-3 text-sm font-bold uppercase tracking-wider" style={{ color: accent }}>Partners</h2>
@@ -89,27 +115,38 @@ export default function PartnersSection({ partners }: { partners: Partner[] }) {
                     <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500">Powering connectivity for industry leaders across the nation.</p>
                 </div>
 
-                {/* Row 1 — scrolls left */}
-                <div className="pm-marquee-wrap relative mb-6 py-4">
-                    <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 sm:w-32" style={{ background: 'linear-gradient(90deg, white, transparent)' }} aria-hidden="true" />
-                    <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 sm:w-32" style={{ background: 'linear-gradient(270deg, white, transparent)' }} aria-hidden="true" />
-                    <div className="pm-track pm-left flex gap-4">
-                        {[...row1, ...row1, ...row1].map((p, i) => (
-                            <PartnerCard key={`r1-${i}`} partner={p} accent={accent} accentAlt={accentAlt} />
-                        ))}
-                    </div>
-                </div>
+                {overflow ? (
+                    <>
+                        {/* Row 1 — scrolls left */}
+                        <div className="pm-marquee-wrap relative mb-6 py-4">
+                            <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 sm:w-32" style={{ background: 'linear-gradient(90deg, white, transparent)' }} aria-hidden="true" />
+                            <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 sm:w-32" style={{ background: 'linear-gradient(270deg, white, transparent)' }} aria-hidden="true" />
+                            <div className="pm-track pm-left flex gap-4">
+                                {[...row1, ...row1, ...row1].map((p, i) => (
+                                    <PartnerCard key={`r1-${i}`} partner={p} accent={accent} accentAlt={accentAlt} />
+                                ))}
+                            </div>
+                        </div>
 
-                {/* Row 2 — scrolls right */}
-                <div className="pm-marquee-wrap relative py-4">
-                    <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 sm:w-32" style={{ background: 'linear-gradient(90deg, white, transparent)' }} aria-hidden="true" />
-                    <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 sm:w-32" style={{ background: 'linear-gradient(270deg, white, transparent)' }} aria-hidden="true" />
-                    <div className="pm-track pm-right flex gap-4">
-                        {[...row2Final, ...row2Final, ...row2Final].map((p, i) => (
-                            <PartnerCard key={`r2-${i}`} partner={p} accent={accent} accentAlt={accentAlt} />
+                        {/* Row 2 — scrolls right */}
+                        <div className="pm-marquee-wrap relative py-4">
+                            <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 sm:w-32" style={{ background: 'linear-gradient(90deg, white, transparent)' }} aria-hidden="true" />
+                            <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 sm:w-32" style={{ background: 'linear-gradient(270deg, white, transparent)' }} aria-hidden="true" />
+                            <div className="pm-track pm-right flex gap-4">
+                                {[...row2Final, ...row2Final, ...row2Final].map((p, i) => (
+                                    <PartnerCard key={`r2-${i}`} partner={p} accent={accent} accentAlt={accentAlt} />
+                                ))}
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    /* Single centered row — no overflow */
+                    <div ref={measureRef} className="flex flex-wrap items-center justify-center gap-4 py-4">
+                        {partners.map((p, i) => (
+                            <PartnerCard key={`static-${i}`} partner={p} accent={accent} accentAlt={accentAlt} />
                         ))}
                     </div>
-                </div>
+                )}
 
                 {/* Bottom HUD line */}
                 <div className="pm-fade mt-12 flex items-center justify-center gap-3">

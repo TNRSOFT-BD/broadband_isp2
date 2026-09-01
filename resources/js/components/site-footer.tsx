@@ -1,6 +1,6 @@
 import IspLogo from '@/components/isp-logo';
 import { Link, usePage } from '@inertiajs/react';
-import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin, MessageCircle, Headphones, Globe, Clock, HelpCircle, ArrowRight } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageCircle, Headphones, Globe, Clock, HelpCircle, ArrowRight } from 'lucide-react';
 import { type ReactNode } from 'react';
 
 const quickLinks = [
@@ -8,15 +8,6 @@ const quickLinks = [
     { title: 'About Us', href: '/about' },
     { title: 'Plans', href: '/plans' },
     { title: 'Contact', href: '/contact' },
-];
-
-
-
-const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
 ];
 
 const iconMap: Record<string, ReactNode> = {
@@ -44,11 +35,19 @@ interface LegalPageLink {
     slug: string;
 }
 
+interface SocialMediaItem {
+    id: number;
+    name: string;
+    image: string;
+    link: string;
+}
+
 export default function SiteFooter() {
     const page = usePage();
     const site = page.props.site as { site_name?: string | null } | undefined;
     const quickContactMethods = (page.props.footerContactMethods as QuickContactMethod[] | undefined) ?? [];
     const legalPages = (page.props.legalPages as LegalPageLink[] | undefined) ?? [];
+    const socialMediaItems = (page.props.socialMediaItems as SocialMediaItem[] | undefined) ?? [];
 
     // Only show contact methods that have both label and value
     const validContactMethods = quickContactMethods.filter((m) => m.label && m.value);
@@ -73,20 +72,27 @@ export default function SiteFooter() {
                         <p className="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-slate-400 md:mx-0">
                             Empowering your digital world with ultra-fast, reliable internet connectivity. Experience the future of broadband today.
                         </p>
-                        <div className="mt-6 flex items-center justify-center gap-3 md:justify-start">
-                            {socialLinks
-                                .filter((social) => social.href && social.href !== '#')
-                                .map((social) => (
-                                <a
-                                    key={social.label}
-                                    href={social.href}
-                                    aria-label={social.label}
-                                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-slate-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--isp-primary)]/50 hover:bg-[var(--isp-primary)]/10 hover:text-[var(--isp-primary)]"
-                                >
-                                    <social.icon className="h-4 w-4" />
-                                </a>
-                            ))}
-                        </div>
+                        {socialMediaItems.length > 0 && (
+                            <div className="mt-6 flex items-center justify-center gap-4 md:justify-start">
+                                {socialMediaItems.map((social) => (
+                                    <a
+                                        key={social.id}
+                                        href={social.link}
+                                        aria-label={social.name}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-slate-300 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--isp-primary)] hover:text-white"
+                                    >
+                                        <img
+                                            src={social.image}
+                                            alt={social.name}
+                                            className="h-full w-full object-contain"
+                                            loading="lazy"
+                                        />
+                                    </a>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Right: Quick Links + Contact Us */}

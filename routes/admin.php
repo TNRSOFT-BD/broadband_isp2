@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\AdminContactPageController;
 use App\Http\Controllers\Admin\AdminInquiryTypeController;
 use App\Http\Controllers\Admin\AdminQuickContactMethodController;
 use App\Http\Controllers\Admin\AdminOfficeLocationController;
+use App\Http\Controllers\Admin\AdminSocialMediaController;
+use App\Http\Controllers\Admin\AdminPaymentPartnerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HeroConfigController;
 use App\Http\Controllers\Admin\HomepageController;
@@ -187,6 +189,27 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::middleware('permission:delete-contact-messages')->group(function () {
             Route::delete('/contact-messages/{id}', [AdminContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
+        });
+
+        // ── Social Media Management ────────────────────────────────
+        Route::middleware('permission:manage-social-media')->group(function () {
+            Route::get('/social-media', [AdminSocialMediaController::class, 'index'])->name('social-media.index');
+            Route::post('/social-media', [AdminSocialMediaController::class, 'store'])->name('social-media.store');
+            Route::post('/social-media/upload', [AdminSocialMediaController::class, 'upload'])->name('social-media.upload');
+            Route::put('/social-media/{id}', [AdminSocialMediaController::class, 'update'])->name('social-media.update');
+            Route::delete('/social-media/{id}', [AdminSocialMediaController::class, 'destroy'])->name('social-media.destroy');
+            Route::patch('/social-media/{id}/toggle-status', [AdminSocialMediaController::class, 'toggleStatus'])->name('social-media.toggle-status');
+        });
+
+        // ── Payment Partners ──────────────────────────────────────
+        Route::middleware('permission:manage-payment-partners')->group(function () {
+            Route::get('/payment-partners', [AdminPaymentPartnerController::class, 'index'])->name('payment-partners.index');
+            Route::post('/payment-partners', [AdminPaymentPartnerController::class, 'store'])->name('payment-partners.store');
+            Route::post('/payment-partners/upload', [AdminPaymentPartnerController::class, 'upload'])->name('payment-partners.upload');
+            Route::put('/payment-partners/{id}', [AdminPaymentPartnerController::class, 'update'])->name('payment-partners.update');
+            Route::delete('/payment-partners/{id}', [AdminPaymentPartnerController::class, 'destroy'])->name('payment-partners.destroy');
+            Route::patch('/payment-partners/{id}/activate', [AdminPaymentPartnerController::class, 'activate'])->name('payment-partners.activate');
+            Route::patch('/payment-partners/deactivate', [AdminPaymentPartnerController::class, 'deactivate'])->name('payment-partners.deactivate');
         });
 
         // ── Quick Contact Methods ───────────────────────────────────
@@ -451,6 +474,16 @@ Route::middleware(['auth'])->group(function () {
             // Quick Contact Methods
             Route::middleware('permission:manage-quick-contact-methods')->group(function () {
                 Route::get('/contact/quick-methods', [AdminQuickContactMethodController::class, 'index'])->name('quick-contact-methods.index');
+            });
+
+            // Social Media Management
+            Route::middleware('permission:manage-social-media')->group(function () {
+                Route::get('/social-media', [AdminSocialMediaController::class, 'index'])->name('social-media.index');
+            });
+
+            // Payment Partners
+            Route::middleware('permission:manage-payment-partners')->group(function () {
+                Route::get('/payment-partners', [AdminPaymentPartnerController::class, 'index'])->name('payment-partners.index');
             });
 
             // Inquiry Types

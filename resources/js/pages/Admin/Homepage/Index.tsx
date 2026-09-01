@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { CheckCircle2 } from 'lucide-react';
-import { LayoutGrid, Edit3, Star, HelpCircle, ArrowRight, Settings, Home, Target, Sparkles, Handshake, ServerCog } from 'lucide-react';
+import { LayoutGrid, Edit3, Star, HelpCircle, ArrowRight, Settings, Home, Target, Sparkles, Handshake, ServerCog, Landmark } from 'lucide-react';
 
 
 interface SectionSetting {
@@ -91,6 +91,29 @@ export default function HomepageIndex() {
                             </Link>
                         );
                     })}
+                </div>
+
+                {/* Payment Partner Section */}
+                <div className="rounded-xl border border-gray-200 bg-white p-5">
+                    <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: `color-mix(in srgb, ${accent} 10%, transparent)` }}>
+                                <Landmark className="h-5 w-5" style={{ color: accent }} />
+                            </div>
+                            <div>
+                                <h3 className="text-sm font-bold text-gray-900">Payment Partner</h3>
+                                <p className="text-xs text-gray-500">
+                                    One active payment partner is displayed above the website footer.
+                                </p>
+                            </div>
+                        </div>
+                        <Link
+                            href={route('admin.payment-partners.index')}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:border-[var(--isp-primary)]/30 hover:bg-[var(--isp-primary)]/5 hover:text-[var(--isp-primary)]"
+                        >
+                            Manage Partners <ArrowRight className="h-3 w-3" />
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Info */}

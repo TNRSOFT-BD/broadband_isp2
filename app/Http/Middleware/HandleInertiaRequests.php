@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use App\Services\FontService;
 use App\Services\HeroService;
 use App\Services\QuickContactMethodService;
+use App\Services\PaymentPartnerService;
+use App\Services\SocialMediaService;
 use App\Services\SiteSettingsService;
 use App\Services\ThemeService;
 use Illuminate\Foundation\Inspiring;
@@ -48,6 +50,8 @@ class HandleInertiaRequests extends Middleware
         $heroService = app(HeroService::class);
         $siteSettingsService = app(SiteSettingsService::class);
         $quickContactMethodService = app(QuickContactMethodService::class);
+        $socialMediaService = app(SocialMediaService::class);
+        $paymentPartnerService = app(PaymentPartnerService::class);
 
         $activeFont = $fontService->getActiveFontDetails();
         $themeColors = $themeService->getActiveThemeColors();
@@ -103,10 +107,15 @@ class HandleInertiaRequests extends Middleware
                 ->map(fn ($method) => $method->only(['id', 'icon', 'label', 'value', 'description', 'href'])),
             'footerContactMethods' => $quickContactMethodService->getFooterMethods()
                 ->map(fn ($method) => $method->only(['id', 'icon', 'label', 'value', 'description', 'href'])),
+            'socialMediaItems' => $socialMediaService->getActiveItems()
+                ->map(fn ($item) => $item->only(['id', 'name', 'image', 'link'])),
+            'activePaymentPartner' => $paymentPartnerService->getActive()
+                ?->only(['id', 'name', 'image', 'website_link']),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+            'csrf_token' => fn () => csrf_token(),
         ]);
     }
 }
