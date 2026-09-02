@@ -1,6 +1,6 @@
 import IspLogo from '@/components/isp-logo';
 import { Link, usePage } from '@inertiajs/react';
-import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin, MessageCircle, Headphones, Globe, Clock, HelpCircle, ArrowRight } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageCircle, Headphones, Globe, Clock, HelpCircle, ArrowRight } from 'lucide-react';
 import { type ReactNode } from 'react';
 
 const quickLinks = [
@@ -8,13 +8,6 @@ const quickLinks = [
     { title: 'About Us', href: '/about' },
     { title: 'Plans', href: '/plans' },
     { title: 'Contact', href: '/contact' },
-];
-
-const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
 ];
 
 const iconMap: Record<string, ReactNode> = {
@@ -37,10 +30,24 @@ interface QuickContactMethod {
     href?: string | null;
 }
 
+interface LegalPageLink {
+    title: string;
+    slug: string;
+}
+
+interface SocialMediaItem {
+    id: number;
+    name: string;
+    image: string;
+    link: string;
+}
+
 export default function SiteFooter() {
     const page = usePage();
     const site = page.props.site as { site_name?: string | null } | undefined;
     const quickContactMethods = (page.props.footerContactMethods as QuickContactMethod[] | undefined) ?? [];
+    const legalPages = (page.props.legalPages as LegalPageLink[] | undefined) ?? [];
+    const socialMediaItems = (page.props.socialMediaItems as SocialMediaItem[] | undefined) ?? [];
 
     // Only show contact methods that have both label and value
     const validContactMethods = quickContactMethods.filter((m) => m.label && m.value);
@@ -55,35 +62,41 @@ export default function SiteFooter() {
             <div className="pointer-events-none absolute -right-40 bottom-0 h-80 w-80 rounded-full bg-[var(--isp-accent)]/5 blur-[120px]" />
 
             <div className="relative mx-auto max-w-7xl px-4 pt-10 pb-6 sm:px-6 lg:px-8">
-                {/* Brand row - full width */}
-                <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-12">
-                    <div className="flex-1 text-center md:text-left">
+                {/* Main row: Logo left, Links + Contact right */}
+                <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-12 text-center md:text-left">
+                    {/* Left: Logo + tagline + social */}
+                    <div className="flex-1">
                         <Link href="/" className="inline-block">
                             <IspLogo />
                         </Link>
                         <p className="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-slate-400 md:mx-0">
                             Empowering your digital world with ultra-fast, reliable internet connectivity. Experience the future of broadband today.
                         </p>
-                        {/* Social icons */}
-                        <div className="mt-6 flex items-center justify-center gap-3 md:justify-start">
-                            {socialLinks
-                                .filter((social) => social.href && social.href !== '#')
-                                .map((social) => (
-                                <a
-                                    key={social.label}
-                                    href={social.href}
-                                    aria-label={social.label}
-                                    className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-slate-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--isp-primary)]/50 hover:bg-[var(--isp-primary)]/10 hover:text-[var(--isp-primary)]"
-                                >
-                                    <social.icon className="h-4 w-4" />
-                                </a>
-                            ))}
-                        </div>
+                        {socialMediaItems.length > 0 && (
+                            <div className="mt-6 flex items-center justify-center gap-4 md:justify-start">
+                                {socialMediaItems.map((social) => (
+                                    <a
+                                        key={social.id}
+                                        href={social.link}
+                                        aria-label={social.name}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-slate-300 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--isp-primary)] hover:text-white"
+                                    >
+                                        <img
+                                            src={social.image}
+                                            alt={social.name}
+                                            className="h-full w-full object-contain"
+                                            loading="lazy"
+                                        />
+                                    </a>
+                                ))}
+                            </div>
+                        )}
                     </div>
-                </div>
 
-                {/* Links grid - separate row */}
-                <div className="mt-8 grid gap-8 text-center sm:grid-cols-2 md:text-left lg:grid-cols-2">
+                    {/* Right: Quick Links + Contact Us */}
+                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:w-1/2">
                     {/* Quick Links */}
                     <div>
                         <h3 className="text-sm font-bold uppercase tracking-wider text-white">Quick Links</h3>
@@ -141,6 +154,7 @@ export default function SiteFooter() {
                             </ul>
                         </div>
                     )}
+                    </div>
                 </div>
 
                 {/* Bottom bar */}
@@ -152,15 +166,15 @@ export default function SiteFooter() {
                             . All rights reserved.
                         </p>
                         <div className="flex items-center gap-6">
-                            <a href="#" className="text-xs text-slate-500 transition-colors hover:text-slate-300">
-                                Privacy Policy
-                            </a>
-                            <a href="#" className="text-xs text-slate-500 transition-colors hover:text-slate-300">
-                                Terms of Service
-                            </a>
-                            <a href="#" className="text-xs text-slate-500 transition-colors hover:text-slate-300">
-                                Cookie Policy
-                            </a>
+                            {legalPages.map((link) => (
+                                <Link
+                                    key={link.slug}
+                                    href={`/legal/${link.slug}`}
+                                    className="text-xs text-slate-500 transition-colors hover:text-slate-300"
+                                >
+                                    {link.title}
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>

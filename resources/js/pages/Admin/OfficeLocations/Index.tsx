@@ -1,15 +1,14 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
-import { CheckCircle2, Plus, Pencil, Trash2, MapPin } from 'lucide-react';
+import { CheckCircle2, Plus, Pencil, Trash2, MapPin, Search, Loader2, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import { useAdminUrl } from '@/hooks/use-admin-url';
-
 
 interface OfficeLocationItem {
     id: number;
@@ -19,6 +18,10 @@ interface OfficeLocationItem {
     address: string;
     phone: string | null;
     email: string | null;
+    google_maps_url: string | null;
+    location_query: string | null;
+    latitude: number | null;
+    longitude: number | null;
     sort_order: number;
     is_active: boolean;
 }
@@ -28,14 +31,14 @@ interface PageProps extends Record<string, unknown> {
     locationTypes: Record<string, string>;
 }
 
-function extractEmbedSrc(value: string): string | null {
-    const trimmed = value.trim();
-    if (!trimmed) return null;
-
-    const match = trimmed.match(/src\s*=\s*["'](https?:\/\/[^"']+)["']/i);
-    if (match) return match[1];
-
-    return /^https?:\/\//i.test(trimmed) ? trimmed : null;
+interface ResolveResult {
+    success: boolean;
+    latitude: number | null;
+    longitude: number | null;
+    location_query: string | null;
+    resolved_url: string | null;
+    embed_url: string | null;
+    error: string | null;
 }
 
 export default function OfficeLocationsIndex() {
@@ -50,6 +53,9 @@ export default function OfficeLocationsIndex() {
 
     const [showForm, setShowForm] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
+    const [resolving, setResolving] = useState(false);
+    const [resolveResult, setResolveResult] = useState<ResolveResult | null>(null);
+    const [showAdvanced, setShowAdvanced] = useState(false);
 
     const form = useForm({
         name: '',
@@ -57,10 +63,10 @@ export default function OfficeLocationsIndex() {
         address: '',
         phone: '',
         email: '',
-        map_url: '',
-        map_embed_url: '',
-        latitude: '',
-        longitude: '',
+        google_maps_url: '',
+        location_query: '',
+        latitude: '' as string | number,
+        longitude: '' as string | number,
         office_hours: '',
         sort_order: 0,
         is_active: true as boolean,
@@ -79,6 +85,7 @@ export default function OfficeLocationsIndex() {
                 onSuccess: () => {
                     setShowForm(false);
                     setEditingId(null);
+                    setResolveResult(null);
                     form.reset();
                 },
             });
@@ -86,6 +93,8 @@ export default function OfficeLocationsIndex() {
             form.post(route('admin.office-locations.store'), {
                 onSuccess: () => {
                     setShowForm(false);
+                    setEditingId(null);
+                    setResolveResult(null);
                     form.reset();
                 },
             });
@@ -94,16 +103,18 @@ export default function OfficeLocationsIndex() {
 
     const handleEdit = (location: OfficeLocationItem) => {
         setEditingId(location.id);
+        setResolveResult(null);
+        setShowAdvanced(false);
         form.setData({
             name: location.name,
             type: location.type ?? '',
             address: location.address,
             phone: location.phone ?? '',
             email: location.email ?? '',
-            map_url: '',
-            map_embed_url: '',
-            latitude: '',
-            longitude: '',
+            google_maps_url: location.google_maps_url ?? '',
+            location_query: location.location_query ?? '',
+            latitude: location.latitude?.toString() ?? '',
+            longitude: location.longitude?.toString() ?? '',
             office_hours: '',
             sort_order: location.sort_order,
             is_active: location.is_active,
@@ -121,6 +132,72 @@ export default function OfficeLocationsIndex() {
         router.patch(route('admin.office-locations.toggle-status', id));
     };
 
+    const handleResolveLocation = async () => {
+        const url = form.data.google_maps_url;
+        if (!url) return;
+
+        setResolving(true);
+        setResolveResult(null);
+
+        try {
+            const response = await fetch(route('admin.office-locations.resolve'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-XSRF-TOKEN': decodeURIComponent(
+                        document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] ?? ''
+                    ),
+                },
+                body: JSON.stringify({ url }),
+            });
+
+            const result: ResolveResult = await response.json();
+            setResolveResult(result);
+
+            if (result.success) {
+                if (result.latitude !== null) {
+                    form.setData('latitude', result.latitude.toString());
+                }
+                if (result.longitude !== null) {
+                    form.setData('longitude', result.longitude.toString());
+                }
+                if (result.location_query) {
+                    form.setData('location_query', result.location_query);
+                }
+            }
+        } catch {
+            setResolveResult({
+                success: false,
+                latitude: null,
+                longitude: null,
+                location_query: null,
+                resolved_url: null,
+                embed_url: null,
+                error: 'Failed to resolve location. Please try again or enter details manually.',
+            });
+        } finally {
+            setResolving(false);
+        }
+    };
+
+    const getEmbedUrl = (): string | null => {
+        const lat = form.data.latitude ? parseFloat(form.data.latitude as string) : null;
+        const lng = form.data.longitude ? parseFloat(form.data.longitude as string) : null;
+        const query = form.data.location_query;
+
+        if (lat !== null && lng !== null) {
+            return `https://www.google.com/maps?q=${lat},${lng}&output=embed`;
+        }
+        if (query) {
+            return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+        }
+        return null;
+    };
+
+    const embedUrl = getEmbedUrl();
+    const inputCls = 'rounded-lg border-gray-200 focus:border-[var(--isp-primary)] focus:ring-[var(--isp-primary)]';
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Office Locations" />
@@ -134,7 +211,7 @@ export default function OfficeLocationsIndex() {
                             Manage office locations shown on the contact page.
                         </p>
                     </div>
-                    <Button onClick={() => { setShowForm(!showForm); setEditingId(null); form.reset(); }}>
+                    <Button onClick={() => { setShowForm(!showForm); setEditingId(null); setResolveResult(null); setShowAdvanced(false); form.reset(); }}>
                         <Plus className="mr-1 h-4 w-4" />
                         Add Location
                     </Button>
@@ -154,57 +231,101 @@ export default function OfficeLocationsIndex() {
                             <CardTitle>{editingId ? 'Edit' : 'Create'} Office Location</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
-                                <div className="sm:col-span-2">
-                                    <Label htmlFor="name">Office Name *</Label>
-                                    <Input id="name" value={form.data.name} onChange={(e) => form.setData('name', e.target.value)} placeholder="e.g. Head Office" className="mt-1" required />
-                                    {form.errors.name && <p className="mt-1 text-xs text-red-500">{form.errors.name}</p>}
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                {/* Basic Info */}
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div className="sm:col-span-2">
+                                        <Label htmlFor="name">Office Name *</Label>
+                                        <Input id="name" value={form.data.name} onChange={(e) => form.setData('name', e.target.value)} placeholder="e.g. Head Office" className={`mt-1 ${inputCls}`} required />
+                                        {form.errors.name && <p className="mt-1 text-xs text-red-500">{form.errors.name}</p>}
+                                    </div>
+                                    <div>
+                                        <Label htmlFor="type">Office Type</Label>
+                                        <Select value={form.data.type} onValueChange={(v) => form.setData('type', v)}>
+                                            <SelectTrigger className={`mt-1 ${inputCls}`}><SelectValue placeholder="Select type..." /></SelectTrigger>
+                                            <SelectContent>
+                                                {Object.entries(locationTypes).map(([key, label]) => (
+                                                    <SelectItem key={key} value={key}>{label}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div>
+                                        <Label htmlFor="sort_order">Sort Order</Label>
+                                        <Input id="sort_order" type="number" value={form.data.sort_order} onChange={(e) => form.setData('sort_order', parseInt(e.target.value) || 0)} className={`mt-1 ${inputCls}`} />
+                                    </div>
+                                    <div className="sm:col-span-2">
+                                        <Label htmlFor="address">Address *</Label>
+                                        <Input id="address" value={form.data.address} onChange={(e) => form.setData('address', e.target.value)} placeholder="Full address" className={`mt-1 ${inputCls}`} required />
+                                    </div>
+                                    <div>
+                                        <Label htmlFor="phone">Phone</Label>
+                                        <Input id="phone" value={form.data.phone} onChange={(e) => form.setData('phone', e.target.value)} className={`mt-1 ${inputCls}`} />
+                                    </div>
+                                    <div>
+                                        <Label htmlFor="email">Email</Label>
+                                        <Input id="email" type="email" value={form.data.email} onChange={(e) => form.setData('email', e.target.value)} className={`mt-1 ${inputCls}`} />
+                                    </div>
+                                    <div className="sm:col-span-2">
+                                        <Label htmlFor="office_hours">Office Hours</Label>
+                                        <Input id="office_hours" value={form.data.office_hours} onChange={(e) => form.setData('office_hours', e.target.value)} placeholder="e.g. Sat-Thu: 9:00 AM - 6:00 PM" className={`mt-1 ${inputCls}`} />
+                                    </div>
                                 </div>
-                                <div>
-                                    <Label htmlFor="type">Office Type</Label>
-                                    <Select value={form.data.type} onValueChange={(v) => form.setData('type', v)}>
-                                        <SelectTrigger className="mt-1"><SelectValue placeholder="Select type..." /></SelectTrigger>
-                                        <SelectContent>
-                                            {Object.entries(locationTypes).map(([key, label]) => (
-                                                <SelectItem key={key} value={key}>{label}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div>
-                                    <Label htmlFor="sort_order">Sort Order</Label>
-                                    <Input id="sort_order" type="number" value={form.data.sort_order} onChange={(e) => form.setData('sort_order', parseInt(e.target.value) || 0)} className="mt-1" />
-                                </div>
-                                <div className="sm:col-span-2">
-                                    <Label htmlFor="address">Address *</Label>
-                                    <Input id="address" value={form.data.address} onChange={(e) => form.setData('address', e.target.value)} placeholder="Full address" className="mt-1" required />
-                                </div>
-                                <div>
-                                    <Label htmlFor="phone">Phone</Label>
-                                    <Input id="phone" value={form.data.phone} onChange={(e) => form.setData('phone', e.target.value)} className="mt-1" />
-                                </div>
-                                <div>
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input id="email" type="email" value={form.data.email} onChange={(e) => form.setData('email', e.target.value)} className="mt-1" />
-                                </div>
-                                <div className="sm:col-span-2">
-                                    <Label htmlFor="map_embed_url">Google Maps Embed</Label>
-                                    <Input
-                                        id="map_embed_url"
-                                        value={form.data.map_embed_url}
-                                        onChange={(e) => form.setData('map_embed_url', e.target.value)}
-                                        placeholder="Paste the Google Maps embed URL or iframe code here"
-                                        className="mt-1"
-                                    />
-                                    <p className="mt-1 text-xs text-muted-foreground">
-                                        Paste the full embed from Google Maps (Share &rarr; Embed a map) or just the URL. We'll handle it.
-                                    </p>
-                                    {extractEmbedSrc(form.data.map_embed_url) && (
-                                        <div className="mt-3 overflow-hidden rounded-xl border border-gray-200">
+
+                                {/* Google Maps Location */}
+                                <div className="rounded-xl border border-gray-200 bg-gray-50/50 p-5 space-y-4">
+                                    <div>
+                                        <h3 className="text-sm font-bold text-gray-900">Google Maps Location</h3>
+                                        <p className="mt-1 text-xs text-muted-foreground">
+                                            Open the location in Google Maps → Click Share → Click Copy Link → Paste the link here.
+                                        </p>
+                                    </div>
+
+                                    <div className="flex gap-2">
+                                        <Input
+                                            value={form.data.google_maps_url}
+                                            onChange={(e) => form.setData('google_maps_url', e.target.value)}
+                                            placeholder="Paste a Google Maps link here (e.g. https://maps.app.goo.gl/...)"
+                                            className={`flex-1 ${inputCls}`}
+                                        />
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            onClick={handleResolveLocation}
+                                            disabled={resolving || !form.data.google_maps_url}
+                                            className="shrink-0 gap-1.5"
+                                        >
+                                            {resolving ? (
+                                                <><Loader2 className="h-4 w-4 animate-spin" /> Detecting...</>
+                                            ) : (
+                                                <><Search className="h-4 w-4" /> Detect Location</>
+                                            )}
+                                        </Button>
+                                    </div>
+
+                                    {/* Resolve Result */}
+                                    {resolveResult && (
+                                        <div className={`rounded-lg border p-3 text-sm ${resolveResult.success ? 'border-green-200 bg-green-50 text-green-800' : 'border-amber-200 bg-amber-50 text-amber-800'}`}>
+                                            {resolveResult.success ? (
+                                                <div className="space-y-1">
+                                                    <p className="flex items-center gap-1.5 font-medium"><CheckCircle2 className="h-4 w-4" /> Location successfully detected</p>
+                                                    {resolveResult.location_query && <p>Location: {resolveResult.location_query}</p>}
+                                                    {resolveResult.latitude && <p>Latitude: {resolveResult.latitude}</p>}
+                                                    {resolveResult.longitude && <p>Longitude: {resolveResult.longitude}</p>}
+                                                </div>
+                                            ) : (
+                                                <p>{resolveResult.error}</p>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {/* Map Preview */}
+                                    {embedUrl && (
+                                        <div className="overflow-hidden rounded-xl border border-gray-200">
                                             <iframe
-                                                src={extractEmbedSrc(form.data.map_embed_url) as string}
+                                                src={embedUrl}
                                                 width="100%"
-                                                height="220"
+                                                height="250"
                                                 style={{ border: 0 }}
                                                 allowFullScreen
                                                 loading="lazy"
@@ -213,24 +334,80 @@ export default function OfficeLocationsIndex() {
                                             />
                                         </div>
                                     )}
+
+                                    {/* Open in Google Maps link */}
+                                    {form.data.google_maps_url && (
+                                        <a
+                                            href={form.data.google_maps_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--isp-primary)] hover:underline"
+                                        >
+                                            <ExternalLink className="h-3 w-3" /> Open in Google Maps
+                                        </a>
+                                    )}
+
+                                    {/* Advanced Location Settings */}
+                                    <div className="border-t border-gray-200 pt-3">
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowAdvanced(!showAdvanced)}
+                                            className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-gray-900"
+                                        >
+                                            {showAdvanced ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                                            Advanced Location Settings
+                                        </button>
+                                        {showAdvanced && (
+                                            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                                                <div>
+                                                    <Label className="text-xs">Location Name (Fallback)</Label>
+                                                    <Input
+                                                        value={form.data.location_query}
+                                                        onChange={(e) => form.setData('location_query', e.target.value)}
+                                                        placeholder="e.g. Rohanpur Railway Station, Bangladesh"
+                                                        className={`mt-1 ${inputCls}`}
+                                                    />
+                                                    <p className="mt-1 text-[10px] text-muted-foreground">Used if coordinates are not available.</p>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <div>
+                                                        <Label className="text-xs">Latitude</Label>
+                                                        <Input
+                                                            value={form.data.latitude}
+                                                            onChange={(e) => form.setData('latitude', e.target.value)}
+                                                            placeholder="24.8261"
+                                                            className={`mt-1 ${inputCls}`}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <Label className="text-xs">Longitude</Label>
+                                                        <Input
+                                                            value={form.data.longitude}
+                                                            onChange={(e) => form.setData('longitude', e.target.value)}
+                                                            placeholder="88.3262"
+                                                            className={`mt-1 ${inputCls}`}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="sm:col-span-2">
-                                    <Label htmlFor="office_hours">Office Hours</Label>
-                                    <Input id="office_hours" value={form.data.office_hours} onChange={(e) => form.setData('office_hours', e.target.value)} placeholder="e.g. Sat-Thu: 9:00 AM - 6:00 PM" className="mt-1" />
-                                </div>
-                                <div className="flex items-end">
+
+                                {/* Active + Submit */}
+                                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                     <label className="flex cursor-pointer items-center gap-2">
                                         <input type="checkbox" checked={form.data.is_active} onChange={(e) => form.setData('is_active', e.target.checked)} className="h-4 w-4 accent-[var(--isp-primary)]" />
                                         <span className="text-sm font-medium">Active</span>
                                     </label>
-                                </div>
-                                <div className="flex gap-2 sm:col-span-2">
-                                    <Button type="submit" disabled={form.processing}>
-                                        {form.processing ? 'Saving...' : editingId ? 'Update' : 'Create'}
-                                    </Button>
-                                    <Button type="button" variant="outline" onClick={() => { setShowForm(false); setEditingId(null); form.reset(); }}>
-                                        Cancel
-                                    </Button>
+                                    <div className="flex gap-2">
+                                        <Button type="submit" disabled={form.processing}>
+                                            {form.processing ? 'Saving...' : editingId ? 'Update' : 'Create'}
+                                        </Button>
+                                        <Button type="button" variant="outline" onClick={() => { setShowForm(false); setEditingId(null); setResolveResult(null); form.reset(); }}>
+                                            Cancel
+                                        </Button>
+                                    </div>
                                 </div>
                             </form>
                         </CardContent>

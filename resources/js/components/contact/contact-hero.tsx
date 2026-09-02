@@ -98,29 +98,6 @@ export default function ContactHero({ settings }: ContactHeroProps) {
                     </p>
                 )}
 
-                {/* CTAs */}
-                <div className="contact-hero-fade-late flex flex-col items-center gap-4 sm:flex-row">
-                    <Link
-                        href={settings.hero_cta_primary_url}
-                        className="group relative inline-flex items-center gap-2 overflow-hidden px-8 py-3.5 text-base font-semibold"
-                        style={{ background: accent, color: '#fff', clipPath: 'polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%)' }}
-                    >
-                        <span className="relative z-10">{settings.hero_cta_primary_text}</span>
-                        <span className="absolute inset-0 -translate-x-[100%] bg-white/10 transition-transform duration-500 group-hover:translate-x-[100%]" />
-                    </Link>
-                    {settings.hero_cta_secondary_text && settings.hero_cta_secondary_url && (
-                        <Link
-                            href={settings.hero_cta_secondary_url}
-                            className="group inline-flex items-center gap-2 rounded-full bg-white/10 px-8 py-3.5 text-base font-semibold text-white backdrop-blur-md transition-colors duration-300 hover:bg-white/15"
-                            style={{ border: '1px solid rgba(255,255,255,0.2)' }}
-                        >
-                            {settings.hero_cta_secondary_text}
-                            <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </Link>
-                    )}
-                </div>
             </div>
 
             {/* Bottom fade into page */}

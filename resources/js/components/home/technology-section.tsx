@@ -9,14 +9,14 @@ interface TechnologyData {
     network_stats?: {
         uptime?: string;
         peers?: string;
+        mini_stats?: { value: string; label: string }[];
     };
-    nodes?: { label: string; sub: string }[];
 }
 
-const miniStats = [
-    { value: 'peers', fallback: '2,847', label: 'PEERS', color: 'var(--isp-primary)' },
-    { value: 'speed', fallback: '10', suffix: ' Gbps', label: 'BACKBONE', color: 'var(--isp-primary)' },
-    { value: 'monitor', fallback: '24/7', label: 'MONITORING', color: 'var(--isp-primary)' },
+const defaultMiniStats = [
+    { value: '2,847', label: 'PEERS' },
+    { value: '10 Gbps', label: 'BACKBONE' },
+    { value: '24/7', label: 'MONITORING' },
 ];
 
 export default function TechnologySection({ data }: { data: TechnologyData }) {
@@ -24,12 +24,7 @@ export default function TechnologySection({ data }: { data: TechnologyData }) {
     const accentAlt = 'var(--isp-accent)';
 
     const uptime = data.network_stats?.uptime ?? '99.99%';
-    const peers = data.network_stats?.peers ?? '2,847';
-
-    const resolveMini = (stat: (typeof miniStats)[number]) => {
-        if (stat.value === 'peers') return peers;
-        return stat.fallback + (stat.suffix ?? '');
-    };
+    const miniStats = data.network_stats?.mini_stats ?? defaultMiniStats;
 
     return (
         <section className="relative overflow-hidden py-10 sm:py-14 lg:py-16" style={{ background: '#0a0e1a' }}>
@@ -71,14 +66,14 @@ export default function TechnologySection({ data }: { data: TechnologyData }) {
                             <div className="grid w-full max-w-sm grid-cols-3 gap-3">
                                 {miniStats.map((stat, i) => (
                                     <div
-                                        key={stat.label}
+                                        key={i}
                                         className="tech-mini-stat group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.08] sm:p-5"
-                                        style={{ animationDelay: `${0.3 + i * 0.1}s`, boxShadow: `inset 0 0 20px -8px ${stat.color}, 0 0 16px -6px ${stat.color}`, borderColor: `color-mix(in srgb, ${stat.color} 20%, transparent)` }}
+                                        style={{ animationDelay: `${0.3 + i * 0.1}s`, boxShadow: `inset 0 0 20px -8px var(--isp-primary), 0 0 16px -6px var(--isp-primary)`, borderColor: `color-mix(in srgb, var(--isp-primary) 20%, transparent)` }}
                                     >
                                         <div className="absolute inset-x-0 top-0 h-px"
-                                            style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                                            style={{ background: `linear-gradient(90deg, transparent, var(--isp-primary), transparent)` }} />
                                         <p className="text-xl font-bold text-white sm:text-2xl">
-                                            {resolveMini(stat)}
+                                            {stat.value}
                                         </p>
                                         <p className="mt-1.5 text-[10px] font-medium uppercase tracking-wider text-slate-400">
                                             {stat.label}

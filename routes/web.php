@@ -21,5 +21,8 @@ Route::get('/paybill', [PayBillController::class, 'index'])->name('paybill.index
 Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
+// Legal Pages (dynamic)
+Route::get('/legal/{slug}', [\App\Http\Controllers\LegalPageController::class, 'show'])->name('legal.show');
+
 require __DIR__.'/admin.php';
 require __DIR__.'/auth.php';

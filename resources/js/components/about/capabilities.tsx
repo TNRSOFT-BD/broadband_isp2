@@ -18,26 +18,33 @@ export default function Capabilities({ data }: { data: CapabilitiesData }) {
     const accent = 'var(--isp-primary)';
 
     return (
-        <section className="relative bg-white py-6 sm:py-10 lg:py-12">
+        <section className="py-10 sm:py-14 lg:py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="grid items-center gap-8 sm:gap-12 lg:grid-cols-2">
-                    {/* Content */}
-                    <div className="text-center sm:text-center lg:text-left">
-                        <h2 className="mb-2 text-center text-sm font-bold uppercase tracking-wider sm:text-center lg:text-left" style={{ color: accent }}>
-                            {data.eyebrow}
-                        </h2>
-                        <div className="mx-auto mb-4 h-1 w-12 rounded-full sm:mx-auto lg:mx-0" style={{ background: accent }} />
-                        <h3 className="mb-4 text-center text-3xl font-bold text-gray-900 sm:text-center sm:text-4xl lg:text-left">{data.title}</h3>
-                        {data.description && <p className="mb-8 text-center text-gray-500 text-justify sm:text-center lg:text-left">{data.description}</p>}
+                <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+                    {/* Left column: Header + Features Grid */}
+                    <div>
+                        {/* Header */}
+                        <div className="mb-10 text-center lg:text-left">
+                            <h2 className="mb-2 text-sm font-bold uppercase tracking-wider" style={{ color: accent }}>
+                                {data.eyebrow}
+                            </h2>
+                            <div className="mx-auto mb-4 h-1 w-12 rounded-full sm:mx-auto lg:mx-0" style={{ background: accent }} />
+                            <h3 className="text-3xl font-bold text-gray-900 sm:text-4xl">{data.title}</h3>
+                            {data.description && <p className="mx-auto mt-3 max-w-2xl text-gray-500 text-justify sm:text-center lg:mx-0 lg:text-left">{data.description}</p>}
+                        </div>
 
+                        {/* Features Grid */}
                         {data.features.length > 0 && (
-                            <div className="grid gap-4 text-left sm:grid-cols-2">
+                            <div className="grid gap-4 text-center sm:grid-cols-2">
                                 {data.features.map((feature) => {
                                     const Icon = iconMap[feature.icon] ?? Wifi;
                                     return (
-                                        <div key={feature.id} className="flex items-start gap-3">
+                                        <div
+                                            key={feature.id}
+                                            className="group rounded-xl border border-gray-100 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gray-200/50"
+                                        >
                                             <div
-                                                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+                                                className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-110"
                                                 style={{
                                                     background: `color-mix(in srgb, ${accent} 10%, transparent)`,
                                                     color: accent,
@@ -45,10 +52,8 @@ export default function Capabilities({ data }: { data: CapabilitiesData }) {
                                             >
                                                 <Icon className="h-5 w-5" />
                                             </div>
-                                            <div>
-                                                <h4 className="text-sm font-bold text-gray-900">{feature.title}</h4>
-                                                <p className="mt-0.5 text-xs leading-relaxed text-gray-500">{feature.description}</p>
-                                            </div>
+                                            <h4 className="text-sm font-bold text-gray-900">{feature.title}</h4>
+                                            <p className="mt-1 text-xs leading-relaxed text-gray-500">{feature.description}</p>
                                         </div>
                                     );
                                 })}

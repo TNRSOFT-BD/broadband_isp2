@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class IntroFeature extends Model
+class SocialMediaItem extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'label',
-        'sub_label',
-        'icon',
-        'color',
-        'sort_order',
+        'name',
+        'image',
+        'link',
         'is_active',
+        'sort_order',
     ];
 
     protected $casts = [
@@ -30,6 +29,6 @@ class IntroFeature extends Model
 
     public function scopeOrdered($query)
     {
-        return $query->orderBy('sort_order')->orderBy('id');
+        return $query->orderBy('sort_order')->orderBy('name');
     }
 }

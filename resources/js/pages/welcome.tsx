@@ -11,6 +11,7 @@ import TechnologySection from '@/components/home/technology-section';
 import TestimonialsSection from '@/components/home/testimonials-section';
 import PartnersSection from '@/components/home/partners-section';
 import FaqSection from '@/components/home/faq-section';
+import PaymentPartner from '@/components/payment-partner';
 
 interface HomepageProps {
     intro?: {
@@ -51,6 +52,11 @@ interface HomepageProps {
         title: string;
         description: string;
     }>;
+    whyChooseUsSettings?: {
+        eyebrow?: string;
+        title?: string;
+        description?: string;
+    };
     statistics?: Array<{
         id: number;
         label: string;
@@ -116,13 +122,6 @@ interface HomepageProps {
         answer: string;
         category: string | null;
     }>;
-    introFeatures?: Array<{
-        id: number;
-        label: string;
-        sub_label: string | null;
-        icon: string | null;
-        color: string | null;
-    }>;
     sectionVisibility?: Record<string, boolean>;
 }
 
@@ -147,7 +146,7 @@ export default function Welcome() {
 
             {/* Homepage sections below */}
             {vis.intro !== false && props.intro && (
-                <IntroSection data={props.intro} features={vis.introFeatures === false ? [] : (props.introFeatures ?? [])} />
+                <IntroSection data={props.intro} />
             )}
 
             {props.featuredPlans && props.featuredPlans.length > 0 && (
@@ -155,7 +154,7 @@ export default function Welcome() {
             )}
 
             {props.whyChooseUs && props.whyChooseUs.length > 0 && (
-                <WhyChooseUsSection items={props.whyChooseUs} />
+                <WhyChooseUsSection items={props.whyChooseUs} settings={props.whyChooseUsSettings} />
             )}
 
             {props.services && props.services.length > 0 && (
@@ -182,6 +181,7 @@ export default function Welcome() {
                 <FaqSection items={props.faqs} />
             )}
 
+            <PaymentPartner />
 
         </PublicLayout>
     );

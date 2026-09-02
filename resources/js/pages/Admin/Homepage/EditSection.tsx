@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Pencil, CheckCircle2 } from 'lucide-react';
 import { useAdminUrl } from '@/hooks/use-admin-url';
 
 const sectionLabels: Record<string, string> = {
@@ -14,16 +14,28 @@ const sectionLabels: Record<string, string> = {
     technology: 'Technology & Infrastructure',
     coverage: 'Coverage Section',
     cta: 'Final CTA',
+    why_choose_us: 'Why Choose Us',
 };
+
+interface WhyChooseUsItem {
+    id: number;
+    icon: string;
+    title: string;
+    description: string;
+    sort_order: number;
+    is_active: boolean;
+}
 
 interface PageProps {
     section: string;
     data: Record<string, unknown>;
     is_active: boolean;
+    items?: WhyChooseUsItem[];
 }
 
 export default function EditSection() {
-    const { section, data: sectionData, is_active: serverIsActive } = usePage().props as unknown as PageProps;
+    const page = usePage().props as unknown as PageProps & { flash?: { success?: string } };
+    const { section, data: sectionData, is_active: serverIsActive, items: serverItems, flash } = page;
     const { adminUrl } = useAdminUrl();
     const accent = 'var(--isp-primary)';
     const d = sectionData ?? {};
@@ -46,18 +58,6 @@ export default function EditSection() {
         secondary_button_url: (d.secondary_button_url as string) ?? '',
         capabilities_json: JSON.stringify(d.capabilities ?? []),
         network_stats_json: JSON.stringify(d.network_stats ?? { uptime: '99.99%', peers: '2,847' }),
-        nodes_json: JSON.stringify(d.nodes ?? [
-            { label: 'POP', sub: 'ACCESS' },
-            { label: 'DATA CENTER', sub: 'CORE' },
-            { label: 'IX PEERING', sub: 'TRANSIT' },
-            { label: 'CDN EDGE', sub: 'CACHE' },
-            { label: 'ACCESS NODE', sub: 'LAST MILE' },
-            { label: 'CORE ROUTER', sub: 'BACKBONE' },
-            { label: 'DNS CLUSTER', sub: 'RESOLVE' },
-            { label: 'BGP PEER', sub: 'ROUTING' },
-            { label: 'SECURITY', sub: 'FIREWALL' },
-            { label: 'WIRELESS', sub: '5G/LTE' },
-        ]),
         hud_panels_json: JSON.stringify(d.hud_panels ?? [
             { label: 'Network', position: 'top-left', stats: [{ value: '99.97%', label: 'uptime' }, { value: '12.4 Gbps', label: 'peak' }] },
             { label: 'Coverage', position: 'bottom-right', stats: [{ value: '64+', label: 'zones' }, { value: '8 divisions', label: 'active' }] },
@@ -65,6 +65,62 @@ export default function EditSection() {
     });
     const setData = (key: string, value: string | boolean) =>
         setFormData((prev) => ({ ...prev, [key]: value }));
+
+    // Why Choose Us items state
+    const ICON_OPTIONS = [
+        'Shield', 'Headphones', 'Server', 'Users', 'Home', 'TrendingUp', 'Wifi', 'Clock',
+        'Globe', 'Zap', 'Heart', 'Eye', 'Target', 'Award', 'CheckCircle2', 'Star',
+    ];
+    const [items, setItems] = useState<WhyChooseUsItem[]>(serverItems ?? []);
+    const [showItemForm, setShowItemForm] = useState(false);
+    const [editingItemId, setEditingItemId] = useState<number | null>(null);
+    const [itemForm, setItemForm] = useState({ icon: 'Shield', title: '', description: '', sort_order: 0, is_active: true });
+
+    const resetItemForm = () => {
+        setItemForm({ icon: 'Shield', title: '', description: '', sort_order: 0, is_active: true });
+        setEditingItemId(null);
+        setShowItemForm(false);
+    };
+
+    const handleItemSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (editingItemId) {
+            router.put(route('admin.homepage.why-choose-us-items.update', editingItemId), itemForm, {
+                onSuccess: () => {
+                    setItems((prev) => prev.map((it) => it.id === editingItemId ? { ...it, ...itemForm } as WhyChooseUsItem : it));
+                    resetItemForm();
+                },
+            });
+        } else {
+            router.post(route('admin.homepage.why-choose-us-items.store'), itemForm, {
+                onSuccess: (page) => {
+                    // Reload to get the new item with proper id
+                    router.reload({ only: ['items'] });
+                    resetItemForm();
+                },
+            });
+        }
+    };
+
+    const handleItemEdit = (item: WhyChooseUsItem) => {
+        setEditingItemId(item.id);
+        setItemForm({ icon: item.icon, title: item.title, description: item.description, sort_order: item.sort_order, is_active: item.is_active });
+        setShowItemForm(true);
+    };
+
+    const handleItemDelete = (id: number) => {
+        if (confirm('Are you sure you want to delete this item?')) {
+            router.delete(route('admin.homepage.why-choose-us-items.destroy', id), {
+                onSuccess: () => setItems((prev) => prev.filter((it) => it.id !== id)),
+            });
+        }
+    };
+
+    const handleItemToggle = (id: number) => {
+        router.patch(route('admin.homepage.why-choose-us-items.toggle-status', id), {}, {
+            onSuccess: () => setItems((prev) => prev.map((it) => it.id === id ? { ...it, is_active: !it.is_active } : it)),
+        });
+    };
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: adminUrl('/dashboard') },
@@ -93,12 +149,6 @@ export default function EditSection() {
             payload.capabilities = JSON.parse(formData.capabilities_json);
         } catch {
             payload.capabilities = [];
-        }
-
-        try {
-            payload.nodes = JSON.parse(formData.nodes_json);
-        } catch {
-            payload.nodes = [];
         }
 
         try {
@@ -150,27 +200,6 @@ export default function EditSection() {
         const caps = [...capabilities];
         caps.splice(index, 1);
         setData('capabilities_json', JSON.stringify(caps));
-    };
-
-    // Network Nodes helpers
-    const nodes: { label: string; sub: string }[] = (() => {
-        try { return JSON.parse(formData.nodes_json); } catch { return []; }
-    })();
-
-    const updateNode = (index: number, key: string, value: string) => {
-        const items = [...nodes];
-        items[index] = { ...items[index], [key]: value };
-        setData('nodes_json', JSON.stringify(items));
-    };
-
-    const addNode = () => {
-        setData('nodes_json', JSON.stringify([...nodes, { label: '', sub: '' }]));
-    };
-
-    const removeNode = (index: number) => {
-        const items = [...nodes];
-        items.splice(index, 1);
-        setData('nodes_json', JSON.stringify(items));
     };
 
     // Highlights helpers
@@ -527,11 +556,45 @@ export default function EditSection() {
                                 <div className="grid gap-4 sm:grid-cols-2">
                                     <div className="space-y-2">
                                         <Label>Uptime</Label>
-                                        <Input value={(() => { try { return JSON.parse(formData.network_stats_json).uptime ?? ''; } catch { return ''; } })()} onChange={(e) => { const stats = (() => { try { return JSON.parse(formData.network_stats_json); } catch { return { uptime: '', peers: '' }; } })(); stats.uptime = e.target.value; setData('network_stats_json', JSON.stringify(stats)); }} placeholder="99.99%" />
+                                        <Input value={(() => { try { return JSON.parse(formData.network_stats_json).uptime ?? ''; } catch { return ''; } })()} onChange={(e) => { const stats = (() => { try { return JSON.parse(formData.network_stats_json); } catch { return { uptime: '', peers: '', mini_stats: [] }; } })(); stats.uptime = e.target.value; setData('network_stats_json', JSON.stringify(stats)); }} placeholder="99.99%" />
                                     </div>
                                     <div className="space-y-2">
                                         <Label>Peers</Label>
-                                        <Input value={(() => { try { return JSON.parse(formData.network_stats_json).peers ?? ''; } catch { return ''; } })()} onChange={(e) => { const stats = (() => { try { return JSON.parse(formData.network_stats_json); } catch { return { uptime: '', peers: '' }; } })(); stats.peers = e.target.value; setData('network_stats_json', JSON.stringify(stats)); }} placeholder="2,847" />
+                                        <Input value={(() => { try { return JSON.parse(formData.network_stats_json).peers ?? ''; } catch { return ''; } })()} onChange={(e) => { const stats = (() => { try { return JSON.parse(formData.network_stats_json); } catch { return { uptime: '', peers: '', mini_stats: [] }; } })(); stats.peers = e.target.value; setData('network_stats_json', JSON.stringify(stats)); }} placeholder="2,847" />
+                                    </div>
+                                </div>
+
+                                {/* Mini Stats (below the uptime ring) */}
+                                <div className="mt-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <Label className="text-sm font-medium">Mini Stats (below animation ring)</Label>
+                                        <Button type="button" variant="outline" size="sm" onClick={() => {
+                                            const stats = (() => { try { return JSON.parse(formData.network_stats_json); } catch { return { uptime: '', peers: '' }; } })();
+                                            stats.mini_stats = [...(stats.mini_stats ?? []), { value: '', label: '' }];
+                                            setData('network_stats_json', JSON.stringify(stats));
+                                        }}><Plus className="mr-1 h-3 w-3" /> Add</Button>
+                                    </div>
+                                    <p className="text-[11px] text-muted-foreground mb-2">3 stat cards shown below the uptime ring animation.</p>
+                                    <div className="space-y-2">
+                                        {(() => { try { return JSON.parse(formData.network_stats_json).mini_stats ?? []; } catch { return []; } })().map((ms: { value: string; label: string }, i: number) => (
+                                            <div key={i} className="flex items-center gap-2">
+                                                <Input value={ms.value} onChange={(e) => {
+                                                    const stats = (() => { try { return JSON.parse(formData.network_stats_json); } catch { return { uptime: '', peers: '', mini_stats: [] }; } })();
+                                                    stats.mini_stats[i] = { ...stats.mini_stats[i], value: e.target.value };
+                                                    setData('network_stats_json', JSON.stringify(stats));
+                                                }} placeholder="Value (e.g. 2,847)" className="flex-1" />
+                                                <Input value={ms.label} onChange={(e) => {
+                                                    const stats = (() => { try { return JSON.parse(formData.network_stats_json); } catch { return { uptime: '', peers: '', mini_stats: [] }; } })();
+                                                    stats.mini_stats[i] = { ...stats.mini_stats[i], label: e.target.value };
+                                                    setData('network_stats_json', JSON.stringify(stats));
+                                                }} placeholder="Label (e.g. PEERS)" className="flex-1" />
+                                                <Button type="button" variant="ghost" size="icon" onClick={() => {
+                                                    const stats = (() => { try { return JSON.parse(formData.network_stats_json); } catch { return { uptime: '', peers: '', mini_stats: [] }; } })();
+                                                    stats.mini_stats.splice(i, 1);
+                                                    setData('network_stats_json', JSON.stringify(stats));
+                                                }}><Trash2 className="h-3 w-3 text-red-400" /></Button>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -556,27 +619,6 @@ export default function EditSection() {
                                 </div>
                             </div>
 
-                            <Separator />
-
-                            <div>
-                                <div className="mb-3 flex items-center justify-between">
-                                    <div>
-                                        <Label className="text-base font-bold">Network Nodes</Label>
-                                        <p className="text-[11px] text-muted-foreground">Labels shown on each node in the animation. 10 nodes max (positions are fixed).</p>
-                                    </div>
-                                    <Button type="button" variant="outline" size="sm" onClick={addNode} disabled={nodes.length >= 10}><Plus className="mr-1 h-3 w-3" /> Add</Button>
-                                </div>
-                                <div className="space-y-2">
-                                    {nodes.map((node, i) => (
-                                        <div key={i} className="flex items-center gap-2">
-                                            <span className="w-6 text-center text-xs text-muted-foreground">{i + 1}</span>
-                                            <Input value={node.label} onChange={(e) => updateNode(i, 'label', e.target.value)} placeholder="Node label (e.g. POP)" className="flex-1" />
-                                            <Input value={node.sub} onChange={(e) => updateNode(i, 'sub', e.target.value)} placeholder="Sub label (e.g. ACCESS)" className="flex-1" />
-                                            <Button type="button" variant="ghost" size="icon" onClick={() => removeNode(i)}><Trash2 className="h-3 w-3 text-red-400" /></Button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
                         </div>
                     )}
 
@@ -607,6 +649,125 @@ export default function EditSection() {
                                 <div className="space-y-2"><Label>Primary Button URL</Label><Input value={formData.primary_button_url} onChange={(e) => setData('primary_button_url', e.target.value)} placeholder="/plans" /></div>
                                 <div className="space-y-2"><Label>Secondary Button Text</Label><Input value={formData.secondary_button_text} onChange={(e) => setData('secondary_button_text', e.target.value)} placeholder="Contact Us" /></div>
                                 <div className="space-y-2"><Label>Secondary Button URL</Label><Input value={formData.secondary_button_url} onChange={(e) => setData('secondary_button_url', e.target.value)} placeholder="/contact" /></div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Why Choose Us Section */}
+                    {section === 'why_choose_us' && (
+                        <div className="space-y-6">
+                            <div className="grid gap-4 lg:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label>Eyebrow Text</Label>
+                                    <Input value={formData.eyebrow} onChange={(e) => setData('eyebrow', e.target.value)} placeholder="Why Us" />
+                                    <p className="text-[11px] text-muted-foreground">Small label shown above the heading (e.g. "Why Us").</p>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Title</Label>
+                                    <Input value={formData.title} onChange={(e) => setData('title', e.target.value)} placeholder="More Than Just Internet" />
+                                    <p className="text-[11px] text-muted-foreground">Main heading displayed on the section.</p>
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Description</Label>
+                                <textarea className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" value={formData.description} onChange={(e) => setData('description', e.target.value)} placeholder="We deliver more than bandwidth — we deliver peace of mind with cutting-edge technology and dedicated support." />
+                                <p className="text-[11px] text-muted-foreground">Subtext below the heading.</p>
+                            </div>
+
+                            <Separator />
+
+                            {/* Items CRUD */}
+                            <div>
+                                <div className="flex items-center justify-between mb-4">
+                                    <div>
+                                        <Label className="text-base font-bold">Section Items</Label>
+                                        <p className="text-[11px] text-muted-foreground">Add, edit, or remove feature cards shown in this section.</p>
+                                    </div>
+                                    <Button type="button" variant="outline" size="sm" onClick={() => { setShowItemForm(!showItemForm); setEditingItemId(null); setItemForm({ icon: 'Shield', title: '', description: '', sort_order: 0, is_active: true }); }}>
+                                        <Plus className="mr-1 h-4 w-4" /> Add Item
+                                    </Button>
+                                </div>
+
+                                {flash?.success && (
+                                    <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 mb-4">
+                                        <CheckCircle2 className="h-4 w-4" /> {flash.success}
+                                    </div>
+                                )}
+
+                                {showItemForm && (
+                                    <div className="rounded-lg border p-4 mb-4 space-y-4">
+                                        <h4 className="text-sm font-bold">{editingItemId ? 'Edit Item' : 'Create Item'}</h4>
+                                        <form onSubmit={handleItemSubmit} className="grid gap-4 sm:grid-cols-2">
+                                            <div className="space-y-2">
+                                                <Label>Title *</Label>
+                                                <Input value={itemForm.title} onChange={(e) => setItemForm({ ...itemForm, title: e.target.value })} placeholder="Reliable Connectivity" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Icon</Label>
+                                                <select value={itemForm.icon} onChange={(e) => setItemForm({ ...itemForm, icon: e.target.value })} className="flex h-10 w-full rounded-lg border border-gray-200 bg-white px-3 text-sm">
+                                                    {ICON_OPTIONS.map((i) => <option key={i} value={i}>{i}</option>)}
+                                                </select>
+                                            </div>
+                                            <div className="sm:col-span-2 space-y-2">
+                                                <Label>Description *</Label>
+                                                <textarea rows={2} value={itemForm.description} onChange={(e) => setItemForm({ ...itemForm, description: e.target.value })} className="flex w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]" required />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Sort Order</Label>
+                                                <Input type="number" value={itemForm.sort_order} onChange={(e) => setItemForm({ ...itemForm, sort_order: parseInt(e.target.value) || 0 })} />
+                                            </div>
+                                            <div className="flex items-end">
+                                                <label className="flex cursor-pointer items-center gap-2">
+                                                    <input type="checkbox" checked={itemForm.is_active} onChange={(e) => setItemForm({ ...itemForm, is_active: e.target.checked })} className="h-4 w-4 accent-[var(--isp-primary)]" />
+                                                    <span className="text-sm font-medium">Active</span>
+                                                </label>
+                                            </div>
+                                            <div className="flex gap-2 sm:col-span-2">
+                                                <Button type="submit" style={{ background: accent }}>{editingItemId ? 'Update' : 'Create'}</Button>
+                                                <Button type="button" variant="outline" onClick={resetItemForm}>Cancel</Button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                )}
+
+                                <div className="rounded-lg border">
+                                    {items.length === 0 ? (
+                                        <div className="py-12 text-center text-gray-500">
+                                            <p className="text-sm">No items yet. Click "Add Item" to create one.</p>
+                                        </div>
+                                    ) : (
+                                        <div className="overflow-x-auto">
+                                            <table className="w-full text-left text-sm">
+                                                <thead><tr className="border-b"><th className="px-4 py-3 font-medium">Icon</th><th className="px-4 py-3 font-medium">Title</th><th className="px-4 py-3 font-medium">Description</th><th className="px-4 py-3 font-medium">Order</th><th className="px-4 py-3 font-medium">Status</th><th className="px-4 py-3 font-medium">Actions</th></tr></thead>
+                                                <tbody className="divide-y">
+                                                    {items.map((item) => (
+                                                        <tr key={item.id} className="hover:bg-gray-50">
+                                                            <td className="px-4 py-3">{item.icon}</td>
+                                                            <td className="px-4 py-3 font-medium">{item.title}</td>
+                                                            <td className="max-w-xs truncate px-4 py-3 text-gray-500">{item.description}</td>
+                                                            <td className="px-4 py-3">{item.sort_order}</td>
+                                                            <td className="px-4 py-3">
+                                                                <button type="button" onClick={() => handleItemToggle(item.id)} className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${item.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-500'}`}>
+                                                                    {item.is_active ? 'Active' : 'Inactive'}
+                                                                </button>
+                                                            </td>
+                                                            <td className="px-4 py-3">
+                                                                <div className="flex items-center gap-2">
+                                                                    <button type="button" onClick={() => handleItemEdit(item)} className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100">
+                                                                        <Pencil className="h-4 w-4" />
+                                                                    </button>
+                                                                    <button type="button" onClick={() => handleItemDelete(item.id)} className="inline-flex h-8 w-8 items-center justify-center rounded-md text-red-500 hover:bg-red-50">
+                                                                        <Trash2 className="h-4 w-4" />
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     )}

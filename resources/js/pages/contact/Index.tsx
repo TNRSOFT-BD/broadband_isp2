@@ -3,7 +3,6 @@ import QuickContactMethods from '@/components/contact/quick-contact-methods';
 import ContactForm from '@/components/contact/contact-form';
 import OfficeLocations from '@/components/contact/office-locations';
 import OfficeHours from '@/components/contact/office-hours';
-import HelpfulResources from '@/components/contact/helpful-resources';
 import ContactFAQ from '@/components/contact/contact-faq';
 import PublicLayout from '@/layouts/public-layout';
 import { type ContactPageSettings, type ContactInquiryType, type OfficeLocation, type QuickContactMethod } from '@/types/contact';
@@ -50,9 +49,6 @@ export default function ContactIndex() {
 
             {/* Office Hours */}
             <OfficeHours settings={pageSettings} />
-
-            {/* Helpful Resources */}
-            <HelpfulResources settings={pageSettings} />
 
             {/* FAQ */}
             <ContactFAQ settings={pageSettings} />

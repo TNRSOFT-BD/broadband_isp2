@@ -43,6 +43,8 @@ export interface OfficeLocation {
     address: string;
     phone?: string | null;
     email?: string | null;
+    google_maps_url?: string | null;
+    location_query?: string | null;
     map_url?: string | null;
     map_embed_url?: string | null;
     latitude?: number | null;
@@ -80,10 +82,6 @@ export interface ContactPageSettings {
     hours_title: string;
     hours_description?: string | null;
 
-    resources_enabled: boolean;
-    resources_title: string;
-    resources_description?: string | null;
-
     faq_enabled: boolean;
     faq_title: string;
     faq_description?: string | null;
@@ -93,7 +91,6 @@ export interface ContactPageSettings {
     meta_keywords?: string | null;
 
     office_hours_entries?: OfficeHoursEntry[];
-    helpful_resources?: HelpfulResource[];
     faq_items?: FAQItem[];
 
     is_active: boolean;
@@ -106,12 +103,6 @@ export interface OfficeHoursEntry {
     note?: string;
 }
 
-export interface HelpfulResource {
-    icon: string;
-    title: string;
-    description: string;
-    href: string;
-}
 
 export interface FAQItem {
     question: string;

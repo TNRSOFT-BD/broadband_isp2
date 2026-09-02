@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\AdminContactPageController;
 use App\Http\Controllers\Admin\AdminInquiryTypeController;
 use App\Http\Controllers\Admin\AdminQuickContactMethodController;
 use App\Http\Controllers\Admin\AdminOfficeLocationController;
+use App\Http\Controllers\Admin\AdminSocialMediaController;
+use App\Http\Controllers\Admin\AdminPaymentPartnerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HeroConfigController;
 use App\Http\Controllers\Admin\HomepageController;
@@ -17,6 +19,7 @@ use App\Http\Controllers\Admin\AdminHomepageServiceController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminLegalPageController;
 use App\Http\Controllers\Admin\WebsiteConfigController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\RolePrefixMiddleware;
@@ -125,6 +128,14 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/homepage/{section}', [HomepageController::class, 'update'])->name('homepage.update');
         });
 
+        // ── Homepage Why Choose Us Items ─────────────────────────
+        Route::middleware('permission:edit-homepage')->group(function () {
+            Route::post('/homepage/why-choose-us-items', [HomepageController::class, 'storeWhyChooseUsItem'])->name('homepage.why-choose-us-items.store');
+            Route::put('/homepage/why-choose-us-items/{id}', [HomepageController::class, 'updateWhyChooseUsItem'])->name('homepage.why-choose-us-items.update');
+            Route::delete('/homepage/why-choose-us-items/{id}', [HomepageController::class, 'destroyWhyChooseUsItem'])->name('homepage.why-choose-us-items.destroy');
+            Route::patch('/homepage/why-choose-us-items/{id}/toggle-status', [HomepageController::class, 'toggleWhyChooseUsItemStatus'])->name('homepage.why-choose-us-items.toggle-status');
+        });
+
         // ── Homepage Partners ───────────────────────────────────────
         Route::middleware('permission:manage-homepage-partners')->group(function () {
             Route::get('/homepage/partners', [HomepageController::class, 'partners'])->name('homepage.partners');
@@ -133,15 +144,6 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/homepage/partners/{id}', [HomepageController::class, 'updatePartner'])->name('homepage.partners.update');
             Route::delete('/homepage/partners/{id}', [HomepageController::class, 'destroyPartner'])->name('homepage.partners.destroy');
             Route::patch('/homepage/partners/{id}/toggle-status', [HomepageController::class, 'togglePartnerStatus'])->name('homepage.partners.toggle-status');
-        });
-
-        // ── Homepage Intro Features ─────────────────────────────────
-        Route::middleware('permission:manage-homepage-intro-features')->group(function () {
-            Route::get('/homepage/intro-features', [HomepageController::class, 'introFeatures'])->name('homepage.intro-features');
-            Route::post('/homepage/intro-features', [HomepageController::class, 'storeIntroFeature'])->name('homepage.intro-features.store');
-            Route::put('/homepage/intro-features/{id}', [HomepageController::class, 'updateIntroFeature'])->name('homepage.intro-features.update');
-            Route::delete('/homepage/intro-features/{id}', [HomepageController::class, 'destroyIntroFeature'])->name('homepage.intro-features.destroy');
-            Route::patch('/homepage/intro-features/toggle', [HomepageController::class, 'toggleIntroFeatures'])->name('homepage.intro-features.toggle');
         });
 
         // ── Homepage Testimonials ───────────────────────────────────
@@ -189,6 +191,27 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/contact-messages/{id}', [AdminContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
         });
 
+        // ── Social Media Management ────────────────────────────────
+        Route::middleware('permission:manage-social-media')->group(function () {
+            Route::get('/social-media', [AdminSocialMediaController::class, 'index'])->name('social-media.index');
+            Route::post('/social-media', [AdminSocialMediaController::class, 'store'])->name('social-media.store');
+            Route::post('/social-media/upload', [AdminSocialMediaController::class, 'upload'])->name('social-media.upload');
+            Route::put('/social-media/{id}', [AdminSocialMediaController::class, 'update'])->name('social-media.update');
+            Route::delete('/social-media/{id}', [AdminSocialMediaController::class, 'destroy'])->name('social-media.destroy');
+            Route::patch('/social-media/{id}/toggle-status', [AdminSocialMediaController::class, 'toggleStatus'])->name('social-media.toggle-status');
+        });
+
+        // ── Payment Partners ──────────────────────────────────────
+        Route::middleware('permission:manage-payment-partners')->group(function () {
+            Route::get('/payment-partners', [AdminPaymentPartnerController::class, 'index'])->name('payment-partners.index');
+            Route::post('/payment-partners', [AdminPaymentPartnerController::class, 'store'])->name('payment-partners.store');
+            Route::post('/payment-partners/upload', [AdminPaymentPartnerController::class, 'upload'])->name('payment-partners.upload');
+            Route::put('/payment-partners/{id}', [AdminPaymentPartnerController::class, 'update'])->name('payment-partners.update');
+            Route::delete('/payment-partners/{id}', [AdminPaymentPartnerController::class, 'destroy'])->name('payment-partners.destroy');
+            Route::patch('/payment-partners/{id}/activate', [AdminPaymentPartnerController::class, 'activate'])->name('payment-partners.activate');
+            Route::patch('/payment-partners/deactivate', [AdminPaymentPartnerController::class, 'deactivate'])->name('payment-partners.deactivate');
+        });
+
         // ── Quick Contact Methods ───────────────────────────────────
         Route::middleware('permission:manage-quick-contact-methods')->group(function () {
             Route::get('/contact/quick-methods', [AdminQuickContactMethodController::class, 'index'])->name('quick-contact-methods.index');
@@ -214,6 +237,7 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/contact/locations/{id}', [AdminOfficeLocationController::class, 'update'])->name('office-locations.update');
             Route::delete('/contact/locations/{id}', [AdminOfficeLocationController::class, 'destroy'])->name('office-locations.destroy');
             Route::patch('/contact/locations/{id}/toggle-status', [AdminOfficeLocationController::class, 'toggleStatus'])->name('office-locations.toggle-status');
+            Route::post('/contact/locations/resolve', [AdminOfficeLocationController::class, 'resolveLocation'])->name('office-locations.resolve');
         });
 
         // ── Plans Page CMS ──────────────────────────────────────────
@@ -291,6 +315,25 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::middleware('permission:edit-website-config')->group(function () {
             Route::put('/third-party-links', [WebsiteConfigController::class, 'updateThirdPartyLinks'])->name('third-party-links.update');
+        });
+
+        // ── Legal Pages ──────────────────────────────────────────
+        Route::middleware('permission:view-legal-pages')->group(function () {
+            Route::get('/legal-pages', [AdminLegalPageController::class, 'index'])->name('legal-pages.index');
+        });
+        Route::middleware('permission:create-legal-pages')->group(function () {
+            Route::get('/legal-pages/create', [AdminLegalPageController::class, 'create'])->name('legal-pages.create');
+            Route::post('/legal-pages', [AdminLegalPageController::class, 'store'])->name('legal-pages.store');
+        });
+        Route::middleware('permission:edit-legal-pages')->group(function () {
+            Route::get('/legal-pages/{id}/edit', [AdminLegalPageController::class, 'edit'])->name('legal-pages.edit');
+            Route::put('/legal-pages/{id}', [AdminLegalPageController::class, 'update'])->name('legal-pages.update');
+        });
+        Route::middleware('permission:delete-legal-pages')->group(function () {
+            Route::delete('/legal-pages/{id}', [AdminLegalPageController::class, 'destroy'])->name('legal-pages.destroy');
+        });
+        Route::middleware('permission:view-legal-pages')->group(function () {
+            Route::get('/legal-pages/{id}/preview', [AdminLegalPageController::class, 'preview'])->name('legal-pages.preview');
         });
 
         // ── User Management (super_admin & admin only) ──────────────
@@ -404,9 +447,6 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware('permission:manage-homepage-partners')->group(function () {
                 Route::get('/homepage/partners', [HomepageController::class, 'partners'])->name('homepage.partners');
             });
-            Route::middleware('permission:manage-homepage-intro-features')->group(function () {
-                Route::get('/homepage/intro-features', [HomepageController::class, 'introFeatures'])->name('homepage.intro-features');
-            });
             Route::middleware('permission:manage-homepage-testimonials')->group(function () {
                 Route::get('/homepage/testimonials', [HomepageController::class, 'testimonials'])->name('homepage.testimonials');
             });
@@ -436,6 +476,16 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/contact/quick-methods', [AdminQuickContactMethodController::class, 'index'])->name('quick-contact-methods.index');
             });
 
+            // Social Media Management
+            Route::middleware('permission:manage-social-media')->group(function () {
+                Route::get('/social-media', [AdminSocialMediaController::class, 'index'])->name('social-media.index');
+            });
+
+            // Payment Partners
+            Route::middleware('permission:manage-payment-partners')->group(function () {
+                Route::get('/payment-partners', [AdminPaymentPartnerController::class, 'index'])->name('payment-partners.index');
+            });
+
             // Inquiry Types
             Route::middleware('permission:manage-inquiry-types')->group(function () {
                 Route::get('/contact/inquiry-types', [AdminInquiryTypeController::class, 'index'])->name('inquiry-types.index');
@@ -460,6 +510,11 @@ Route::middleware(['auth'])->group(function () {
             // Website Config
             Route::middleware('permission:view-website-config')->group(function () {
                 Route::get('/website-config', [WebsiteConfigController::class, 'index'])->name('website-config');
+            });
+
+            // Legal Pages
+            Route::middleware('permission:view-legal-pages')->group(function () {
+                Route::get('/legal-pages', [AdminLegalPageController::class, 'index'])->name('legal-pages.index');
             });
 
             // Roles & Users

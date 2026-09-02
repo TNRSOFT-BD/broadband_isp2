@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { usePage } from '@inertiajs/react';
 import { Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -16,9 +17,17 @@ export default function PageImageField({
     onChange: (v: string) => void;
     uploadUrl: string;
 }) {
+    const { props } = usePage();
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(value);
     const [error, setError] = useState<string | null>(null);
+
+    // Inertia keeps csrf_token fresh in page props after every request.
+    // Falling back to the meta tag is a last resort.
+    const getCsrfToken = (): string =>
+        (props as Record<string, unknown>).csrf_token as string ||
+        (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null)?.content ||
+        '';
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -42,8 +51,7 @@ export default function PageImageField({
             const response = await fetch(uploadUrl, {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN':
-                        (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null)?.content ?? '',
+                    'X-CSRF-TOKEN': getCsrfToken(),
                     'X-Requested-With': 'XMLHttpRequest',
                     Accept: 'application/json',
                 },
@@ -58,9 +66,14 @@ export default function PageImageField({
                 setPreview(result.url);
             } else {
                 setPreview(value);
-                setError(
-                    result?.errors?.image?.[0] ?? result?.message ?? 'Upload failed. Please try again.',
-                );
+                // 419 = CSRF token mismatch — guide the user to refresh
+                if (response.status === 419) {
+                    setError('Session expired. Please refresh the page and try again.');
+                } else {
+                    setError(
+                        result?.errors?.image?.[0] ?? result?.message ?? 'Upload failed. Please try again.',
+                    );
+                }
             }
         } catch {
             setPreview(value);

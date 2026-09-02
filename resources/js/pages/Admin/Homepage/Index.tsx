@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { CheckCircle2 } from 'lucide-react';
-import { LayoutGrid, Edit3, Star, HelpCircle, MapPin, ArrowRight, Settings, Zap, Home } from 'lucide-react';
+import { LayoutGrid, Edit3, Star, HelpCircle, ArrowRight, Settings, Home, Target, Sparkles, Handshake, ServerCog, Landmark } from 'lucide-react';
 
 
 interface SectionSetting {
@@ -11,17 +11,23 @@ interface SectionSetting {
     section_key: string;
     is_active: boolean;
     sort_order: number;
+    eyebrow: string | null;
+    title: string | null;
 }
 
 interface PageProps {
     settings: SectionSetting[];
 }
 
-const sectionConfig: Record<string, { label: string; description: string; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }> }> = {
-    intro: { label: 'Company Introduction', description: 'Trust section with company overview', icon: Settings },
-    technology: { label: 'Technology & Infrastructure', description: 'Network capabilities and tech stack', icon: Settings },
-    coverage: { label: 'Coverage Areas', description: 'Service coverage regions', icon: MapPin },
-    cta: { label: 'Final CTA', description: 'Bottom conversion section', icon: ArrowRight },
+const sectionConfig: Record<string, { description: string; icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; route?: string }> = {
+    hero: { description: 'Main hero banner with heading, CTA buttons, and background', icon: Home, route: 'hero-config' },
+    intro: { description: 'Trust section with company overview', icon: Settings },
+    technology: { description: 'Network capabilities and tech stack', icon: Sparkles },
+    testimonials: { description: 'Customer reviews and testimonials', icon: Star, route: 'homepage.testimonials' },
+    faqs: { description: 'Frequently asked questions', icon: HelpCircle, route: 'homepage.faqs' },
+    partners: { description: 'Our trusted partners and clients', icon: Handshake, route: 'homepage.partners' },
+    services: { description: 'Digital services section with background images', icon: ServerCog, route: 'homepage-services.index' },
+    why_choose_us: { description: 'Section heading and subtitle for Why Choose Us', icon: Target },
 };
 
 export default function HomepageIndex() {
@@ -57,27 +63,16 @@ export default function HomepageIndex() {
 
                 {/* Section Cards */}
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {/* Hero Section */}
-                    <Link
-                        href={adminUrl("/hero-config")}
-                        className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[var(--isp-primary)]/30 hover:shadow-md"
-                    >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--isp-primary) 10%, transparent)' }}>
-                            <Home className="h-5 w-5" style={{ color: 'var(--isp-primary)' }} />
-                        </div>
-                        <h3 className="mt-3 text-sm font-bold text-gray-900">Hero Section</h3>
-                        <p className="mt-1 text-xs text-gray-500">Main hero banner with heading, CTA buttons, and background</p>
-                        <div className="mt-3 flex items-center gap-1 text-xs font-medium" style={{ color: accent }}>
-                            Edit Section <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                        </div>
-                    </Link>
-
                     {Object.entries(sectionConfig).map(([key, config]) => {
                         const setting = settingsMap.get(key);
+                        const href = config.route
+                            ? (config.route === 'hero-config' ? adminUrl('/hero-config') : route(`admin.${config.route}`))
+                            : route('admin.homepage.edit', key);
+
                         return (
                             <Link
                                 key={key}
-                                href={route('admin.homepage.edit', key)}
+                                href={href}
                                 className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[var(--isp-primary)]/30 hover:shadow-md"
                             >
                                 <div className="flex items-start justify-between">
@@ -88,83 +83,45 @@ export default function HomepageIndex() {
                                         {setting?.is_active !== false ? 'Active' : 'Inactive'}
                                     </span>
                                 </div>
-                                <h3 className="mt-3 text-sm font-bold text-gray-900">{config.label}</h3>
-                                <p className="mt-1 text-xs text-gray-500">{config.description}</p>
+                                <h3 className="mt-3 text-sm font-bold text-gray-900">{setting?.eyebrow ?? key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</h3>
+                                <p className="mt-1 text-xs text-gray-500">{setting?.title ?? config.description}</p>
                                 <div className="mt-3 flex items-center gap-1 text-xs font-medium transition-colors" style={{ color: accent }}>
                                     Edit Section <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                                 </div>
                             </Link>
                         );
                     })}
+                </div>
 
-                    {/* Intro Features */}
-                    <Link
-                        href={route('admin.homepage.intro-features')}
-                        className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[var(--isp-primary)]/30 hover:shadow-md"
-                    >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--isp-accent) 10%, transparent)' }}>
-                            <Zap className="h-5 w-5" style={{ color: 'var(--isp-accent)' }} />
+                {/* Payment Partner Section */}
+                <div className="rounded-xl border border-gray-200 bg-white p-5">
+                    <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: `color-mix(in srgb, ${accent} 10%, transparent)` }}>
+                                <Landmark className="h-5 w-5" style={{ color: accent }} />
+                            </div>
+                            <div>
+                                <h3 className="text-sm font-bold text-gray-900">Payment Partner</h3>
+                                <p className="text-xs text-gray-500">
+                                    One active payment partner is displayed above the website footer.
+                                </p>
+                            </div>
                         </div>
-                        <h3 className="mt-3 text-sm font-bold text-gray-900">Intro Network Features</h3>
-                        <p className="mt-1 text-xs text-gray-500">Satellite nodes in the company intro section</p>
-                        <div className="mt-3 flex items-center gap-1 text-xs font-medium" style={{ color: accent }}>
-                            Manage <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                        </div>
-                    </Link>
-
-                    {/* Testimonials */}
-                    <Link
-                        href={route('admin.homepage.testimonials')}
-                        className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[var(--isp-primary)]/30 hover:shadow-md"
-                    >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--isp-accent) 10%, transparent)' }}>
-                            <Star className="h-5 w-5" style={{ color: 'var(--isp-accent)' }} />
-                        </div>
-                        <h3 className="mt-3 text-sm font-bold text-gray-900">Testimonials</h3>
-                        <p className="mt-1 text-xs text-gray-500">Customer reviews and testimonials</p>
-                        <div className="mt-3 flex items-center gap-1 text-xs font-medium" style={{ color: accent }}>
-                            Manage <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                        </div>
-                    </Link>
-
-                    {/* FAQs */}
-                    <Link
-                        href={route('admin.homepage.faqs')}
-                        className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[var(--isp-primary)]/30 hover:shadow-md"
-                    >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--isp-warning, #F59E0B) 10%, transparent)' }}>
-                            <HelpCircle className="h-5 w-5" style={{ color: 'var(--isp-warning, #F59E0B)' }} />
-                        </div>
-                        <h3 className="mt-3 text-sm font-bold text-gray-900">FAQs</h3>
-                        <p className="mt-1 text-xs text-gray-500">Frequently asked questions</p>
-                        <div className="mt-3 flex items-center gap-1 text-xs font-medium" style={{ color: accent }}>
-                            Manage <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                        </div>
-                    </Link>
-
-                    {/* Coverage */}
-                    <Link
-                        href={route('admin.homepage.coverage')}
-                        className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-[var(--isp-primary)]/30 hover:shadow-md"
-                    >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ background: 'color-mix(in srgb, var(--isp-success, #10B981) 10%, transparent)' }}>
-                            <MapPin className="h-5 w-5" style={{ color: 'var(--isp-success, #10B981)' }} />
-                        </div>
-                        <h3 className="mt-3 text-sm font-bold text-gray-900">Coverage Areas</h3>
-                        <p className="mt-1 text-xs text-gray-500">Service coverage regions</p>
-                        <div className="mt-3 flex items-center gap-1 text-xs font-medium" style={{ color: accent }}>
-                            Manage <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-                        </div>
-                    </Link>
+                        <Link
+                            href={route('admin.payment-partners.index')}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:border-[var(--isp-primary)]/30 hover:bg-[var(--isp-primary)]/5 hover:text-[var(--isp-primary)]"
+                        >
+                            Manage Partners <ArrowRight className="h-3 w-3" />
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Info */}
                 <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-700">
-                    <strong>Note:</strong> Featured Plans, Why Choose Us, Statistics, Services, and Partners are managed through their own admin sections.
-                    Plans use the <Link href={adminUrl("/plans")} className="font-semibold underline">Plans Manager</Link>,
-                    Services use the <Link href={adminUrl("/services")} className="font-semibold underline">Services Manager</Link>,
-                    Statistics and Why Choose Us are managed in <Link href={adminUrl("/pages/about")} className="font-semibold underline">About Page</Link>,
-                    and Partners/Clients are also in <Link href={adminUrl("/pages/about")} className="font-semibold underline">About Page</Link>.
+                    <strong>Note:</strong> Plans, Services, Statistics, and Why Choose Us items are managed in their own sections:
+                    <Link href={adminUrl("/plans")} className="font-semibold underline"> Plans</Link>,
+                    <Link href={adminUrl("/services")} className="font-semibold underline"> Services</Link>,
+                    <Link href={adminUrl("/pages/about")} className="font-semibold underline"> About Page</Link>.
                 </div>
             </div>
         </AppLayout>

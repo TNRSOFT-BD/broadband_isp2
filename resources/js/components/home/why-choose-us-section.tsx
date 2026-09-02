@@ -11,11 +11,21 @@ interface FeatureItem {
     description: string;
 }
 
-export default function WhyChooseUsSection({ items }: { items: FeatureItem[] }) {
+interface WhyChooseUsSettings {
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+}
+
+export default function WhyChooseUsSection({ items, settings }: { items: FeatureItem[]; settings?: WhyChooseUsSettings }) {
     const accent = 'var(--isp-primary)';
     const accentAlt = 'var(--isp-accent)';
 
     if (items.length === 0) return null;
+
+    const eyebrow = settings?.eyebrow ?? 'Why Us';
+    const title = settings?.title ?? 'More Than Just Internet';
+    const description = settings?.description ?? 'We deliver more than bandwidth — we deliver peace of mind with cutting-edge technology and dedicated support.';
 
     return (
         <section className="relative overflow-hidden bg-white pt-6 sm:pt-8 lg:pt-10 pb-10 sm:pb-14 lg:pb-16">
@@ -26,14 +36,14 @@ export default function WhyChooseUsSection({ items }: { items: FeatureItem[] }) 
                         className="mb-3 text-sm font-bold uppercase tracking-wider"
                         style={{ color: accent }}
                     >
-                        Why Us
+                        {eyebrow}
                     </h2>
                     <div className="mx-auto mb-4 h-1 w-12 rounded-full" style={{ background: accent }} />
                     <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl lg:text-5xl">
-                        More Than Just Internet
+                        {title}
                     </h3>
                     <p className="mx-auto mt-4 max-w-2xl text-base text-gray-500 text-justify">
-                        We deliver more than bandwidth — we deliver peace of mind with cutting-edge technology and dedicated support.
+                        {description}
                     </p>
                 </div>
 
