@@ -99,10 +99,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/homepage-services/upload', [AdminHomepageServiceController::class, 'upload'])->name('homepage-services.upload');
         });
         Route::middleware('permission:edit-plans')->group(function () {
-            Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update');
+            Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update')->whereNumber('id');
         });
         Route::middleware('permission:delete-plans')->group(function () {
-            Route::delete('/homepage-services/{id}', [AdminHomepageServiceController::class, 'destroy'])->name('homepage-services.destroy');
+            Route::delete('/homepage-services/{id}', [AdminHomepageServiceController::class, 'destroy'])->name('homepage-services.destroy')->whereNumber('id');
         });
         Route::middleware('permission:edit-homepage')->group(function () {
             Route::put('/homepage-services/settings', [AdminHomepageServiceController::class, 'updateSectionSettings'])->name('homepage-services.settings');
@@ -576,7 +576,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/homepage-services/upload', [AdminHomepageServiceController::class, 'upload'])->name('homepage-services.upload');
             });
             Route::middleware('permission:edit-plans')->group(function () {
-                Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update');
+                Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update')->whereNumber('id');
             });
             Route::middleware('permission:edit-homepage')->group(function () {
                 Route::put('/homepage-services/settings', [AdminHomepageServiceController::class, 'updateSectionSettings'])->name('homepage-services.settings');
