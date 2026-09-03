@@ -21,6 +21,7 @@ interface RolePermission {
 interface Role {
     id: number;
     name: string;
+    prefix: string | null;
     permissions: RolePermission[];
 }
 
@@ -40,6 +41,7 @@ export default function RolesEdit({ role, permissions }: RolesEditProps) {
 
     const { data, setData, put, processing, errors } = useForm({
         name: role.name,
+        prefix: role.prefix ?? '',
         permissions: role.permissions.map((p) => p.id),
     });
 
@@ -130,11 +132,29 @@ export default function RolesEdit({ role, permissions }: RolesEditProps) {
                                 type="text"
                                 id="name"
                                 value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                onChange={(e) => setData('name', e.target.value.toLowerCase())}
                                 className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
                                 placeholder="e.g., content_editor"
                             />
                             {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+                            <p className="mt-1 text-xs text-gray-500">
+                                Stored in lowercase automatically. Used as the URL prefix when URL Prefix is left empty.
+                            </p>
+                        </div>
+
+                        <div className="mt-4">
+                            <label htmlFor="prefix" className="block text-sm font-medium text-gray-700">
+                                URL Prefix
+                            </label>
+                            <input
+                                type="text"
+                                id="prefix"
+                                value={data.prefix}
+                                onChange={(e) => setData('prefix', e.target.value.toLowerCase())}
+                                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-[var(--isp-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--isp-primary)]"
+                                placeholder="e.g., editor"
+                            />
+                            {errors.prefix && <p className="mt-1 text-xs text-red-500">{errors.prefix}</p>}
                         </div>
                     </div>
 

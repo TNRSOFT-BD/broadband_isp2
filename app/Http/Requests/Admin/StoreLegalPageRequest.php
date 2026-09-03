@@ -11,6 +11,18 @@ class StoreLegalPageRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Boolean fields are omitted from partial/API payloads; default them so
+     * the DTO receives a real bool instead of crashing with a TypeError.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'show_last_updated' => $this->boolean('show_last_updated'),
+            'cta_enabled' => $this->boolean('cta_enabled'),
+        ]);
+    }
+
     public function rules(): array
     {
         return [
