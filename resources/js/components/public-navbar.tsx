@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import SiteFooter from '@/components/site-footer';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu } from 'lucide-react';
-import { type ReactNode, useState, useEffect, useCallback, useRef } from 'react';
+import { type ReactNode } from 'react';
 
 interface NavLink {
     title: string;
@@ -35,54 +35,13 @@ export function PublicNavbar({ children }: PublicNavbarProps) {
     const thirdPartyLinks = (page.props as any).thirdPartyLinks as Record<string, string> | undefined;
     const selfcareUrl = thirdPartyLinks?.selfcare || '#';
 
-    // Smart navbar: hide on scroll down, show on scroll up
-    const [isHidden, setIsHidden] = useState(false);
-    const lastScrollY = useRef(0);
-    const ticking = useRef(false);
-
-    useEffect(() => {
-        const onScroll = () => {
-            if (!ticking.current) {
-                window.requestAnimationFrame(() => {
-                    const currentY = window.scrollY;
-
-                    // Always visible at top
-                    if (currentY <= 10) {
-                        setIsHidden(false);
-                        lastScrollY.current = currentY;
-                        ticking.current = false;
-                        return;
-                    }
-
-                    // Scrolling UP → show navbar
-                    if (currentY < lastScrollY.current) {
-                        setIsHidden(false);
-                    }
-                    // Scrolling DOWN → hide navbar
-                    else if (currentY > lastScrollY.current + 5) {
-                        setIsHidden(true);
-                    }
-
-                    lastScrollY.current = currentY;
-                    ticking.current = false;
-                });
-                ticking.current = true;
-            }
-        };
-
-        window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
-    }, []);
-
     return (
         <div className="flex min-h-screen flex-col overflow-x-clip">
             {/* Spacer — keeps content below the fixed header */}
             <div className="h-16" aria-hidden="true" />
 
             {/* Main Navigation */}
-            <header className={`fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 transition-transform duration-300 ease-in-out ${
-                isHidden ? '-translate-y-full' : 'translate-y-0'
-            }`}>
+            <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
                 <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                     {/* Logo */}
                     <Link href="/" className="flex items-center">
