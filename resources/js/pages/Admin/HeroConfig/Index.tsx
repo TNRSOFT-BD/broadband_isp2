@@ -233,7 +233,7 @@ export default function HeroConfig() {
                                             form.setData('background_image', v);
                                             setPreviewBg(v);
                                         }}
-                                        uploadUrl={'/admin/hero-config/upload'}
+                                        uploadUrl={adminUrl('/hero-config/upload')}
                                     />
 
                                     <Separator className="my-1" />

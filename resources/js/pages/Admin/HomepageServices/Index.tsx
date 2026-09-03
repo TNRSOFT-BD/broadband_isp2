@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useAdminUrl } from '@/hooks/use-admin-url';
+import { getCsrfToken } from '@/lib/csrf';
 import {
     Dialog,
     DialogContent,
@@ -63,6 +64,7 @@ type ServiceFormState = typeof emptyForm;
 
 export default function HomepageServicesIndex() {
     const { adminUrl } = useAdminUrl();
+    const csrfToken = getCsrfToken();
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: adminUrl('/dashboard') },
         { title: 'Homepage Services', href: adminUrl('/homepage-services') },
@@ -172,10 +174,10 @@ export default function HomepageServicesIndex() {
             const formData = new FormData();
             formData.append('image', file);
 
-            const response = await fetch('/admin/homepage-services/upload', {
+            const response = await fetch(adminUrl('/homepage-services/upload'), {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                     Accept: 'application/json',
                 },
