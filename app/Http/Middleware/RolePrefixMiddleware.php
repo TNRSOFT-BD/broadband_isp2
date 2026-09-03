@@ -32,6 +32,13 @@ class RolePrefixMiddleware
 
         // If hitting /admin/* and user has a different prefix, redirect
         if (str_starts_with($uri, 'admin/')) {
+            // Let write methods (POST/PUT/PATCH/DELETE) through to /admin/* directly.
+            // The routes are individually permission-gated, so security is preserved.
+            // Only redirect safe methods (GET/HEAD) to keep page URLs consistent.
+            if (! in_array($request->method(), ['GET', 'HEAD'])) {
+                return $next($request);
+            }
+
             $rest = substr($uri, 6); // Remove 'admin/' (6 chars)
             $redirectUrl = '/' . $prefix . '/' . $rest;
 
