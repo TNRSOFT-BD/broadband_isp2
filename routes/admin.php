@@ -524,6 +524,12 @@ Route::middleware(['auth'])->group(function () {
             // Website Config
             Route::middleware('permission:view-website-config')->group(function () {
                 Route::get('/website-config', [WebsiteConfigController::class, 'index'])->name('website-config');
+                Route::get('/website-config/colors', [WebsiteConfigController::class, 'getThemeColors'])->name('website-config.colors');
+            });
+
+            // Third-Party Links
+            Route::middleware('permission:view-website-config')->group(function () {
+                Route::get('/third-party-links', [WebsiteConfigController::class, 'thirdPartyLinks'])->name('third-party-links');
             });
 
             // Legal Pages
@@ -534,9 +540,17 @@ Route::middleware(['auth'])->group(function () {
             // Roles & Users
             Route::middleware('permission:manage-roles')->group(function () {
                 Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+                Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+                Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit')->whereNumber('id');
             });
             Route::middleware('permission:view-users')->group(function () {
                 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+            });
+            Route::middleware('permission:create-users')->group(function () {
+                Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+            });
+            Route::middleware('permission:edit-users')->group(function () {
+                Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
             });
 
             // ── Write Routes (mirror of /admin) ────────────────────────
@@ -578,6 +592,9 @@ Route::middleware(['auth'])->group(function () {
             Route::middleware('permission:edit-plans')->group(function () {
                 Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update')->whereNumber('id');
             });
+            Route::middleware('permission:delete-plans')->group(function () {
+                Route::delete('/homepage-services/{id}', [AdminHomepageServiceController::class, 'destroy'])->name('homepage-services.destroy')->whereNumber('id');
+            });
             Route::middleware('permission:edit-homepage')->group(function () {
                 Route::put('/homepage-services/settings', [AdminHomepageServiceController::class, 'updateSectionSettings'])->name('homepage-services.settings');
             });
@@ -586,6 +603,9 @@ Route::middleware(['auth'])->group(function () {
             });
             Route::middleware('permission:edit-plans')->group(function () {
                 Route::put('/homepage-service-categories/{id}', [AdminHomepageServiceController::class, 'updateCategory'])->name('homepage-service-categories.update');
+            });
+            Route::middleware('permission:delete-plans')->group(function () {
+                Route::delete('/homepage-service-categories/{id}', [AdminHomepageServiceController::class, 'destroyCategory'])->name('homepage-service-categories.destroy');
             });
 
             // Homepage Why Choose Us Items
