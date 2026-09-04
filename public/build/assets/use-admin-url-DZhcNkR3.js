@@ -1,1 +1,0 @@
-import{K as e}from"./app-Cz6_avDR.js";function m(){const{props:t}=e(),r=t.admin_prefix||"admin";function s(n){const i=n.startsWith("/")?n.slice(1):n;return i.startsWith(r+"/")||i===r?"/"+i:i.startsWith("admin/")?"/"+r+"/"+i.slice(6):"/"+r+"/"+i}return{adminUrl:s,adminPrefix:r}}export{m as u};

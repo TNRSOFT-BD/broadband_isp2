@@ -1,0 +1,1 @@
+import{K as e}from"./app-D5dIaedl.js";function c(){var r;const{props:t}=e(),o=t.csrf_token;return o||(((r=document.querySelector('meta[name="csrf-token"]'))==null?void 0:r.content)??"")}export{c as g};
