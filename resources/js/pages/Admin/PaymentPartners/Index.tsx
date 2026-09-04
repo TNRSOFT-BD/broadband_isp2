@@ -16,6 +16,7 @@ import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, ImagePlus, Plus, Pencil, Trash2, Power, PowerOff, ExternalLink, Info } from 'lucide-react';
 import { useState } from 'react';
 import { useAdminUrl } from '@/hooks/use-admin-url';
+import { getCsrfToken } from '@/lib/csrf';
 
 interface PaymentPartner {
     id: number;
@@ -37,6 +38,7 @@ const emptyForm = {
 
 export default function PaymentPartnersIndex() {
     const { adminUrl } = useAdminUrl();
+    const csrfToken = getCsrfToken();
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: adminUrl('/dashboard') },
         { title: 'Payment Partners', href: adminUrl('/payment-partners') },
@@ -83,11 +85,10 @@ export default function PaymentPartnersIndex() {
             const formData = new FormData();
             formData.append('image', file);
 
-            const response = await fetch('/admin/payment-partners/upload', {
+            const response = await fetch(adminUrl('/payment-partners/upload'), {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN':
-                        (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                     Accept: 'application/json',
                 },

@@ -8,6 +8,7 @@ import { useAdminUrl } from '@/hooks/use-admin-url';
 interface Role {
     id: number;
     name: string;
+    prefix: string | null;
     guard_name: string;
     permissions_count: number;
     created_at: string;
@@ -81,12 +82,16 @@ export default function RolesIndex() {
                                     <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                                         <Link
                                             href={route('admin.roles.edit', role.id)}
+                                            title={`Edit ${role.name} role`}
+                                            aria-label={`Edit ${role.name} role`}
                                             className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-blue-600"
                                         >
                                             <Edit3 className="h-4 w-4" />
                                         </Link>
                                         <button
                                             onClick={() => handleDelete(role.id, role.name)}
+                                            title={`Delete ${role.name} role`}
+                                            aria-label={`Delete ${role.name} role`}
                                             className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
                                         >
                                             <Trash2 className="h-4 w-4" />
@@ -95,7 +100,17 @@ export default function RolesIndex() {
                                 )}
                             </div>
 
-                            <h3 className="mt-3 text-sm font-bold text-gray-900 capitalize">{role.name.replace(/_/g, ' ')}</h3>
+                            <div className="mt-3 flex items-center justify-between gap-2">
+                                <h3 className="text-sm font-bold text-gray-900 capitalize">{role.name.replace(/_/g, ' ')}</h3>
+                                {role.prefix && (
+                                    <span
+                                        className="rounded-full bg-gray-100 px-2 py-0.5 font-mono text-[10px] font-medium text-gray-600"
+                                        title="Admin panel URL prefix for this role"
+                                    >
+                                        /{role.prefix}/…
+                                    </span>
+                                )}
+                            </div>
                             <div className="mt-2 flex items-center gap-1 text-xs text-gray-500">
                                 <Users className="h-3.5 w-3.5" />
                                 <span>{role.permissions_count} permission{role.permissions_count !== 1 ? 's' : ''}</span>

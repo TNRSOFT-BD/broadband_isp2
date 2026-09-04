@@ -9,6 +9,7 @@ import type { BreadcrumbItem, SharedData } from '@/types';
 import { Head, useForm, usePage, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { useAdminUrl } from '@/hooks/use-admin-url';
+import { getCsrfToken } from '@/lib/csrf';
 import {
     CheckCircle2,
     Globe,
@@ -165,6 +166,8 @@ function ImageUploadField({ label, value, onChange, altValue, onAltChange, place
     label: string; value: string; onChange: (v: string) => void;
     altValue?: string; onAltChange?: (v: string) => void; placeholder?: string;
 }) {
+    const { adminUrl } = useAdminUrl();
+    const csrfToken = getCsrfToken();
     const MAX_SIZE_BYTES = 1024 * 1024; // 1 MB
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(value);
@@ -189,10 +192,10 @@ function ImageUploadField({ label, value, onChange, altValue, onAltChange, place
             const formData = new FormData();
             formData.append('image', file);
 
-            const response = await fetch('/admin/pages/about/upload', {
+            const response = await fetch(adminUrl('/pages/about/upload'), {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                     Accept: 'application/json',
                 },

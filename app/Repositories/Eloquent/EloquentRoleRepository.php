@@ -31,8 +31,9 @@ class EloquentRoleRepository implements RoleRepositoryInterface
     public function create(array $data): Role
     {
         $role = Role::create([
-            'name' => $data['name'],
+            'name' => strtolower(trim($data['name'])),
             'guard_name' => 'web',
+            'prefix' => $this->normalizePrefix($data['prefix'] ?? null) ?? $this->normalizePrefix($data['name']),
         ]);
 
         if (! empty($data['permissions'])) {
@@ -50,7 +51,8 @@ class EloquentRoleRepository implements RoleRepositoryInterface
         $role = Role::findOrFail($id);
 
         $role->update([
-            'name' => $data['name'],
+            'name' => strtolower(trim($data['name'])),
+            'prefix' => $this->normalizePrefix($data['prefix'] ?? $role->prefix) ?? $this->normalizePrefix($data['name']),
         ]);
 
         if (array_key_exists('permissions', $data)) {
@@ -58,6 +60,17 @@ class EloquentRoleRepository implements RoleRepositoryInterface
         }
 
         return $role->load('permissions');
+    }
+
+    /**
+     * Normalize the prefix: trim, lowercase, and store empty values as null
+     * so unique validation and the prefix middleware treat them uniformly.
+     */
+    private function normalizePrefix(?string $prefix): ?string
+    {
+        $prefix = $prefix === null ? null : strtolower(trim($prefix));
+
+        return $prefix === '' ? null : $prefix;
     }
 
     /**

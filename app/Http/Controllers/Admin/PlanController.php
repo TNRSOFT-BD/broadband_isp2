@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\StorePlanRequest;
 use App\Http\Requests\Admin\UpdatePlanRequest;
 use App\Models\Plan;
 use App\Services\PlanCategoryService;
+use App\Services\PlansPageSettingsService;
 use App\Services\PlanService;
 use App\Services\ServiceService;
 use Illuminate\Http\RedirectResponse;
@@ -19,6 +20,7 @@ class PlanController extends Controller
         private PlanService $planService,
         private PlanCategoryService $categoryService,
         private ServiceService $serviceService,
+        private PlansPageSettingsService $pageSettingsService,
     ) {}
 
     /**
@@ -42,6 +44,7 @@ class PlanController extends Controller
                 'active' => Plan::where('is_active', true)->count(),
                 'featured' => Plan::where('is_featured', true)->count(),
             ],
+            'pageSettings' => $this->pageSettingsService->getPublicSettings(),
         ]);
     }
 

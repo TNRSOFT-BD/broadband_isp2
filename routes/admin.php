@@ -99,10 +99,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/homepage-services/upload', [AdminHomepageServiceController::class, 'upload'])->name('homepage-services.upload');
         });
         Route::middleware('permission:edit-plans')->group(function () {
-            Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update');
+            Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update')->whereNumber('id');
         });
         Route::middleware('permission:delete-plans')->group(function () {
-            Route::delete('/homepage-services/{id}', [AdminHomepageServiceController::class, 'destroy'])->name('homepage-services.destroy');
+            Route::delete('/homepage-services/{id}', [AdminHomepageServiceController::class, 'destroy'])->name('homepage-services.destroy')->whereNumber('id');
         });
         Route::middleware('permission:edit-homepage')->group(function () {
             Route::put('/homepage-services/settings', [AdminHomepageServiceController::class, 'updateSectionSettings'])->name('homepage-services.settings');
@@ -357,16 +357,30 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
             Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
             Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
-            Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-            Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
-            Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
+            Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit')->whereNumber('id');
+            Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update')->whereNumber('id');
+            Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy')->whereNumber('id');
         });
     });
 
     // ── Role Prefix Routes (permission-gated) ──────────────────────────
     // Non-admin roles access admin pages via their prefix, e.g. /editor/plans.
     // Every route mirrors the same permission middleware as /admin/* routes.
-    $rolePrefixes = ['staff', 'editor', 'viewer', 'manager'];
+    // Prefixes are derived from the roles table so that any current or future
+    // role automatically gets its own view + write routes under its prefix.
+    $rolePrefixes = [];
+    try {
+        $rolePrefixes = \Illuminate\Support\Facades\DB::table('roles')
+            ->whereNotNull('prefix')
+            ->where('prefix', '!=', 'admin')
+            ->distinct()
+            ->orderBy('prefix')
+            ->pluck('prefix')
+            ->all();
+    } catch (\Throwable $e) {
+        // Roles table may not exist yet (e.g. before migrations run); fall back to empty.
+        $rolePrefixes = [];
+    }
 
     foreach ($rolePrefixes as $rolePrefix) {
         if ($rolePrefix === 'admin') {
@@ -510,6 +524,22 @@ Route::middleware(['auth'])->group(function () {
             // Website Config
             Route::middleware('permission:view-website-config')->group(function () {
                 Route::get('/website-config', [WebsiteConfigController::class, 'index'])->name('website-config');
+                Route::get('/website-config/colors', [WebsiteConfigController::class, 'getThemeColors'])->name('website-config.colors');
+            });
+            Route::middleware('permission:edit-website-config')->group(function () {
+                Route::put('/website-config/theme', [WebsiteConfigController::class, 'updateTheme'])->name('website-config.theme.update');
+                Route::put('/website-config/font', [WebsiteConfigController::class, 'updateFont'])->name('website-config.font.update');
+                Route::post('/website-config/theme/reset', [WebsiteConfigController::class, 'resetTheme'])->name('website-config.theme.reset');
+                Route::post('/website-config/upload', [WebsiteConfigController::class, 'uploadBranding'])->name('website-config.upload');
+                Route::put('/website-config/branding', [WebsiteConfigController::class, 'updateBranding'])->name('website-config.branding.update');
+            });
+
+            // Third-Party Links
+            Route::middleware('permission:view-website-config')->group(function () {
+                Route::get('/third-party-links', [WebsiteConfigController::class, 'thirdPartyLinks'])->name('third-party-links');
+            });
+            Route::middleware('permission:edit-website-config')->group(function () {
+                Route::put('/third-party-links', [WebsiteConfigController::class, 'updateThirdPartyLinks'])->name('third-party-links.update');
             });
 
             // Legal Pages
@@ -520,9 +550,260 @@ Route::middleware(['auth'])->group(function () {
             // Roles & Users
             Route::middleware('permission:manage-roles')->group(function () {
                 Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+                Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+                Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit')->whereNumber('id');
             });
             Route::middleware('permission:view-users')->group(function () {
                 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+            });
+            Route::middleware('permission:create-users')->group(function () {
+                Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+            });
+            Route::middleware('permission:edit-users')->group(function () {
+                Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+            });
+            Route::middleware('permission:create-users')->group(function () {
+                Route::post('/users', [UserController::class, 'store'])->name('users.store');
+            });
+            Route::middleware('permission:edit-users')->group(function () {
+                Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+            });
+            Route::middleware('permission:delete-users')->group(function () {
+                Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+            });
+
+            // Roles write routes
+            Route::middleware('permission:manage-roles')->group(function () {
+                Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+                Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update')->whereNumber('id');
+                Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy')->whereNumber('id');
+            });
+
+            // ── Write Routes (mirror of /admin) ────────────────────────
+            // Non-admin roles with the matching manage/edit permissions use
+            // their prefix for the same writes as /admin/*.
+
+            // Plans
+            Route::middleware('permission:create-plans')->group(function () {
+                Route::get('/plans/create', [AdminPlanController::class, 'create'])->name('plans.create');
+                Route::post('/plans', [AdminPlanController::class, 'store'])->name('plans.store');
+            });
+            Route::middleware('permission:edit-plans')->group(function () {
+                Route::put('/plans/{id}', [AdminPlanController::class, 'update'])->name('plans.update');
+                Route::patch('/plans/{id}/toggle-status', [AdminPlanController::class, 'toggleStatus'])->name('plans.toggle-status');
+            });
+
+            // Plan Categories
+            Route::middleware('permission:create-plan-categories')->group(function () {
+                Route::post('/plan-categories', [PlanCategoryController::class, 'store'])->name('plan-categories.store');
+            });
+            Route::middleware('permission:edit-plan-categories')->group(function () {
+                Route::put('/plan-categories/{id}', [PlanCategoryController::class, 'update'])->name('plan-categories.update');
+            });
+
+            // Services
+            Route::middleware('permission:create-services')->group(function () {
+                Route::post('/services', [AdminServiceController::class, 'store'])->name('services.store');
+                Route::post('/services/upload', [AdminServiceController::class, 'upload'])->name('services.upload');
+            });
+            Route::middleware('permission:edit-services')->group(function () {
+                Route::put('/services/{id}', [AdminServiceController::class, 'update'])->name('services.update');
+            });
+
+            // Homepage Services
+            Route::middleware('permission:create-plans')->group(function () {
+                Route::post('/homepage-services', [AdminHomepageServiceController::class, 'store'])->name('homepage-services.store');
+                Route::post('/homepage-services/upload', [AdminHomepageServiceController::class, 'upload'])->name('homepage-services.upload');
+            });
+            Route::middleware('permission:edit-plans')->group(function () {
+                Route::put('/homepage-services/{id}', [AdminHomepageServiceController::class, 'update'])->name('homepage-services.update')->whereNumber('id');
+            });
+            Route::middleware('permission:delete-plans')->group(function () {
+                Route::delete('/homepage-services/{id}', [AdminHomepageServiceController::class, 'destroy'])->name('homepage-services.destroy')->whereNumber('id');
+            });
+            Route::middleware('permission:edit-homepage')->group(function () {
+                Route::put('/homepage-services/settings', [AdminHomepageServiceController::class, 'updateSectionSettings'])->name('homepage-services.settings');
+            });
+            Route::middleware('permission:create-plans')->group(function () {
+                Route::post('/homepage-service-categories', [AdminHomepageServiceController::class, 'storeCategory'])->name('homepage-service-categories.store');
+            });
+            Route::middleware('permission:edit-plans')->group(function () {
+                Route::put('/homepage-service-categories/{id}', [AdminHomepageServiceController::class, 'updateCategory'])->name('homepage-service-categories.update');
+            });
+            Route::middleware('permission:delete-plans')->group(function () {
+                Route::delete('/homepage-service-categories/{id}', [AdminHomepageServiceController::class, 'destroyCategory'])->name('homepage-service-categories.destroy');
+            });
+
+            // Homepage Why Choose Us Items
+            Route::middleware('permission:edit-homepage')->group(function () {
+                Route::post('/homepage/why-choose-us-items', [HomepageController::class, 'storeWhyChooseUsItem'])->name('homepage.why-choose-us-items.store');
+                Route::put('/homepage/why-choose-us-items/{id}', [HomepageController::class, 'updateWhyChooseUsItem'])->name('homepage.why-choose-us-items.update');
+                Route::delete('/homepage/why-choose-us-items/{id}', [HomepageController::class, 'destroyWhyChooseUsItem'])->name('homepage.why-choose-us-items.destroy');
+                Route::patch('/homepage/why-choose-us-items/{id}/toggle-status', [HomepageController::class, 'toggleWhyChooseUsItemStatus'])->name('homepage.why-choose-us-items.toggle-status');
+            });
+
+            // Homepage Partners
+            Route::middleware('permission:manage-homepage-partners')->group(function () {
+                Route::post('/homepage/partners', [HomepageController::class, 'storePartner'])->name('homepage.partners.store');
+                Route::post('/homepage/partner-upload', [HomepageController::class, 'uploadPartnerImage'])->name('homepage.partner-upload');
+                Route::put('/homepage/partners/{id}', [HomepageController::class, 'updatePartner'])->name('homepage.partners.update');
+                Route::delete('/homepage/partners/{id}', [HomepageController::class, 'destroyPartner'])->name('homepage.partners.destroy');
+                Route::patch('/homepage/partners/{id}/toggle-status', [HomepageController::class, 'togglePartnerStatus'])->name('homepage.partners.toggle-status');
+            });
+
+            // Homepage Testimonials
+            Route::middleware('permission:manage-homepage-testimonials')->group(function () {
+                Route::post('/homepage/testimonials', [HomepageController::class, 'storeTestimonial'])->name('homepage.testimonials.store');
+                Route::put('/homepage/testimonials/{id}', [HomepageController::class, 'updateTestimonial'])->name('homepage.testimonials.update');
+                Route::delete('/homepage/testimonials/{id}', [HomepageController::class, 'destroyTestimonial'])->name('homepage.testimonials.destroy');
+            });
+
+            // Homepage FAQs
+            Route::middleware('permission:manage-homepage-faqs')->group(function () {
+                Route::post('/homepage/faqs', [HomepageController::class, 'storeFaq'])->name('homepage.faqs.store');
+                Route::put('/homepage/faqs/{id}', [HomepageController::class, 'updateFaq'])->name('homepage.faqs.update');
+                Route::delete('/homepage/faqs/{id}', [HomepageController::class, 'destroyFaq'])->name('homepage.faqs.destroy');
+            });
+
+            // Homepage Coverage
+            Route::middleware('permission:manage-homepage-coverage')->group(function () {
+                Route::post('/homepage/coverage', [HomepageController::class, 'storeCoverage'])->name('homepage.coverage.store');
+                Route::put('/homepage/coverage/{id}', [HomepageController::class, 'updateCoverage'])->name('homepage.coverage.update');
+                Route::delete('/homepage/coverage/{id}', [HomepageController::class, 'destroyCoverage'])->name('homepage.coverage.destroy');
+            });
+
+            // Hero Config
+            Route::middleware('permission:edit-hero-config')->group(function () {
+                Route::put('/hero-config', [HeroConfigController::class, 'update'])->name('hero-config.update');
+                Route::post('/hero-config/upload', [HeroConfigController::class, 'upload'])->name('hero-config.upload');
+            });
+
+            // Contact Messages
+            Route::middleware('permission:manage-contact-messages')->group(function () {
+                Route::patch('/contact-messages/{id}/status', [AdminContactMessageController::class, 'updateStatus'])->name('contact-messages.update-status');
+            });
+            Route::middleware('permission:delete-contact-messages')->group(function () {
+                Route::delete('/contact-messages/{id}', [AdminContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
+            });
+
+            // Social Media
+            Route::middleware('permission:manage-social-media')->group(function () {
+                Route::post('/social-media', [AdminSocialMediaController::class, 'store'])->name('social-media.store');
+                Route::post('/social-media/upload', [AdminSocialMediaController::class, 'upload'])->name('social-media.upload');
+                Route::put('/social-media/{id}', [AdminSocialMediaController::class, 'update'])->name('social-media.update');
+                Route::delete('/social-media/{id}', [AdminSocialMediaController::class, 'destroy'])->name('social-media.destroy');
+                Route::patch('/social-media/{id}/toggle-status', [AdminSocialMediaController::class, 'toggleStatus'])->name('social-media.toggle-status');
+            });
+
+            // Payment Partners
+            Route::middleware('permission:manage-payment-partners')->group(function () {
+                Route::post('/payment-partners', [AdminPaymentPartnerController::class, 'store'])->name('payment-partners.store');
+                Route::post('/payment-partners/upload', [AdminPaymentPartnerController::class, 'upload'])->name('payment-partners.upload');
+                Route::put('/payment-partners/{id}', [AdminPaymentPartnerController::class, 'update'])->name('payment-partners.update');
+                Route::delete('/payment-partners/{id}', [AdminPaymentPartnerController::class, 'destroy'])->name('payment-partners.destroy');
+                Route::patch('/payment-partners/{id}/activate', [AdminPaymentPartnerController::class, 'activate'])->name('payment-partners.activate');
+                Route::patch('/payment-partners/deactivate', [AdminPaymentPartnerController::class, 'deactivate'])->name('payment-partners.deactivate');
+            });
+
+            // Quick Contact Methods
+            Route::middleware('permission:manage-quick-contact-methods')->group(function () {
+                Route::post('/contact/quick-methods', [AdminQuickContactMethodController::class, 'store'])->name('quick-contact-methods.store');
+                Route::put('/contact/quick-methods/{id}', [AdminQuickContactMethodController::class, 'update'])->name('quick-contact-methods.update');
+                Route::delete('/contact/quick-methods/{id}', [AdminQuickContactMethodController::class, 'destroy'])->name('quick-contact-methods.destroy');
+                Route::patch('/contact/quick-methods/{id}/toggle-status', [AdminQuickContactMethodController::class, 'toggleStatus'])->name('quick-contact-methods.toggle-status');
+            });
+
+            // Inquiry Types
+            Route::middleware('permission:manage-inquiry-types')->group(function () {
+                Route::post('/contact/inquiry-types', [AdminInquiryTypeController::class, 'store'])->name('inquiry-types.store');
+                Route::put('/contact/inquiry-types/{id}', [AdminInquiryTypeController::class, 'update'])->name('inquiry-types.update');
+                Route::delete('/contact/inquiry-types/{id}', [AdminInquiryTypeController::class, 'destroy'])->name('inquiry-types.destroy');
+                Route::patch('/contact/inquiry-types/{id}/toggle-status', [AdminInquiryTypeController::class, 'toggleStatus'])->name('inquiry-types.toggle-status');
+            });
+
+            // Office Locations
+            Route::middleware('permission:manage-office-locations')->group(function () {
+                Route::post('/contact/locations', [AdminOfficeLocationController::class, 'store'])->name('office-locations.store');
+                Route::put('/contact/locations/{id}', [AdminOfficeLocationController::class, 'update'])->name('office-locations.update');
+                Route::delete('/contact/locations/{id}', [AdminOfficeLocationController::class, 'destroy'])->name('office-locations.destroy');
+                Route::patch('/contact/locations/{id}/toggle-status', [AdminOfficeLocationController::class, 'toggleStatus'])->name('office-locations.toggle-status');
+                Route::post('/contact/locations/resolve', [AdminOfficeLocationController::class, 'resolveLocation'])->name('office-locations.resolve');
+            });
+
+            // Pages: Plans Page CMS
+            Route::middleware('permission:manage-plans-page')->group(function () {
+                Route::put('/pages/plans', [PlansPageController::class, 'update'])->name('pages.plans.update');
+                Route::post('/pages/plans/upload', [PlansPageController::class, 'upload'])->name('pages.plans.upload');
+            });
+
+            // Pages: Contact Page CMS
+            Route::middleware('permission:manage-contact-page')->group(function () {
+                Route::put('/pages/contact', [AdminContactPageController::class, 'update'])->name('contact-page.update');
+                Route::post('/pages/contact/upload', [AdminContactPageController::class, 'upload'])->name('contact-page.upload');
+            });
+
+            // Pages: About Us Page CMS + sub-resources
+            Route::middleware('permission:manage-about-page')->group(function () {
+                Route::put('/pages/about', [AdminAboutUsController::class, 'update'])->name('about-us.update');
+                Route::post('/pages/about/upload', [AdminAboutUsController::class, 'upload'])->name('about-us.upload');
+
+                Route::get('/pages/about/statistics', [AdminAboutUsController::class, 'statistics'])->name('about-us.statistics');
+                Route::post('/pages/about/statistics', [AdminAboutUsController::class, 'storeStatistic'])->name('about-us.statistics.store');
+                Route::put('/pages/about/statistics/{id}', [AdminAboutUsController::class, 'updateStatistic'])->name('about-us.statistics.update');
+                Route::delete('/pages/about/statistics/{id}', [AdminAboutUsController::class, 'destroyStatistic'])->name('about-us.statistics.destroy');
+                Route::patch('/pages/about/statistics/{id}/toggle-status', [AdminAboutUsController::class, 'toggleStatisticStatus'])->name('about-us.statistics.toggle-status');
+
+                Route::get('/pages/about/core-values', [AdminAboutUsController::class, 'coreValues'])->name('about-us.core-values');
+                Route::post('/pages/about/core-values', [AdminAboutUsController::class, 'storeCoreValue'])->name('about-us.core-values.store');
+                Route::put('/pages/about/core-values/{id}', [AdminAboutUsController::class, 'updateCoreValue'])->name('about-us.core-values.update');
+                Route::delete('/pages/about/core-values/{id}', [AdminAboutUsController::class, 'destroyCoreValue'])->name('about-us.core-values.destroy');
+                Route::patch('/pages/about/core-values/{id}/toggle-status', [AdminAboutUsController::class, 'toggleCoreValueStatus'])->name('about-us.core-values.toggle-status');
+
+                Route::get('/pages/about/milestones', [AdminAboutUsController::class, 'milestones'])->name('about-us.milestones');
+                Route::post('/pages/about/milestones', [AdminAboutUsController::class, 'storeMilestone'])->name('about-us.milestones.store');
+                Route::put('/pages/about/milestones/{id}', [AdminAboutUsController::class, 'updateMilestone'])->name('about-us.milestones.update');
+                Route::delete('/pages/about/milestones/{id}', [AdminAboutUsController::class, 'destroyMilestone'])->name('about-us.milestones.destroy');
+                Route::patch('/pages/about/milestones/{id}/toggle-status', [AdminAboutUsController::class, 'toggleMilestoneStatus'])->name('about-us.milestones.toggle-status');
+
+                Route::get('/pages/about/capabilities', [AdminAboutUsController::class, 'capabilities'])->name('about-us.capabilities');
+                Route::post('/pages/about/capabilities', [AdminAboutUsController::class, 'storeCapability'])->name('about-us.capabilities.store');
+                Route::put('/pages/about/capabilities/{id}', [AdminAboutUsController::class, 'updateCapability'])->name('about-us.capabilities.update');
+                Route::delete('/pages/about/capabilities/{id}', [AdminAboutUsController::class, 'destroyCapability'])->name('about-us.capabilities.destroy');
+                Route::patch('/pages/about/capabilities/{id}/toggle-status', [AdminAboutUsController::class, 'toggleCapabilityStatus'])->name('about-us.capabilities.toggle-status');
+
+                Route::get('/pages/about/clients', [AdminAboutUsController::class, 'clients'])->name('about-us.clients');
+                Route::post('/pages/about/clients', [AdminAboutUsController::class, 'storeClient'])->name('about-us.clients.store');
+                Route::put('/pages/about/clients/{id}', [AdminAboutUsController::class, 'updateClient'])->name('about-us.clients.update');
+                Route::delete('/pages/about/clients/{id}', [AdminAboutUsController::class, 'destroyClient'])->name('about-us.clients.destroy');
+                Route::patch('/pages/about/clients/{id}/toggle-status', [AdminAboutUsController::class, 'toggleClientStatus'])->name('about-us.clients.toggle-status');
+
+                Route::get('/pages/about/certifications', [AdminAboutUsController::class, 'certifications'])->name('about-us.certifications');
+                Route::post('/pages/about/certifications', [AdminAboutUsController::class, 'storeCertification'])->name('about-us.certifications.store');
+                Route::put('/pages/about/certifications/{id}', [AdminAboutUsController::class, 'updateCertification'])->name('about-us.certifications.update');
+                Route::delete('/pages/about/certifications/{id}', [AdminAboutUsController::class, 'destroyCertification'])->name('about-us.certifications.destroy');
+                Route::patch('/pages/about/certifications/{id}/toggle-status', [AdminAboutUsController::class, 'toggleCertificationStatus'])->name('about-us.certifications.toggle-status');
+
+                Route::get('/pages/about/why-choose-us', [AdminAboutUsController::class, 'whyChooseUs'])->name('about-us.why-choose-us');
+                Route::post('/pages/about/why-choose-us', [AdminAboutUsController::class, 'storeWhyChooseUs'])->name('about-us.why-choose-us.store');
+                Route::put('/pages/about/why-choose-us/{id}', [AdminAboutUsController::class, 'updateWhyChooseUs'])->name('about-us.why-choose-us.update');
+                Route::delete('/pages/about/why-choose-us/{id}', [AdminAboutUsController::class, 'destroyWhyChooseUs'])->name('about-us.why-choose-us.destroy');
+                Route::patch('/pages/about/why-choose-us/{id}/toggle-status', [AdminAboutUsController::class, 'toggleWhyChooseUsStatus'])->name('about-us.why-choose-us.toggle-status');
+            });
+
+            // Legal Pages
+            Route::middleware('permission:create-legal-pages')->group(function () {
+                Route::get('/legal-pages/create', [AdminLegalPageController::class, 'create'])->name('legal-pages.create');
+                Route::post('/legal-pages', [AdminLegalPageController::class, 'store'])->name('legal-pages.store');
+            });
+            Route::middleware('permission:edit-legal-pages')->group(function () {
+                Route::get('/legal-pages/{id}/edit', [AdminLegalPageController::class, 'edit'])->name('legal-pages.edit');
+                Route::put('/legal-pages/{id}', [AdminLegalPageController::class, 'update'])->name('legal-pages.update');
+            });
+            Route::middleware('permission:view-legal-pages')->group(function () {
+                Route::get('/legal-pages/{id}/preview', [AdminLegalPageController::class, 'preview'])->name('legal-pages.preview');
+            });
+            Route::middleware('permission:delete-legal-pages')->group(function () {
+                Route::delete('/legal-pages/{id}', [AdminLegalPageController::class, 'destroy'])->name('legal-pages.destroy');
             });
         });
     }

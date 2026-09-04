@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, Pencil, Users, Image as ImageIcon, CheckCircle2, ExternalLink } from 'lucide-react';
 import { useAdminUrl } from '@/hooks/use-admin-url';
+import { getCsrfToken } from '@/lib/csrf';
 
 
 interface PartnerItem {
@@ -25,6 +26,7 @@ interface PageProps extends Record<string, unknown> {
 
 export default function PartnersPage() {
     const { adminUrl } = useAdminUrl();
+    const csrfToken = getCsrfToken();
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: adminUrl('/dashboard') },
         { title: 'Homepage', href: adminUrl('/homepage') },
@@ -92,10 +94,10 @@ export default function PartnersPage() {
             const fd = new FormData();
             fd.append('image', file);
 
-            const response = await fetch('/admin/homepage/partner-upload', {
+            const response = await fetch(adminUrl('/homepage/partner-upload'), {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                     Accept: 'application/json',
                 },

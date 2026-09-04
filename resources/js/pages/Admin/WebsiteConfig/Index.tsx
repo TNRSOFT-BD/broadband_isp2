@@ -261,13 +261,13 @@ export default function WebsiteConfig() {
                                     label="Website Logo"
                                     value={brandingForm.data.logo}
                                     onChange={(v) => brandingForm.setData('logo', v)}
-                                    uploadUrl={'/admin/website-config/upload'}
+                                    uploadUrl={adminUrl('/website-config/upload')}
                                 />
                                 <PageImageField
                                     label="Favicon"
                                     value={brandingForm.data.favicon}
                                     onChange={(v) => brandingForm.setData('favicon', v)}
-                                    uploadUrl={'/admin/website-config/upload'}
+                                    uploadUrl={adminUrl('/website-config/upload')}
                                 />
                             </div>
 

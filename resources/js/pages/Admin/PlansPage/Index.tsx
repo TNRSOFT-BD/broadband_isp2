@@ -212,7 +212,7 @@ export default function PlansPageSettingsIndex() {
                                 label="Background Image"
                                 value={form.data.background_image}
                                 onChange={(v) => form.setData('background_image', v)}
-                                uploadUrl={'/admin/pages/plans/upload'}
+                                uploadUrl={adminUrl('/pages/plans/upload')}
                             />
                             <Separator className="my-1" />
                             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Call-to-Action Buttons</p>
@@ -351,7 +351,7 @@ export default function PlansPageSettingsIndex() {
                                 label="CTA Background Image"
                                 value={form.data.cta_section_background_image}
                                 onChange={(v) => form.setData('cta_section_background_image', v)}
-                                uploadUrl={'/admin/pages/plans/upload'}
+                                uploadUrl={adminUrl('/pages/plans/upload')}
                             />
                         </SectionCard>
                     )}

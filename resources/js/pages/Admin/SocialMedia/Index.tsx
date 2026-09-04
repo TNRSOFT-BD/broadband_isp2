@@ -16,6 +16,7 @@ import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { CheckCircle2, ImagePlus, Plus, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useAdminUrl } from '@/hooks/use-admin-url';
+import { getCsrfToken } from '@/lib/csrf';
 
 interface SocialMediaItem {
     id: number;
@@ -40,6 +41,7 @@ const emptyForm = {
 
 export default function SocialMediaIndex() {
     const { adminUrl } = useAdminUrl();
+    const csrfToken = getCsrfToken();
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Dashboard', href: adminUrl('/dashboard') },
         { title: 'Social Media', href: adminUrl('/social-media') },
@@ -95,11 +97,10 @@ export default function SocialMediaIndex() {
             const formData = new FormData();
             formData.append('image', file);
 
-            const response = await fetch('/admin/social-media/upload', {
+            const response = await fetch(adminUrl('/social-media/upload'), {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN':
-                        (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '',
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                     Accept: 'application/json',
                 },

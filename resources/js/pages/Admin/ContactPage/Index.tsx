@@ -353,7 +353,7 @@ export default function ContactPageIndex() {
                                 label="Background Image"
                                 value={form.data.hero_background_image}
                                 onChange={(v) => form.setData('hero_background_image', v)}
-                                uploadUrl={'/admin/pages/contact/upload'}
+                                uploadUrl={adminUrl('/pages/contact/upload')}
                             />
                         </SectionCard>
                     )}

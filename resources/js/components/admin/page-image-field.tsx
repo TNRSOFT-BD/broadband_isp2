@@ -1,8 +1,8 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { usePage } from '@inertiajs/react';
 import { Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
+import { getCsrfToken } from '@/lib/csrf';
 
 const MAX_SIZE_BYTES = 1024 * 1024; // 1 MB
 
@@ -17,17 +17,10 @@ export default function PageImageField({
     onChange: (v: string) => void;
     uploadUrl: string;
 }) {
-    const { props } = usePage();
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState(value);
     const [error, setError] = useState<string | null>(null);
-
-    // Inertia keeps csrf_token fresh in page props after every request.
-    // Falling back to the meta tag is a last resort.
-    const getCsrfToken = (): string =>
-        (props as Record<string, unknown>).csrf_token as string ||
-        (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null)?.content ||
-        '';
+    const csrfToken = getCsrfToken();
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -51,7 +44,7 @@ export default function PageImageField({
             const response = await fetch(uploadUrl, {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': getCsrfToken(),
+                    'X-CSRF-TOKEN': csrfToken,
                     'X-Requested-With': 'XMLHttpRequest',
                     Accept: 'application/json',
                 },

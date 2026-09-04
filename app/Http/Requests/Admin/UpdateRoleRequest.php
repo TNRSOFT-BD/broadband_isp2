@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class UpdateRoleRequest extends FormRequest
@@ -16,6 +17,26 @@ class UpdateRoleRequest extends FormRequest
     }
 
     /**
+     * Normalize input before validation so role names/prefixes are always
+     * stored lowercase (routes are built from the prefix).
+     */
+    protected function prepareForValidation(): void
+    {
+        $name = strtolower(trim((string) $this->input('name')));
+        $prefix = strtolower(trim((string) $this->input('prefix')));
+
+        // No prefix given? Use the role name as the URL prefix.
+        if ($prefix === '') {
+            $prefix = $name;
+        }
+
+        $this->merge([
+            'name' => $name,
+            'prefix' => $prefix,
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -24,15 +45,42 @@ class UpdateRoleRequest extends FormRequest
     {
         $roleId = $this->route('id');
 
+        // System roles (super_admin, admin) may keep the reserved 'admin' prefix
+        // so they stay on /admin/*. All other roles must pick a different prefix.
+        $isSystemRole = DB::table('roles')
+            ->where('id', $roleId)
+            ->whereIn('name', ['super_admin', 'admin'])
+            ->exists();
+
+        $prefix = $isSystemRole ? 'nullable|string|max:50|alpha_dash' : 'nullable|string|max:50|alpha_dash|not_in:admin';
+
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('roles', 'name')->ignore($roleId)->where('guard_name', 'web'),
+                Rule::unique('roles', 'name')->ignore($roleId)->where(function ($query) {
+                    $query->where('guard_name', 'web')
+                        ->whereRaw('LOWER(name) = ?', [strtolower(trim((string) $this->input('name')))]);
+                }),
             ],
+            'prefix' => array_merge(explode('|', $prefix), [
+                Rule::unique('roles', 'prefix')->ignore($roleId)->where(function ($query) {
+                    $query->whereNotNull('prefix')
+                        ->where('prefix', '!=', '')
+                        ->whereRaw('LOWER(prefix) = ?', [strtolower(trim((string) $this->input('prefix')))]);
+                }),
+            ]),
             'permissions' => 'required|array',
             'permissions.*' => 'exists:permissions,id',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'prefix.not_in' => 'The URL prefix "admin" is reserved. Choose a different prefix.',
+            'prefix.unique' => 'That URL prefix is already in use by another role.',
         ];
     }
 }
