@@ -12,7 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import type { AdminPlan, PlanCategory } from '@/types/plans';
+import type { AdminPlan, PlanCategory, PlansPageSettings } from '@/types/plans';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Eye, Pencil, Plus, Search, Star, Trash2 } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
@@ -28,6 +28,7 @@ interface PageProps {
     filters: { search?: string; category?: string; status?: string };
     categories: PlanCategory[];
     stats: { total: number; active: number; featured: number };
+    pageSettings: PlansPageSettings;
 }
 
 
@@ -38,7 +39,9 @@ export default function PlansIndex() {
         { title: 'Plans', href: adminUrl('/plans') },
     ];
 
-    const { plans, filters, categories, stats } = usePage<PageProps & { [key: string]: unknown }>().props;
+    const { plans, filters, categories, stats, pageSettings } = usePage<PageProps & { [key: string]: unknown }>().props;
+
+    const currencySymbol = pageSettings.currency_symbol ?? '$';
 
     const [search, setSearch] = useState(filters.search ?? '');
     const [category, setCategory] = useState(filters.category ?? '');
@@ -187,7 +190,7 @@ export default function PlansIndex() {
                                     <td className="whitespace-nowrap px-4 py-3 tabular-nums">
                                         {plan.speed} {plan.speed_unit}
                                     </td>
-                                    <td className="whitespace-nowrap px-4 py-3 tabular-nums">${Number(plan.monthly_price).toFixed(2)}/mo</td>
+                                    <td className="whitespace-nowrap px-4 py-3 tabular-nums">{currencySymbol}{Number(plan.monthly_price).toFixed(2)}/mo</td>
                                     <td className="px-4 py-3">
                                         <button
                                             type="button"

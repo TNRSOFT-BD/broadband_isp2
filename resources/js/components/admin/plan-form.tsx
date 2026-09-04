@@ -14,7 +14,6 @@ import { useMemo, useState } from 'react';
 export interface PlanFeatureInput {
     [key: string]: string;
     title: string;
-    icon: string;
     description: string;
 }
 
@@ -112,7 +111,7 @@ export function PlanForm({ initialData, categories, services, submitRoute, metho
     };
 
     const addFeature = () => {
-        form.setData('features', [...form.data.features, { title: '', icon: '', description: '' }]);
+        form.setData('features', [...form.data.features, { title: '', description: '' }]);
     };
 
     const removeFeature = (index: number) => {
@@ -322,9 +321,8 @@ export function PlanForm({ initialData, categories, services, submitRoute, metho
                                         <ArrowDown className="h-3.5 w-3.5" />
                                     </button>
                                 </div>
-                                <div className="grid flex-1 gap-2 md:grid-cols-[1fr_140px_1fr]">
+                                <div className="grid flex-1 gap-2 md:grid-cols-2">
                                     <Input value={feature.title} onChange={(e) => updateFeature(index, { title: e.target.value })} placeholder="Unlimited bandwidth *" aria-label={`Feature ${index + 1} title`} />
-                                    <Input value={feature.icon} onChange={(e) => updateFeature(index, { icon: e.target.value })} placeholder="Icon (optional)" aria-label={`Feature ${index + 1} icon`} />
                                     <Input value={feature.description} onChange={(e) => updateFeature(index, { description: e.target.value })} placeholder="Short description (optional)" aria-label={`Feature ${index + 1} description`} />
                                 </div>
                                 <Button type="button" variant="ghost" size="icon" onClick={() => removeFeature(index)} aria-label={`Remove feature ${index + 1}`}>
