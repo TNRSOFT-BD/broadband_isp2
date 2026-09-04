@@ -42,6 +42,12 @@ class StoreRoleRequest extends FormRequest
      */
     public function rules(): array
     {
+        // System role names (super_admin, admin) may use the reserved 'admin'
+        // prefix so they stay on /admin/*. All other roles must pick a different prefix.
+        $isSystemName = in_array(strtolower(trim((string) $this->input('name'))), ['super_admin', 'admin']);
+
+        $prefix = $isSystemName ? 'nullable|string|max:50|alpha_dash' : 'nullable|string|max:50|alpha_dash|not_in:admin';
+
         return [
             'name' => [
                 'required',
@@ -52,18 +58,13 @@ class StoreRoleRequest extends FormRequest
                         ->whereRaw('LOWER(name) = ?', [strtolower(trim((string) $this->input('name')))]);
                 }),
             ],
-            'prefix' => [
-                'nullable',
-                'string',
-                'max:50',
-                'alpha_dash',
-                'not_in:admin',
+            'prefix' => array_merge(explode('|', $prefix), [
                 Rule::unique('roles', 'prefix')->where(function ($query) {
                     $query->whereNotNull('prefix')
                         ->where('prefix', '!=', '')
                         ->whereRaw('LOWER(prefix) = ?', [strtolower(trim((string) $this->input('prefix')))]);
                 }),
-            ],
+            ]),
             'permissions' => 'required|array',
             'permissions.*' => 'exists:permissions,id',
         ];

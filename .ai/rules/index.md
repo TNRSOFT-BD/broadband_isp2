@@ -8,6 +8,7 @@ Before planning or editing, find the row whose globs match the file's path and r
 | app/Repositories/Eloquent/EloquentPlanCategoryRepository.php | .ai/rules/eloquent.md |
 | resources/js/**/*.tsx | .ai/rules/js.md |
 | app/Http/Middleware/RolePrefixMiddleware.php | .ai/rules/middleware.md |
+| app/Http/Requests/Admin/*RoleRequest.php | .ai/rules/requests-admin.md |
 | routes/admin.php | .ai/rules/routes.md |
 | app/Services/OfficeLocationService.php | .ai/rules/services.md |
 | resources/views/app.blade.php | .ai/rules/views.md |

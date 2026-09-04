@@ -526,10 +526,20 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/website-config', [WebsiteConfigController::class, 'index'])->name('website-config');
                 Route::get('/website-config/colors', [WebsiteConfigController::class, 'getThemeColors'])->name('website-config.colors');
             });
+            Route::middleware('permission:edit-website-config')->group(function () {
+                Route::put('/website-config/theme', [WebsiteConfigController::class, 'updateTheme'])->name('website-config.theme.update');
+                Route::put('/website-config/font', [WebsiteConfigController::class, 'updateFont'])->name('website-config.font.update');
+                Route::post('/website-config/theme/reset', [WebsiteConfigController::class, 'resetTheme'])->name('website-config.theme.reset');
+                Route::post('/website-config/upload', [WebsiteConfigController::class, 'uploadBranding'])->name('website-config.upload');
+                Route::put('/website-config/branding', [WebsiteConfigController::class, 'updateBranding'])->name('website-config.branding.update');
+            });
 
             // Third-Party Links
             Route::middleware('permission:view-website-config')->group(function () {
                 Route::get('/third-party-links', [WebsiteConfigController::class, 'thirdPartyLinks'])->name('third-party-links');
+            });
+            Route::middleware('permission:edit-website-config')->group(function () {
+                Route::put('/third-party-links', [WebsiteConfigController::class, 'updateThirdPartyLinks'])->name('third-party-links.update');
             });
 
             // Legal Pages
@@ -551,6 +561,22 @@ Route::middleware(['auth'])->group(function () {
             });
             Route::middleware('permission:edit-users')->group(function () {
                 Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+            });
+            Route::middleware('permission:create-users')->group(function () {
+                Route::post('/users', [UserController::class, 'store'])->name('users.store');
+            });
+            Route::middleware('permission:edit-users')->group(function () {
+                Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+            });
+            Route::middleware('permission:delete-users')->group(function () {
+                Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+            });
+
+            // Roles write routes
+            Route::middleware('permission:manage-roles')->group(function () {
+                Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+                Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update')->whereNumber('id');
+                Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('roles.destroy')->whereNumber('id');
             });
 
             // ── Write Routes (mirror of /admin) ────────────────────────
@@ -655,6 +681,9 @@ Route::middleware(['auth'])->group(function () {
             // Contact Messages
             Route::middleware('permission:manage-contact-messages')->group(function () {
                 Route::patch('/contact-messages/{id}/status', [AdminContactMessageController::class, 'updateStatus'])->name('contact-messages.update-status');
+            });
+            Route::middleware('permission:delete-contact-messages')->group(function () {
+                Route::delete('/contact-messages/{id}', [AdminContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
             });
 
             // Social Media
@@ -772,6 +801,9 @@ Route::middleware(['auth'])->group(function () {
             });
             Route::middleware('permission:view-legal-pages')->group(function () {
                 Route::get('/legal-pages/{id}/preview', [AdminLegalPageController::class, 'preview'])->name('legal-pages.preview');
+            });
+            Route::middleware('permission:delete-legal-pages')->group(function () {
+                Route::delete('/legal-pages/{id}', [AdminLegalPageController::class, 'destroy'])->name('legal-pages.destroy');
             });
         });
     }

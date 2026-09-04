@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class UpdateRoleRequest extends FormRequest
@@ -44,6 +45,15 @@ class UpdateRoleRequest extends FormRequest
     {
         $roleId = $this->route('id');
 
+        // System roles (super_admin, admin) may keep the reserved 'admin' prefix
+        // so they stay on /admin/*. All other roles must pick a different prefix.
+        $isSystemRole = DB::table('roles')
+            ->where('id', $roleId)
+            ->whereIn('name', ['super_admin', 'admin'])
+            ->exists();
+
+        $prefix = $isSystemRole ? 'nullable|string|max:50|alpha_dash' : 'nullable|string|max:50|alpha_dash|not_in:admin';
+
         return [
             'name' => [
                 'required',
@@ -54,18 +64,13 @@ class UpdateRoleRequest extends FormRequest
                         ->whereRaw('LOWER(name) = ?', [strtolower(trim((string) $this->input('name')))]);
                 }),
             ],
-            'prefix' => [
-                'nullable',
-                'string',
-                'max:50',
-                'alpha_dash',
-                'not_in:admin',
+            'prefix' => array_merge(explode('|', $prefix), [
                 Rule::unique('roles', 'prefix')->ignore($roleId)->where(function ($query) {
                     $query->whereNotNull('prefix')
                         ->where('prefix', '!=', '')
                         ->whereRaw('LOWER(prefix) = ?', [strtolower(trim((string) $this->input('prefix')))]);
                 }),
-            ],
+            ]),
             'permissions' => 'required|array',
             'permissions.*' => 'exists:permissions,id',
         ];
